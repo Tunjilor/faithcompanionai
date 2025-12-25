@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+/* =========================================================
+   Faith Companion AI — Brand Tokens (single source of truth)
+   DO NOT INLINE COLORS IN COMPONENTS
+   ========================================================= */
+
+:root {
+  /* Brand gradient */
+  --brand-purple: #7c3aed; /* purple-600 */
+  --brand-pink: #ec4899;   /* pink-500 */
+  --brand-orange: #f97316; /* orange-500 */
+
+  /* Page background gradient (light) */
+  --bg-top: #fbf7ff;
+  --bg-mid: #fff7f2;
+  --bg-bottom: #ffffff;
+
+  /* Text */
+  --text-primary: #0f172a;   /* slate-900 */
+  --text-secondary: #475569; /* slate-600 */
+  --text-muted: #64748b;     /* slate-500 */
+  --text-inverse: #ffffff;
+
+  /* Surfaces */
+  --surface: rgba(255, 255, 255, 0.88);
+  --surface-strong: #ffffff;
+  --surface-dark: rgba(0, 0, 0, 0.85);
+
+  /* Borders */
+  --border-soft: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+
+  /* Radius */
+  --radius-xl: 28px;
+  --radius-lg: 16px;
+}
+
+/* ---------------------------------------------------------
+   Helper classes (use these instead of hardcoding colors)
+   --------------------------------------------------------- */
+
+.app-bg {
+  background: linear-gradient(to bottom, var(--bg-top), var(--bg-mid), var(--bg-bottom));
+  color: var(--text-primary);
+}
+
+.brand-gradient {
+  background: linear-gradient(to right, var(--brand-purple), var(--brand-pink), var(--brand-orange));
+}
+
+.brand-gradient-border {
+  border-radius: var(--radius-xl);
+  padding: 1px;
+  background: linear-gradient(to right, var(--brand-purple), var(--brand-pink), var(--brand-orange));
+}
+
+.brand-surface {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(10px);
+}
+
+.brand-surface-strong {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: calc(var(--radius-xl) - 1px);
+  backdrop-filter: blur(10px);
+}

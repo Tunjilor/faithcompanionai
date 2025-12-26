@@ -64,15 +64,18 @@ function isActivePath(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
-export function useOnClickOutside(
+function useOnClickOutside(
   ref: React.RefObject<HTMLElement | null>,
   handler: (event: MouseEvent | TouchEvent) => void
 ) {
-  useEffect(() => {
+  React.useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
-      const el = ref.current;
+      const el = ref?.current;
       if (!el) return;
+
+      // If clicking inside the element, do nothing
       if (el.contains(event.target as Node)) return;
+
       handler(event);
     };
 
@@ -307,3 +310,4 @@ export default function Navbar() {
     </header>
   );
 }
+

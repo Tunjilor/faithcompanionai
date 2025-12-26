@@ -107,7 +107,6 @@ function useOnClickOutside(
   }, [ref, handler]);
 }
 
-
     document.addEventListener("mousedown", listener);
     document.addEventListener("touchstart", listener);
 
@@ -310,4 +309,5 @@ export default function Navbar() {
     </header>
   );
 }
+
 

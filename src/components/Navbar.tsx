@@ -162,38 +162,98 @@ export default function Navbar() {
           </div>
         </Link>
 
-        <nav className="flex items-center gap-1">
-          {NAV.map((item) => {
-            if (item.type === "menu") {
-              return (
-                <Dropdown
-                  key={item.label}
-                  label={item.label}
-                  items={item.items}
-                  baseHref={item.baseHref}
-                />
-              );
-            }
+        <div className="flex items-center gap-2">
+  {/* Desktop nav */}
+  <nav className="hidden items-center gap-1 md:flex">
+    {NAV.map((item) => {
+      if (item.type === "menu") {
+        return (
+          <Dropdown
+            key={item.label}
+            label={item.label}
+            items={item.items}
+            baseHref={item.baseHref}
+          />
+        );
+      }
 
-            const active = isActivePath(pathname, item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={classNames(
-                  "rounded-md px-3 py-2 text-sm font-medium transition",
-                  active
-                    ? "bg-white/10 text-white"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+      const active = isActivePath(pathname, item.href);
+      return (
+        <Link
+          key={item.href}
+          href={item.href}
+          className={classNames(
+            "rounded-md px-3 py-2 text-sm font-medium transition",
+            active
+              ? "bg-white/10 text-white"
+              : "text-white/80 hover:text-white hover:bg-white/10"
+          )}
+        >
+          {item.label}
+        </Link>
+      );
+    })}
+  </nav>
+
+  {/* Mobile button */}
+  <button
+    type="button"
+    className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 md:hidden"
+    onClick={() => setMobileOpen((v) => !v)}
+    aria-label="Open menu"
+  >
+    ☰
+  </button>
+</div>
       </div>
+    {mobileOpen && (
+  <div className="border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
+    <div className="mx-auto max-w-6xl px-4 py-3">
+      <div className="flex flex-col gap-1">
+        {NAV.map((item) => {
+          if (item.type === "menu") {
+            return (
+              <div key={item.label} className="rounded-xl border border-white/10 bg-white/5 p-2">
+                <div className="px-2 pb-2 text-xs font-semibold text-white/70">{item.label}</div>
+                <div className="flex flex-col">
+                  {item.items.map((it) => (
+                    <Link
+                      key={it.href}
+                      href={it.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="rounded-md px-2 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white"
+                    >
+                      {it.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
+          const active = isActivePath(pathname, item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className={classNames(
+                "rounded-md px-3 py-2 text-sm font-medium transition",
+                active
+                  ? "bg-white/10 text-white"
+                  : "text-white/80 hover:text-white hover:bg-white/10"
+              )}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+)}
     </header>
   );
 }
+
 

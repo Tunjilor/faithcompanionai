@@ -211,17 +211,19 @@ export default function Navbar() {
               const active = isActivePath(pathname, item.href);
               return (
                 <Link
-                  key={item.href}
-                  href={item.href}
-                  className={classNames(
-                    "rounded-md px-3 py-2 text-sm font-medium transition",
-                    active
-                      ? "bg-white/10 text-white"
-                      : "text-white/80 hover:text-white hover:bg-white/10"
-                  )}
-                >
-                  {item.label}
-                </Link>
+  key={item.href}
+  href={item.href}
+  onClick={() => setMobileOpen(false)}
+  className={classNames(
+    "rounded-md px-3 py-2 text-sm font-medium transition",
+    active
+      ? "bg-white/10 text-white"
+      : "text-white/80 hover:text-white hover:bg-white/10"
+  )}
+>
+  {item.label}
+</Link>
+
               );
             })}
           </nav>
@@ -308,4 +310,5 @@ export default function Navbar() {
     </header>
   );
 }
+
 

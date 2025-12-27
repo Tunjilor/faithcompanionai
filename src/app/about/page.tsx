@@ -1,15 +1,32 @@
+import BrandHeader from "@/components/BrandHeader";
+
 export default function AboutPage() {
   return (
-    <main className="min-h-screen app-bg px-6 py-10">
-      <div className="mx-auto max-w-5xl">
-        <div className="brand-surface p-8">
-          <h1 className="text-3xl font-extrabold text-slate-900">About</h1>
-          <p className="mt-2 text-slate-700">
-            Faith Companion AI helps you get Scripture references, short prayers, and devotionals—fast.
-            Next step: write your mission + how Premium supports Jamaica relief.
-          </p>
+    <div className="space-y-6">
+      <BrandHeader
+        title="About"
+        subtitle="Why Faith Companion AI exists — and how it helps your daily walk."
+      />
+
+      <div className="fc-surface p-6 space-y-4">
+        <p className="text-white/80">
+          Faith Companion AI helps you get Scripture references, short prayers, and devotionals — fast.
+        </p>
+
+        <p className="text-white/70">
+          The goal is simple: make it easier to build consistent time with God using tools that feel
+          calm, focused, and mobile-friendly.
+        </p>
+
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+          <div className="text-white font-semibold">What’s coming next</div>
+          <ul className="mt-2 list-disc pl-5 text-sm text-white/70 space-y-1">
+            <li>Saved favorites (verses, prayers, devotionals)</li>
+            <li>Guided plans and daily progress tracking</li>
+            <li>Premium quizzes and deeper study tools</li>
+          </ul>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -10,14 +10,20 @@ export default function ResourcesPage() {
       />
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Link href="/resources/christian-living" className="fc-surface p-6 hover:bg-white/10 transition">
+        <Link
+          href="/resources/christian-living"
+          className="fc-surface p-6 hover:bg-white/10 transition"
+        >
           <div className="text-white font-semibold">Christian Living</div>
           <p className="mt-2 text-sm text-white/70">
             Practical encouragement for everyday life.
           </p>
         </Link>
 
-        <Link href="/resources/favorites" className="fc-surface p-6 hover:bg-white/10 transition">
+        <Link
+          href="/resources/favorites"
+          className="fc-surface p-6 hover:bg-white/10 transition"
+        >
           <div className="text-white font-semibold">Favorites</div>
           <p className="mt-2 text-sm text-white/70">
             Your saved verses, prayers, and devotionals.

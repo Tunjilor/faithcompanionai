@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 // If your hook lives elsewhere, adjust this import to match your project.
-import { usePremium } from "@/components/usePremium";
+import usePremium from "@/components/usePremium";
 
 type Plan = {
   id: string;
@@ -233,5 +233,6 @@ export default function PricingPage() {
     </main>
   );
 }
+
 
 

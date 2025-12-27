@@ -17,4 +17,20 @@ export default function ResourcesPage() {
           </p>
         </Link>
 
-        <Link href="/resources/favorites" className="fc-surface p-6 hover:bg-white/10
+        <Link href="/resources/favorites" className="fc-surface p-6 hover:bg-white/10 transition">
+          <div className="text-white font-semibold">Favorites</div>
+          <p className="mt-2 text-sm text-white/70">
+            Your saved verses, prayers, and devotionals.
+          </p>
+        </Link>
+
+        <div className="fc-surface p-6">
+          <div className="text-white font-semibold">More coming soon</div>
+          <p className="mt-2 text-sm text-white/70">
+            Guides, reading plans, and study tools.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

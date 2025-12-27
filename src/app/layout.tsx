@@ -14,19 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-fc text-fc-foreground">
-        {/* Subtle global background */}
-        <div className="fc-bg" />
+      <body className="min-h-screen bg-fc text-fc">
+  <div className="fc-bg" />
+  ...
+</body>
 
-        <Navbar />
-
-        {/* Consistent page container */}
-        <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:px-6">
-          {children}
-        </main>
-
-        <Footer />
-      </body>
     </html>
   );
 }

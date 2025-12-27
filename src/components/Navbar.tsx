@@ -264,12 +264,14 @@ export default function Navbar() {
                       <div className="flex flex-col">
                         {item.items.map((it) => (
                           <Link
-                            key={it.href}
-                            href={it.href}
-                            className="rounded-md px-2 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white"
-                          >
-                            {it.label}
-                          </Link>
+  key={it.href}
+  href={it.href}
+  onClick={() => setMobileOpen(false)}
+  className="rounded-md px-2 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white"
+>
+  {it.label}
+</Link>
+
                         ))}
                       </div>
                     </div>
@@ -306,3 +308,4 @@ export default function Navbar() {
     </header>
   );
 }
+

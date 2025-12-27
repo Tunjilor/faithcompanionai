@@ -1,20 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-const KEY = "fc_premium";
-
-export default function usePremium() {
+export function usePremium() {
   const [isPremium, setIsPremium] = useState(false);
 
-  // Read on mount + when storage changes (other tabs)
   useEffect(() => {
-    const read = () => {
-      try {
-        setIsPremium(localStorage.getItem(KEY) === "true");
-      } catch {
-        setIsPremium(false);
-      }
+    // TODO: replace with real premium check (Supabase/Stripe/PayPal)
+    const v = localStorage.getItem("isPremium") === "true";
+    setIsPremium(v);
+  }, []);
+
+  return { isPremium };
+}
+
     };
 
     read();
@@ -47,3 +46,4 @@ export default function usePremium() {
 
   return { isPremium, activatePremium, deactivatePremium };
 }
+

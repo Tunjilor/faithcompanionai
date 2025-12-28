@@ -64,7 +64,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-fc text-fc-foreground">
+      <body className="min-h-screen bg-fc text-fc">
         <div className="fc-bg" />
 
         <Navbar />

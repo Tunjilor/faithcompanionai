@@ -1,29 +1,95 @@
+import BrandHeader from "@/components/BrandHeader";
+
 export default function PrivacyPage() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="text-3xl font-bold text-slate-900">Privacy Policy</h1>
-      <p className="mt-4 text-slate-700">
-        We keep this simple: we collect only what we need to run the site and improve the experience.
-      </p>
+    <div className="space-y-8">
+      <BrandHeader
+        title="Privacy Policy"
+        subtitle="Your privacy matters. Here’s how we protect and respect your information."
+      />
 
-      <section className="mt-8 space-y-4 text-slate-700">
-        <h2 className="text-xl font-semibold text-slate-900">What we collect</h2>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>Basic usage information (pages visited, performance, errors)</li>
-          <li>Info you choose to submit (questions, saved content) when those features are enabled</li>
-        </ul>
+      <div className="fc-surface p-6 space-y-6">
+        {/* Introduction */}
+        <section>
+          <p className="text-white/80 leading-relaxed">
+            Faith Companion AI ("we", "us") respects your privacy. This Privacy Policy
+            explains how we collect, use, and protect your information when you use
+            our website and services.
+          </p>
+        </section>
 
-        <h2 className="text-xl font-semibold text-slate-900">What we don’t do</h2>
-        <ul className="list-disc pl-6 space-y-2">
-          <li>We do not sell your personal information.</li>
-          <li>We do not share private content publicly unless you choose to post it (e.g., Prayer Wall).</li>
-        </ul>
+        {/* Information We Collect */}
+        <section>
+          <h2 className="text-lg font-semibold text-white mb-2">
+            Information We Collect
+          </h2>
+          <ul className="list-disc list-inside text-white/70 space-y-1">
+            <li>Email address (if you contact us or subscribe)</li>
+            <li>Favorites and saved content stored locally in your browser</li>
+            <li>Usage data to help improve our service</li>
+            <li>
+              Payment information (processed securely by PayPal — we never store
+              payment details)
+            </li>
+          </ul>
+        </section>
 
-        <h2 className="text-xl font-semibold text-slate-900">Contact</h2>
-        <p>
-          Questions? Use the <a className="underline" href="/contact">contact page</a>.
-        </p>
-      </section>
-    </main>
+        {/* How We Use Information */}
+        <section>
+          <h2 className="text-lg font-semibold text-white mb-2">
+            How We Use Your Information
+          </h2>
+          <ul className="list-disc list-inside text-white/70 space-y-1">
+            <li>Provide verses, prayers, and devotionals</li>
+            <li>Maintain your subscription and premium access</li>
+            <li>Improve app performance and user experience</li>
+          </ul>
+        </section>
+
+        {/* Data Protection */}
+        <section>
+          <h2 className="text-lg font-semibold text-white mb-2">
+            Data Protection
+          </h2>
+          <p className="text-white/80 leading-relaxed">
+            We do not sell or share your personal information with third parties.
+            All payments are processed securely through trusted third-party
+            providers such as PayPal.
+          </p>
+        </section>
+
+        {/* Cookies / Local Storage */}
+        <section>
+          <h2 className="text-lg font-semibold text-white mb-2">
+            Cookies & Local Storage
+          </h2>
+          <p className="text-white/80 leading-relaxed">
+            Faith Companion AI uses local storage in your browser to save favorites
+            and premium status. This information remains on your device and is not
+            transmitted to our servers.
+          </p>
+        </section>
+
+        {/* Contact */}
+        <section>
+          <h2 className="text-lg font-semibold text-white mb-2">
+            Contact Us
+          </h2>
+          <p className="text-white/80">
+            If you have questions about this Privacy Policy, you can contact us at:
+          </p>
+          <p className="mt-2 font-medium text-white">
+            shoptunji@gmail.com
+          </p>
+        </section>
+
+        {/* Last Updated */}
+        <section className="pt-4 border-t border-white/10">
+          <p className="text-sm text-white/50">
+            Last updated: {new Date().toLocaleDateString()}
+          </p>
+        </section>
+      </div>
+    </div>
   );
 }

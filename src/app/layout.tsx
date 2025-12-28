@@ -77,6 +77,15 @@ export const metadata = {
   description: "Daily verse • prayer • hope",
 };
 
+import SpiritualAssistant from "@/components/SpiritualAssistant";
+
+// ...
+<body>
+  {/* your existing layout */}
+  {children}
+  <SpiritualAssistant />
+</body>
+
 export default function RootLayout({
   children,
 }: {

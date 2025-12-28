@@ -1,63 +1,84 @@
-import BrandHeader from "@/components/BrandHeader";
+import type { Metadata } from "next";
+import Link from "next/link";
 
-const RESOURCES = [
+export const metadata: Metadata = {
+  title: "Resources",
+  description:
+    "Recommended Christian resources for studying Scripture, building prayer habits, and growing daily faith.",
+  alternates: { canonical: "/resources" },
+};
+
+const cards = [
   {
     title: "Study Bibles",
-    description:
-      "Explore trusted study Bibles to deepen your understanding of Scripture.",
+    desc: "Trusted study tools to go deeper in Scripture.",
+    href: "/resources/christian-living",
   },
   {
     title: "Prayer Journals",
-    description:
-      "Guided and open-format journals to support a consistent prayer life.",
+    desc: "Build a consistent prayer habit and track answered prayers.",
+    href: "/tools/prayer-journal",
   },
   {
     title: "Devotional Books",
-    description:
-      "Daily devotionals focused on Scripture, reflection, and application.",
+    desc: "Daily devotionals to strengthen your walk with God.",
+    href: "/tools/devotional",
   },
   {
     title: "Christian Living",
-    description:
-      "Resources to help apply biblical principles to everyday life.",
-  },
-  {
-    title: "Scripture Memory",
-    description:
-      "Tools and methods to help you memorize and retain God’s Word.",
-  },
-  {
-    title: "Faith & Growth",
-    description:
-      "Materials designed to encourage spiritual maturity and growth.",
+    desc: "Practical guidance for everyday faith and character.",
+    href: "/resources/christian-living",
   },
 ];
 
 export default function ResourcesPage() {
   return (
-    <div className="space-y-8">
-      <BrandHeader
-        title="Christian Resources"
-        subtitle="Carefully selected tools and materials to support your daily walk with God."
-      />
+    <main className="space-y-8">
+      <header className="text-center space-y-2">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-white">
+          Resources
+        </h1>
+        <p className="text-white/70 max-w-2xl mx-auto">
+          Recommended Christian resources to support your spiritual growth—simple, trusted, and easy to explore.
+        </p>
+      </header>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {RESOURCES.map((item) => (
-          <div
-            key={item.title}
-            className="brand-surface p-6 transition hover:shadow-md"
+      <section className="grid gap-4 md:grid-cols-2">
+        {cards.map((c) => (
+          <Link
+            key={c.title}
+            href={c.href}
+            className="fc-surface p-6 hover:bg-white/10 transition"
           >
-            <h3 className="text-lg font-semibold">{item.title}</h3>
-            <p className="mt-2 text-sm text-slate-600">
-              {item.description}
-            </p>
-          </div>
+            <div className="text-lg font-bold text-white">{c.title}</div>
+            <p className="mt-2 text-white/70">{c.desc}</p>
+            <div className="mt-4 text-sm text-white/70 underline underline-offset-4">
+              Explore →
+            </div>
+          </Link>
         ))}
-      </div>
+      </section>
 
-      <div className="brand-surface p-6 text-sm text-slate-600">
-        More resources and recommendations will continue to be added over time.
-      </div>
-    </div>
+      <section className="fc-surface p-6 md:p-8">
+        <h2 className="text-xl font-bold text-white">Quick Links</h2>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Link className="rounded-md bg-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/15" href="/tools/verse">
+            Verse
+          </Link>
+          <Link className="rounded-md bg-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/15" href="/tools/prayer">
+            Prayer
+          </Link>
+          <Link className="rounded-md bg-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/15" href="/tools/devotional">
+            Devotional
+          </Link>
+          <Link className="rounded-md bg-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/15" href="/biblequiz">
+            Bible Quiz
+          </Link>
+          <Link className="rounded-md bg-white/10 px-3 py-2 text-sm text-white/80 hover:bg-white/15" href="/community/prayer-wall">
+            Prayer Wall
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }

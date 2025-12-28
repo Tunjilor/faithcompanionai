@@ -4,80 +4,57 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Resources",
   description:
-    "Faith Companion AI resources: Bible study links, Christian living, and helpful tools to support your spiritual journey.",
+    "Explore Christian resources, favorites, and helpful tools to support your daily faith journey.",
   alternates: { canonical: "/resources" },
 };
-
-const resourceCards = [
-  {
-    title: "Christian Living",
-    desc: "Practical guidance for faith in everyday life.",
-    href: "/resources/christian-living",
-  },
-  {
-    title: "Favorites",
-    desc: "Your saved verses, prayers, and devotionals (local to this device).",
-    href: "/resources/favorites",
-  },
-  {
-    title: "Prayer Wall",
-    desc: "Encourage others and share prayer requests.",
-    href: "/community/prayer-wall",
-  },
-];
-
-const quickLinks = [
-  { label: "Generate a Verse", href: "/tools/verse" },
-  { label: "Generate a Prayer", href: "/tools/prayer" },
-  { label: "Daily Devotional", href: "/tools/devotional" },
-  { label: "Bible Quiz", href: "/biblequiz" },
-  { label: "Pricing", href: "/pricing" },
-];
 
 export default function ResourcesPage() {
   return (
     <div className="space-y-8">
-      <section className="fc-surface p-8 md:p-10">
-        <h1 className="text-4xl font-extrabold text-white md:text-5xl">Resources</h1>
-        <p className="mt-3 text-white/70">
-          Helpful sections and tools to support your spiritual journey.
+      <header className="text-center">
+        <h1 className="text-3xl font-extrabold text-white">Resources</h1>
+        <p className="mt-2 text-white/70">
+          Helpful pages to support your faith journey—favorites, Christian living, and more.
         </p>
-      </section>
+      </header>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        {resourceCards.map((c) => (
+      <div className="grid gap-4 md:grid-cols-2">
+        <Link href="/resources/christian-living" className="fc-surface p-6 hover:bg-white/10 transition">
+          <div className="text-lg font-bold text-white">Christian Living</div>
+          <div className="mt-2 text-white/70">
+            Encouragement and practical faith-based guidance for everyday life.
+          </div>
+        </Link>
+
+        <Link href="/resources/favorites" className="fc-surface p-6 hover:bg-white/10 transition">
+          <div className="text-lg font-bold text-white">Favorites</div>
+          <div className="mt-2 text-white/70">
+            Your saved verses, prayers, and devotionals stored on this device.
+          </div>
+        </Link>
+      </div>
+
+      <div className="fc-surface p-6 md:p-8 text-center">
+        <h2 className="text-xl font-bold text-white">Want more tools and premium content?</h2>
+        <p className="mt-2 text-white/70">
+          Upgrade to unlock more generations, quizzes, and future features.
+        </p>
+
+        <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
-            key={c.href}
-            href={c.href}
-            className="fc-surface p-6 transition hover:bg-white/10"
+            href="/pricing"
+            className="inline-flex items-center justify-center rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-3 text-sm font-semibold text-white hover:opacity-95"
           >
-            <div className="text-lg font-semibold text-white">{c.title}</div>
-            <div className="mt-2 text-white/70">{c.desc}</div>
-            <div className="mt-4 text-sm font-semibold text-white/80">
-              Open →
-            </div>
+            Go Premium
           </Link>
-        ))}
-      </section>
-
-      <section className="fc-surface p-6 md:p-8">
-        <h2 className="text-xl font-bold text-white">Quick Links</h2>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {quickLinks.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
-            >
-              {l.label}
-            </Link>
-          ))}
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center rounded-md border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
+          >
+            Back to Home
+          </Link>
         </div>
-
-        <div className="mt-6 text-sm text-white/60">
-          Tip: For the best experience, add Faith Companion AI to your phone’s home screen.
-        </div>
-      </section>
+      </div>
     </div>
   );
 }

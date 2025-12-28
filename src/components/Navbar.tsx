@@ -13,6 +13,7 @@ type NavItem =
       items: Array<{ label: string; href: string }>;
     };
 
+// Matches your src/app routes
 const NAV: NavItem[] = [
   { type: "link", label: "Home", href: "/" },
   { type: "link", label: "Dashboard", href: "/dashboard" },
@@ -45,6 +46,8 @@ const NAV: NavItem[] = [
     type: "menu",
     label: "More",
     items: [
+      { label: "Christian Living", href: "/resources/christian-living" },
+      { label: "Favorites", href: "/resources/favorites" },
       { label: "About", href: "/about" },
       { label: "Privacy", href: "/privacy" },
       { label: "Terms", href: "/terms" },
@@ -53,6 +56,8 @@ const NAV: NavItem[] = [
       { label: "Contact", href: "/contact" },
     ],
   },
+
+  { type: "link", label: "Pricing", href: "/pricing" },
 ];
 
 function classNames(...xs: Array<string | false | null | undefined>) {
@@ -176,8 +181,8 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-6">
-        <Link href="/" className="flex items-center gap-3">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
+        <Link href="/" className="flex items-center gap-2">
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-white/10 text-white">
             ✝
           </div>
@@ -188,8 +193,8 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-2">
-          {/* Desktop nav */}
-          <nav className="hidden items-center gap-1 md:flex">
+          {/* Desktop */}
+          <nav className="hidden items-center gap-1 lg:flex">
             {NAV.map((item) => {
               if (item.type === "menu") {
                 return (
@@ -220,18 +225,18 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Premium button */}
+          {/* Premium CTA */}
           <Link
             href="/pricing"
-            className="hidden rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-sm font-semibold text-white hover:opacity-95 md:inline-flex"
+            className="hidden rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-sm font-semibold text-white hover:opacity-95 lg:inline-flex"
           >
             Premium
           </Link>
 
-          {/* Mobile button */}
+          {/* Mobile toggle */}
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 md:hidden"
+            className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 lg:hidden"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Open menu"
           >
@@ -242,7 +247,7 @@ export default function Navbar() {
 
       {/* Mobile panel */}
       {mobileOpen && (
-        <div className="border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
+        <div className="border-t border-white/10 bg-black/40 backdrop-blur-xl lg:hidden">
           <div className="mx-auto max-w-6xl px-4 py-3">
             <div className="flex flex-col gap-1">
               {NAV.map((item) => {
@@ -260,6 +265,7 @@ export default function Navbar() {
                           <Link
                             key={it.href}
                             href={it.href}
+                            onClick={() => setMobileOpen(false)}
                             className="rounded-md px-2 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white"
                           >
                             {it.label}
@@ -275,6 +281,7 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={() => setMobileOpen(false)}
                     className={classNames(
                       "rounded-md px-3 py-2 text-sm font-medium transition",
                       active
@@ -289,6 +296,7 @@ export default function Navbar() {
 
               <Link
                 href="/pricing"
+                onClick={() => setMobileOpen(false)}
                 className="mt-2 rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-center text-sm font-semibold text-white"
               >
                 Premium

@@ -194,7 +194,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2">
           {/* Desktop */}
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav className="hidden items-center gap-1 md:flex">
             {NAV.map((item) => {
               if (item.type === "menu") {
                 return (
@@ -228,7 +228,7 @@ export default function Navbar() {
           {/* Premium CTA */}
           <Link
             href="/pricing"
-            className="hidden rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-sm font-semibold text-white hover:opacity-95 lg:inline-flex"
+            className="hidden rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-sm font-semibold text-white hover:opacity-95 md:inline-flex"
           >
             Premium
           </Link>
@@ -236,7 +236,7 @@ export default function Navbar() {
           {/* Mobile toggle */}
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 lg:hidden"
+            className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 md:hidden"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Open menu"
           >
@@ -247,7 +247,7 @@ export default function Navbar() {
 
       {/* Mobile panel */}
       {mobileOpen && (
-        <div className="border-t border-white/10 bg-black/40 backdrop-blur-xl lg:hidden">
+        <div className="border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
           <div className="mx-auto max-w-6xl px-4 py-3">
             <div className="flex flex-col gap-1">
               {NAV.map((item) => {
@@ -308,3 +308,4 @@ export default function Navbar() {
     </header>
   );
 }
+

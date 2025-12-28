@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FAQ",
+  description:
+    "Answers to common questions about Faith Companion AI, premium subscriptions, privacy, and features.",
+  alternates: { canonical: "/faq" },
+};
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -250,3 +259,4 @@ export default function PricingPage() {
     </div>
   );
 }
+

@@ -1,5 +1,20 @@
 import type { Metadata } from "next";
 
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: FAQS.map((x) => ({
+        "@type": "Question",
+        name: x.q,
+        acceptedAnswer: { "@type": "Answer", text: x.a },
+      })),
+    }),
+  }}
+/>
+
 export const metadata: Metadata = {
   title: "FAQ",
   description:
@@ -129,4 +144,5 @@ export default function FAQPage() {
     </div>
   );
 }
+
 

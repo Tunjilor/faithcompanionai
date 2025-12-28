@@ -1,25 +1,22 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://faithcompanionai.com";
+  const base = "https://faithcompanionai.com";
 
   const routes = [
-    "",
-    "/about",
-    "/pricing",
+    "/",
     "/dashboard",
+    "/pricing",
+    "/biblequiz",
+    "/resources",
+    "/community/prayer-wall",
     "/tools/verse",
     "/tools/prayer",
     "/tools/devotional",
     "/tools/prayer-journal",
     "/tools/scripture-memory",
     "/tools/verse-finder",
-    "/community",
-    "/community/prayer-wall",
-    "/biblequiz",
-    "/resources",
-    "/resources/christian-living",
-    "/resources/favorites",
+    "/about",
     "/privacy",
     "/terms",
     "/refund",
@@ -27,11 +24,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/contact",
   ];
 
-  return routes.map((route) => ({
-    url: `${baseUrl}${route}`,
+  return routes.map((path) => ({
+    url: `${base}${path}`,
     lastModified: new Date(),
     changeFrequency: "weekly",
-    priority: route === "" ? 1 : 0.7,
+    priority: path === "/" ? 1 : 0.7,
   }));
 }
-

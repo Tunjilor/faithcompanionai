@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SpiritualAssistant from "@/components/SpiritualAssistant";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://faithcompanionai.com"),
@@ -20,7 +22,9 @@ export const metadata: Metadata = {
     title: "Faith Companion AI",
     description:
       "Personalized Bible verses, prayers, and devotionals — grounded in Scripture.",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Faith Companion AI" }],
+    images: [
+      { url: "/og.png", width: 1200, height: 630, alt: "Faith Companion AI" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -53,39 +57,6 @@ export const viewport: Viewport = {
   themeColor: "#07070a",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body className="min-h-screen bg-fc text-fc">
-        <div className="fc-bg" />
-        <Navbar />
-        <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:px-6">
-          {children}
-        </main>
-        <Footer />
-      </body>
-    </html>
-  );
-}
-
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-
-export const metadata = {
-  title: "Faith Companion AI",
-  description: "Daily verse • prayer • hope",
-};
-
-import SpiritualAssistant from "@/components/SpiritualAssistant";
-
-// ...
-<body>
-  {/* your existing layout */}
-  {children}
-  <SpiritualAssistant />
-</body>
-
 export default function RootLayout({
   children,
 }: {
@@ -93,11 +64,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="bg-fc text-fc-foreground">
-  <div className="fc-bg" />
-  {children}
-</body>
+      <body className="min-h-screen bg-fc text-fc-foreground">
+        <div className="fc-bg" />
 
+        <Navbar />
+
+        <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:px-6">
+          {children}
+        </main>
+
+        <Footer />
+
+        {/* Floating chat widget */}
+        <SpiritualAssistant />
+      </body>
     </html>
   );
 }

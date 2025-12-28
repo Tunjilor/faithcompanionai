@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FAQ",
+  description:
+    "Answers to common questions about Faith Companion AI, premium subscriptions, privacy, and features.",
+  alternates: { canonical: "/faq" },
+};
+
 export default function ContactPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
@@ -20,3 +29,4 @@ export default function ContactPage() {
     </main>
   );
 }
+

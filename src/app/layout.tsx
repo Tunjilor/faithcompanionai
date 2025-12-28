@@ -14,9 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-fc text-fc">
+      <body className="bg-fc text-fc-foreground">
   <div className="fc-bg" />
-  ...
+  {children}
 </body>
 
     </html>

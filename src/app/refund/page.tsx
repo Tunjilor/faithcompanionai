@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FAQ",
+  description:
+    "Answers to common questions about Faith Companion AI, premium subscriptions, privacy, and features.",
+  alternates: { canonical: "/faq" },
+};
+
 import BrandHeader from "@/components/BrandHeader";
 
 export default function RefundPage() {
@@ -71,3 +80,4 @@ export default function RefundPage() {
     </div>
   );
 }
+

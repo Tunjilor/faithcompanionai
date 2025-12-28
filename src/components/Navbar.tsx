@@ -13,7 +13,6 @@ type NavItem =
       items: Array<{ label: string; href: string }>;
     };
 
-// Match your src/app routes
 const NAV: NavItem[] = [
   { type: "link", label: "Home", href: "/" },
   { type: "link", label: "Dashboard", href: "/dashboard" },
@@ -46,6 +45,8 @@ const NAV: NavItem[] = [
     type: "menu",
     label: "More",
     items: [
+      { label: "Christian Living", href: "/resources/christian-living" },
+      { label: "Favorites", href: "/resources/favorites" },
       { label: "About", href: "/about" },
       { label: "Privacy", href: "/privacy" },
       { label: "Terms", href: "/terms" },
@@ -57,7 +58,7 @@ const NAV: NavItem[] = [
   },
 ];
 
-function cx(...xs: Array<string | false | null | undefined>) {
+function classNames(...xs: Array<string | false | null | undefined>) {
   return xs.filter(Boolean).join(" ");
 }
 
@@ -125,7 +126,7 @@ function Dropdown({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={cx(
+        className={classNames(
           "inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition",
           anyActive
             ? "bg-white/10 text-white"
@@ -135,13 +136,13 @@ function Dropdown({
         aria-expanded={open}
       >
         {label}
-        <span className={cx("transition", open && "rotate-180")}>▾</span>
+        <span className={classNames("transition", open && "rotate-180")}>▾</span>
       </button>
 
       {open && (
         <div
           role="menu"
-          className="absolute left-0 mt-2 w-60 overflow-hidden rounded-xl border border-white/10 bg-black/70 backdrop-blur shadow-lg"
+          className="absolute left-0 mt-2 w-56 overflow-hidden rounded-xl border border-white/10 bg-black/70 backdrop-blur shadow-lg"
         >
           {items.map((it) => {
             const active = isActivePath(pathname, it.href);
@@ -150,7 +151,7 @@ function Dropdown({
                 key={it.href}
                 href={it.href}
                 onClick={() => setOpen(false)}
-                className={cx(
+                className={classNames(
                   "block px-4 py-2 text-sm transition",
                   active
                     ? "bg-white/10 text-white"
@@ -168,76 +169,28 @@ function Dropdown({
   );
 }
 
-function MobileSection({
-  label,
-  items,
-  onNavigate,
-}: {
-  label: string;
-  items: Array<{ label: string; href: string }>;
-  onNavigate: () => void;
-}) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div className="rounded-xl border border-white/10 bg-white/5">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between px-3 py-3 text-left text-sm font-semibold text-white"
-      >
-        <span>{label}</span>
-        <span className={cx("transition", open && "rotate-180")}>▾</span>
-      </button>
-
-      {open && (
-        <div className="px-2 pb-2">
-          {items.map((it) => (
-            <Link
-              key={it.href}
-              href={it.href}
-              onClick={onNavigate}
-              className="block rounded-md px-2 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white"
-            >
-              {it.label}
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Close mobile menu on route change
+  // close on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  const closeMobile = () => setMobileOpen(false);
-
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-6">
-        {/* Brand */}
         <Link href="/" className="flex items-center gap-3">
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-white/10 text-white">
             ✝
           </div>
           <div className="leading-tight">
-            <div className="text-sm font-semibold text-white">
-              Faith Companion AI
-            </div>
-            <div className="text-xs text-white/60">
-              Daily verse • prayer • hope
-            </div>
+            <div className="text-sm font-semibold text-white">Faith Companion AI</div>
+            <div className="text-xs text-white/60">Daily verse • prayer • hope</div>
           </div>
         </Link>
 
-        {/* Right side */}
         <div className="flex items-center gap-2">
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 md:flex">
@@ -258,7 +211,7 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={cx(
+                  className={classNames(
                     "rounded-md px-3 py-2 text-sm font-medium transition",
                     active
                       ? "bg-white/10 text-white"
@@ -294,70 +247,52 @@ export default function Navbar() {
       {/* Mobile panel */}
       {mobileOpen && (
         <div className="border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
-          <div className="mx-auto max-w-6xl px-4 py-4">
-            <div className="flex flex-col gap-2">
-              {/* Top links */}
-              <Link
-                href="/"
-                onClick={closeMobile}
-                className="rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white"
-              >
-                Home
-              </Link>
-              <Link
-                href="/dashboard"
-                onClick={closeMobile}
-                className="rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white"
-              >
-                Dashboard
-              </Link>
-
-              {/* Collapsible sections (better than dumping every item) */}
-              <MobileSection
-                label="Tools"
-                items={
-                  (NAV.find((n) => n.type === "menu" && n.label === "Tools") as any)
-                    ?.items ?? []
+          <div className="mx-auto max-w-6xl px-4 py-3">
+            <div className="flex flex-col gap-1">
+              {NAV.map((item) => {
+                if (item.type === "menu") {
+                  return (
+                    <details
+                      key={item.label}
+                      className="rounded-xl border border-white/10 bg-white/5"
+                    >
+                      <summary className="cursor-pointer list-none px-3 py-2 text-sm font-semibold text-white/80 hover:text-white">
+                        {item.label}
+                      </summary>
+                      <div className="flex flex-col gap-1 px-2 pb-2">
+                        {item.items.map((it) => (
+                          <Link
+                            key={it.href}
+                            href={it.href}
+                            className="rounded-md px-2 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white"
+                          >
+                            {it.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </details>
+                  );
                 }
-                onNavigate={closeMobile}
-              />
-              <MobileSection
-                label="Community"
-                items={
-                  (NAV.find((n) => n.type === "menu" && n.label === "Community") as any)
-                    ?.items ?? []
-                }
-                onNavigate={closeMobile}
-              />
 
-              <Link
-                href="/biblequiz"
-                onClick={closeMobile}
-                className="rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white"
-              >
-                Quiz
-              </Link>
-
-              <Link
-                href="/resources"
-                onClick={closeMobile}
-                className="rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white"
-              >
-                Resources
-              </Link>
-
-              <MobileSection
-                label="More"
-                items={
-                  (NAV.find((n) => n.type === "menu" && n.label === "More") as any)
-                    ?.items ?? []
-                }
-                onNavigate={closeMobile}
-              />
+                const active = isActivePath(pathname, item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={classNames(
+                      "rounded-md px-3 py-2 text-sm font-medium transition",
+                      active
+                        ? "bg-white/10 text-white"
+                        : "text-white/80 hover:text-white hover:bg-white/10"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
 
               <Link
                 href="/pricing"
-                onClick={closeMobile}
                 className="mt-2 rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-center text-sm font-semibold text-white"
               >
                 Premium

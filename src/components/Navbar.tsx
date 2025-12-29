@@ -13,6 +13,10 @@ type NavItem =
       items: Array<{ label: string; href: string }>;
     };
 
+<span className="ml-3 rounded bg-red-600 px-2 py-1 text-xs font-bold text-white">
+  DEBUG NAVBAR
+</span>
+
 // Matches your src/app routes
 const NAV: NavItem[] = [
   { type: "link", label: "Home", href: "/" },
@@ -308,4 +312,5 @@ export default function Navbar() {
     </header>
   );
 }
+
 

@@ -1,40 +1,35 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* =========================================================
-   Faith Companion AI — Global Theme (Calm Dark Default)
-   Single source of truth to avoid styling conflicts
-   ========================================================= */
+/* -----------------------------
+   Faith Companion AI theme
+------------------------------ */
 
 :root {
-  /* Base */
   --fc-bg: #07070a;
-  --fc-text: rgba(255, 255, 255, 0.92);
-  --fc-muted: rgba(255, 255, 255, 0.70);
+  --fc-text: #f5f5f7;
 
   /* Surfaces */
   --fc-surface: rgba(255, 255, 255, 0.06);
-  --fc-surface-2: rgba(255, 255, 255, 0.09);
   --fc-border: rgba(255, 255, 255, 0.10);
 
-  /* Accent (gentle) */
-  --fc-purple-glow: rgba(124, 58, 237, 0.12);
-  --fc-orange-glow: rgba(249, 115, 22, 0.08);
-  --fc-white-glow: rgba(255, 255, 255, 0.06);
-
-  /* Brand gradient colors */
-  --brand-purple: #7c3aed; /* purple-600 */
-  --brand-pink: #ec4899;   /* pink-500 */
-  --brand-orange: #f97316; /* orange-500 */
-
-  /* Radius */
-  --fc-radius-xl: 28px;
-  --fc-radius-lg: 16px;
+  /* Accent glows */
+  --fc-purple: 168, 85, 247;  /* purple-500-ish */
+  --fc-orange: 249, 115, 22;  /* orange-500-ish */
 }
 
-/* ---------------------------------------------------------
-   Base helpers
-   --------------------------------------------------------- */
+html,
+body {
+  height: 100%;
+}
 
+body {
+  background: var(--fc-bg);
+  color: var(--fc-text);
+}
+
+/* Layout helper classes used across your app */
 .bg-fc {
   background: var(--fc-bg);
 }
@@ -43,78 +38,35 @@
   color: var(--fc-text);
 }
 
-.text-fc-muted {
-  color: var(--fc-muted);
-}
-
-/* Global background glow */
+/* Background glow layer used by layout.tsx */
 .fc-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
+
+  /* subtle radial glows like before */
   background:
-    radial-gradient(900px 600px at 20% 10%, var(--fc-purple-glow), transparent 60%),
-    radial-gradient(900px 600px at 85% 15%, var(--fc-orange-glow), transparent 55%),
-    radial-gradient(1000px 700px at 50% 80%, var(--fc-white-glow), transparent 60%),
-    linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.35));
+    radial-gradient(900px 500px at 20% 10%, rgba(var(--fc-purple), 0.25), transparent 55%),
+    radial-gradient(900px 500px at 80% 20%, rgba(var(--fc-orange), 0.20), transparent 60%),
+    radial-gradient(900px 700px at 50% 90%, rgba(var(--fc-purple), 0.12), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.25));
 }
 
-/* Optional: nicer text rendering */
-html, body {
-  text-rendering: geometricPrecision;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ---------------------------------------------------------
-   Reusable surfaces (use these instead of bg-white, slate borders)
-   --------------------------------------------------------- */
-
+/* Standard card surface */
 .fc-surface {
+  border-radius: 1.25rem; /* ~rounded-2xl */
   background: var(--fc-surface);
   border: 1px solid var(--fc-border);
-  border-radius: var(--fc-radius-xl);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
 }
 
-.fc-surface-strong {
-  background: var(--fc-surface-2);
-  border: 1px solid var(--fc-border);
-  border-radius: var(--fc-radius-xl);
-  backdrop-filter: blur(12px);
+/* Make links/buttons look reasonable even if some pages use raw HTML */
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-/* ---------------------------------------------------------
-   Brand gradient helpers (use sparingly for CTAs)
-   --------------------------------------------------------- */
-
-.brand-gradient {
-  background: linear-gradient(to right, var(--brand-purple), var(--brand-pink), var(--brand-orange));
-}
-
-.brand-gradient-border {
-  border-radius: var(--fc-radius-xl);
-  padding: 1px;
-  background: linear-gradient(to right, var(--brand-purple), var(--brand-pink), var(--brand-orange));
-}
-
-/* =========================================================
-   OPTIONAL Light Theme (only if you wrap a page/container)
-   Usage example:
-     <body className="theme-light">...</body>
-   ========================================================= */
-
-.theme-light {
-  --fc-bg: #fbf7ff;
-  --fc-text: #0f172a;
-  --fc-muted: #475569;
-
-  --fc-surface: rgba(255, 255, 255, 0.88);
-  --fc-surface-2: rgba(255, 255, 255, 0.92);
-  --fc-border: rgba(0, 0, 0, 0.10);
-
-  --fc-purple-glow: rgba(124, 58, 237, 0.10);
-  --fc-orange-glow: rgba(249, 115, 22, 0.08);
-  --fc-white-glow: rgba(0, 0, 0, 0.04);
+button {
+  font: inherit;
 }

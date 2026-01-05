@@ -38,7 +38,7 @@ export default function AboutPage() {
 
       {/* What We Offer */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-extrabold text-white text-center">What We Offer</h2>
+        <h2 className="text-2xl font-extrabold text-white text-center">What We Offer</h2> 
 
         <div className="grid gap-4 md:grid-cols-3">
           <div className="fc-surface p-6">

@@ -21,11 +21,11 @@ const tools = [
 
 const legal = [
   { label: "About", href: "/about" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Contact", href: "/contact" },
   { label: "Privacy", href: "/privacy" },
   { label: "Terms", href: "/terms" },
   { label: "Refund", href: "/refund" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export default function Footer() {
@@ -33,15 +33,18 @@ export default function Footer() {
 
   return (
     <footer className="mt-16 border-t border-white/10">
-      <div className="mx-auto max-w-6xl px-4 py-12 md:px-6">
-        <div className="fc-surface p-8">
+      <div className="mx-auto max-w-6xl px-4 py-10 md:px-6">
+        <div className="fc-surface p-6 sm:p-8">
           <div className="grid gap-10 md:grid-cols-4">
             {/* Brand */}
             <div className="space-y-4 md:col-span-1">
               <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 text-white font-extrabold">
-                  F
-                </div>
+                <img
+                  src="/brand/logo-mono.png"
+                  alt="Faith Companion AI"
+                  className="h-9 w-9 rounded-2xl opacity-90"
+                  loading="lazy"
+                />
                 <div className="leading-tight">
                   <div className="font-extrabold text-white">
                     Faith Companion AI
@@ -52,28 +55,41 @@ export default function Footer() {
                 </div>
               </div>
 
-              <p className="text-sm text-white/70">
+              <p className="text-sm leading-relaxed text-white/70">
                 A calm, Scripture-grounded companion for daily encouragement and
                 growth.
               </p>
 
-              <Link
-                href="/pricing"
-                className="inline-flex items-center justify-center rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-2 text-sm font-semibold text-white hover:opacity-95"
-              >
-                Go Premium
-              </Link>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center justify-center rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-2 text-sm font-semibold text-white hover:opacity-95"
+                >
+                  Go Premium
+                </Link>
+
+                <Link
+                  href="/biblequiz"
+                  className="inline-flex items-center justify-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white/85 hover:bg-white/10 hover:text-white"
+                >
+                  Take the Quiz
+                </Link>
+              </div>
+
+              <p className="text-xs text-white/45">
+                Tip: Share your quiz score to invite friends to beat it.
+              </p>
             </div>
 
             {/* Sitemap */}
             <div className="space-y-3">
               <div className="text-sm font-semibold text-white">Sitemap</div>
-              <nav className="grid gap-2 text-sm">
+              <nav className="grid gap-2 text-sm" aria-label="Footer sitemap">
                 {sitemap.map((l) => (
                   <Link
                     key={l.href}
                     href={l.href}
-                    className="text-white/70 hover:text-white transition"
+                    className="text-white/70 transition hover:text-white"
                   >
                     {l.label}
                   </Link>
@@ -84,12 +100,12 @@ export default function Footer() {
             {/* Tools */}
             <div className="space-y-3">
               <div className="text-sm font-semibold text-white">Tools</div>
-              <nav className="grid gap-2 text-sm">
+              <nav className="grid gap-2 text-sm" aria-label="Footer tools">
                 {tools.map((l) => (
                   <Link
                     key={l.href}
                     href={l.href}
-                    className="text-white/70 hover:text-white transition"
+                    className="text-white/70 transition hover:text-white"
                   >
                     {l.label}
                   </Link>
@@ -97,15 +113,15 @@ export default function Footer() {
               </nav>
             </div>
 
-            {/* Legal + Help */}
+            {/* Help + Legal */}
             <div className="space-y-3">
               <div className="text-sm font-semibold text-white">Help & Legal</div>
-              <nav className="grid gap-2 text-sm">
+              <nav className="grid gap-2 text-sm" aria-label="Footer legal">
                 {legal.map((l) => (
                   <Link
                     key={l.href}
                     href={l.href}
-                    className="text-white/70 hover:text-white transition"
+                    className="text-white/70 transition hover:text-white"
                   >
                     {l.label}
                   </Link>
@@ -127,8 +143,12 @@ export default function Footer() {
           <div className="my-10 h-px bg-white/10" />
 
           <div className="flex flex-col gap-3 text-sm text-white/50 md:flex-row md:items-center md:justify-between">
-            <div>© {year} Faith Companion AI — Built with purpose &amp; prayer.</div>
-            <div className="text-white/40">Mobile-friendly • SEO-ready internal links</div>
+            <div>
+              © {year} Faith Companion AI — Built with purpose &amp; prayer.
+            </div>
+            <div className="text-white/40">
+              Mobile-friendly • SEO-ready internal links
+            </div>
           </div>
         </div>
       </div>

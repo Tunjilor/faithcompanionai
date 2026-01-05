@@ -1,15 +1,28 @@
-import BrandHeader from "@/components/BrandHeader";
+import type { Metadata } from "next";
+import QuizClient from "./quiz-client";
 
-export default function DashboardPage() {
+export const metadata: Metadata = {
+  title: "Bible Quiz",
+  description: "Test your Scripture knowledge with Faith Companion AI.",
+  alternates: { canonical: "/biblequiz" },
+  openGraph: {
+    title: "Faith Companion AI — Bible Quiz",
+    description: "Trivia + Speed Round Bible quizzes (premium categories included).",
+    url: "https://faithcompanionai.com/biblequiz",
+    images: [{ url: "/brand/og-quiz.png", width: 1200, height: 630, alt: "Faith Companion AI" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Faith Companion AI — Bible Quiz",
+    description: "Trivia + Speed Round Bible quizzes (premium categories included).",
+    images: ["/brand/og-quiz.png"],
+  },
+};
+
+export default function Page() {
   return (
-    <main className="min-h-screen px-6 py-10">
-      <div className="max-w-6xl mx-auto">
-        <BrandHeader
-          title="Dashboard"
-          subtitle="Your saved verses, prayers, devotionals, and daily progress."
-        />
-        <p className="text-slate-700">Saved prayers, favorites, reading plans — coming next.</p>
-      </div>
+    <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:px-6">
+      <QuizClient />
     </main>
   );
 }

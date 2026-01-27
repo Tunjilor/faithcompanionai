@@ -88,7 +88,7 @@ export default function PrivacyPage() {
             If you have questions about this Privacy Policy, you can contact us at:
           </p>
           <p className="mt-2 font-medium text-white">
-            shoptunji@gmail.com
+            support@faithcompanionai.com
           </p>
         </section>
 

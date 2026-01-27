@@ -8,13 +8,16 @@ datasource db {
 }
 
 model User {
-  id               String   @id @default(cuid())
-  email            String   @unique
-  stripeCustomerId String?  @unique
-  isPremium        Boolean  @default(false)
-  premiumUntil     DateTime?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                 String    @id @default(cuid())
+  email              String    @unique
+  stripeCustomerId   String?   @unique
+  stripeSubscriptionId String? @unique
+  isPremium          Boolean   @default(false)
+  premiumUntil       DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  quizAttempts QuizAttempt[]
 }
 
 model QuizResult {
@@ -24,4 +27,47 @@ model QuizResult {
   total     Int
   category  String
   createdAt DateTime @default(now())
+}
+
+model Question {
+  id          String   @id @default(cuid())
+  category    String
+  prompt      String
+  optionA     String
+  optionB     String
+  optionC     String
+  optionD     String
+  answer      String // store "A" | "B" | "C" | "D"
+  explanation String?
+  createdAt   DateTime @default(now())
+
+  attemptQuestions QuizAttemptQuestion[]
+}
+
+model QuizAttempt {
+  id              String   @id @default(cuid())
+  userId          String?
+  email           String?
+  category        String
+  score           Int      @default(0)
+  total           Int      @default(10)
+  timed           Boolean  @default(false)
+  durationSeconds Int?
+  createdAt       DateTime @default(now())
+
+  user      User?                 @relation(fields: [userId], references: [id], onDelete: SetNull)
+  questions QuizAttemptQuestion[]
+}
+
+model QuizAttemptQuestion {
+  id         String   @id @default(cuid())
+  attemptId  String
+  questionId String
+  chosen     String? // "A" | "B" | "C" | "D"
+  isCorrect  Boolean? // set when submitted
+
+  attempt  QuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, questionId])
 }

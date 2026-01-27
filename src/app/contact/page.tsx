@@ -1,14 +1,12 @@
+"use client";
+
 import type { Metadata } from "next";
 import BrandHeader from "@/components/BrandHeader";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Contact Faith Companion AI support for questions, feedback, or help with your account or premium subscription.",
-  alternates: { canonical: "/contact" },
-};
+// NOTE: You can't export metadata from a Client Component file.
+// If you want metadata, move it to app/contact/layout.tsx (example below).
 
-const SUPPORT_EMAIL = "shoptunji@gmail.com";
+const SUPPORT_EMAIL = "support@faithcompanionai.com";
 
 export default function ContactPage() {
   const subject = encodeURIComponent("Faith Companion AI Support");
@@ -36,6 +34,7 @@ export default function ContactPage() {
             <div className="text-xs font-semibold text-white/60 uppercase tracking-wide">
               Email
             </div>
+
             <a
               href={mailto}
               className="mt-1 inline-flex items-center gap-2 text-white font-semibold underline underline-offset-4 hover:opacity-90"
@@ -45,18 +44,20 @@ export default function ContactPage() {
                 ↗
               </span>
             </a>
+
             <p className="mt-2 text-sm text-white/70">
-              For premium billing questions, include your PayPal email (if
-              applicable).
+              For premium billing questions, include the email you used at
+              checkout and (if possible) a Stripe receipt or invoice number.
             </p>
           </div>
 
           <div className="text-sm text-white/60">
-            Typical response time: <span className="text-white/80">1–2 business days</span>
+            Typical response time:{" "}
+            <span className="text-white/80">1–2 business days</span>
           </div>
         </section>
 
-        {/* Right: Optional form (UX-only for now) */}
+        {/* Right: Optional form (mailto helper) */}
         <section className="fc-surface p-6">
           <h2 className="text-lg font-semibold text-white">Send a Message</h2>
           <p className="mt-2 text-white/75">
@@ -123,7 +124,7 @@ export default function ContactPage() {
                 defaultValue="General"
               >
                 <option>General</option>
-                <option>Premium / Billing</option>
+                <option>Premium / Billing (Stripe)</option>
                 <option>Bug / Something not working</option>
                 <option>Feature request</option>
                 <option>Privacy question</option>
@@ -141,7 +142,8 @@ export default function ContactPage() {
                 className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none placeholder:text-white/40 focus:ring-2 focus:ring-white/10"
               />
               <p className="mt-2 text-xs text-white/50">
-                Tip: If reporting a bug, include the page URL and what you clicked.
+                Tip: If reporting a bug, include the page URL and what you
+                clicked.
               </p>
             </div>
 

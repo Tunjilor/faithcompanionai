@@ -1,10 +1,7 @@
 {
-  "/page": "app/page.js",
-  "/tools/verse/page": "app/tools/verse/page.js",
-  "/tools/prayer/page": "app/tools/prayer/page.js",
-  "/resources/page": "app/resources/page.js",
-  "/api/me/route": "app/api/me/route.js",
-  "/biblequiz/page": "app/biblequiz/page.js",
+  "/pricing/page": "app/pricing/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/pricing/page": "app/pricing/page.js"
+  "/page": "app/page.js",
+  "/api/me/route": "app/api/me/route.js",
+  "/contact/page": "app/contact/page.js"
 }

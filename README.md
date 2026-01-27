@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+// initial production deploy
 
-## Getting Started
+# Faith Companion AI
 
-First, run the development server:
+Faith Companion AI is a Next.js + Prisma application providing Bible-based quizzes, scripture guidance, and premium faith tools.
 
+---
+
+## Tech Stack
+
+- Next.js 14 (App Router)
+- Prisma ORM
+- SQLite (local development)
+- PostgreSQL (production – Vercel / Neon)
+- Stripe (subscriptions)
+- TypeScript
+
+---
+
+# 🚀 DAILY DEVELOPMENT WORKFLOW (DEV)
+
+### Terminal A (Next.js App)
 ```bash
+cd C:\dev\faithcompanionai
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+App runs at: http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Terminal B (Database / Admin)
+cd C:\dev\faithcompanionai
+npm run studio
+Prisma Studio: http://localhost:5555
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+One-time (or when DB changes)
+npm run seed
+Seeds quiz questions into local SQLite database
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🧠 ADMIN SCRIPTS (LOCAL OR PROD)
+Admin scripts are never exposed to users.
 
-## Learn More
+npm run admin:count-questions
+npm run admin:make-premium -- user@example.com 30
+npm run admin:revoke-premium -- user@example.com
+npm run admin:reset-attempts -- user@example.com
+🔐 ENVIRONMENT SETUP
+Local (.env.local)
+DATABASE_URL="file:./prisma/dev.db"
 
-To learn more about Next.js, take a look at the following resources:
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_PRICE_MONTHLY=price_...
+STRIPE_PRICE_YEARLY=price_...
+STRIPE_PRICE_LIFETIME=price_...
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+SESSION_SECRET=some-long-random-string
+Production (Vercel)
+DATABASE_URL → PostgreSQL (Neon)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+NEVER use file: in production
 
-## Deploy on Vercel
+All Stripe + SESSION_SECRET required
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🧪 PRE-DEPLOY CHECKLIST (RUN BEFORE PUSH)
+npm run predeploy
+This runs:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ESLint
+
+TypeScript checks
+
+Prisma validation
+
+Production build
+
+✅ If this passes, deployment is safe.
+
+🚢 PRODUCTION DEPLOYMENT (VERCEL)
+Push to main
+
+Vercel auto-builds and deploys
+
+Verify production env variables
+
+Confirm database is PostgreSQL
+
+🔄 ROLLBACK PLAN (IMPORTANT)
+If production breaks:
+
+Go to Vercel → Project → Deployments
+
+Find last known good deployment
+
+Click ⋯ → Promote to Production
+
+Rollback is instant.
+
+⚠️ Never rollback if the newer deploy ran incompatible DB migrations.
+
+🔒 PRODUCTION SAFETY RULES
+SQLite never allowed in production
+
+Admin routes require secret token
+
+Premium logic enforced server-side
+
+Free users rate-limited daily
+
+🧭 TROUBLESHOOTING RULES
+If something feels “off”:
+
+Stop (Ctrl+C) and restart npm run dev
+
+Confirm correct port (3000 vs 3001)
+
+Confirm DATABASE_URL
+
+Check Prisma Studio for data
+
+Re-run npm run seed if needed
+
+✅ STATUS
+Local dev: ✅ stable
+
+Seeding: ✅ stable
+
+API routes: ✅ working
+
+Premium logic: ✅ enforced
+
+Ready for production when PostgreSQL is connected
+
+🙏 Built with intention and care.
+
+
+---
+
+
+
+
+

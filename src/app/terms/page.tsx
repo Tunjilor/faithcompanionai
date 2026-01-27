@@ -134,7 +134,7 @@ export default function TermsPage() {
             For questions about these Terms of Service, please contact us at:
           </p>
           <p className="mt-2 font-medium text-white">
-            shoptunji@gmail.com
+            support@faithcompanionai.com
           </p>
         </section>
 

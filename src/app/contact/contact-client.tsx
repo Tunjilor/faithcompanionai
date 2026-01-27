@@ -53,7 +53,7 @@ export default function ContactClient() {
             className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-white/20"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            placeholder="support@faithcompanionai.com"
             type="email"
           />
         </div>

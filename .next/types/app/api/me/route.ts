@@ -1,4 +1,4 @@
-// File: C:\dev\faithcompanionai_fresh\src\app\api\me\route.ts
+// File: C:\dev\faithcompanionai\src\app\api\me\route.ts
 import * as entry from '../../../../../src/app/api/me/route.js'
 import type { NextRequest } from 'next/server.js'
 

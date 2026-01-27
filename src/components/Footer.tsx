@@ -132,9 +132,9 @@ export default function Footer() {
                 Email:{" "}
                 <a
                   className="underline underline-offset-4 hover:text-white"
-                  href="mailto:shoptunji@gmail.com?subject=Faith%20Companion%20AI%20Support"
+                  href="mailto:support@faithcompanionai.com?subject=Faith%20Companion%20AI%20Support"
                 >
-                  shoptunji@gmail.com
+                  support@faithcompanionai.com
                 </a>
               </div>
             </div>

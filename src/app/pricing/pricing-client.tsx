@@ -23,7 +23,9 @@ export default function PricingClient() {
   const [premium, setPremium] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  const success = search.get("success");
+  // normalize params
+  const success = search.get("success") === "1";
+  const canceled = search.get("canceled") === "1";
   const error = search.get("error");
 
   useEffect(() => {
@@ -55,7 +57,9 @@ export default function PricingClient() {
       {/* Hero */}
       <section className="rounded-3xl bg-gradient-to-r from-purple-600 to-orange-500 p-[1px]">
         <div className="rounded-3xl bg-black/35 px-6 py-10 text-center backdrop-blur">
-          <h1 className="text-4xl font-extrabold text-white md:text-5xl">Pricing</h1>
+          <h1 className="text-4xl font-extrabold text-white md:text-5xl">
+            Pricing
+          </h1>
           <p className="mt-2 text-white/80">
             Unlock premium tools, unlimited use, and AI-powered quiz packs.
           </p>
@@ -63,15 +67,38 @@ export default function PricingClient() {
         </div>
       </section>
 
-      {/* Success / Error banners */}
-      {success ? (
-        <div className="fc-surface rounded-2xl border border-green-500/20 bg-green-500/10 p-4 text-white">
-          <div className="font-semibold">Payment complete ✅</div>
+      {/* Success / Cancel / Error banners */}
+      {success && (
+        <div className="fc-surface rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-white">
+          <div className="font-semibold">Payment successful — you’re Premium 🎉</div>
           <div className="mt-1 text-sm text-white/80">
-            If your premium status doesn’t update automatically, refresh this page.
+            Your Premium access should be active now. If it doesn’t update, refresh the page.
+          </div>
+          <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center justify-center rounded-md bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/15"
+            >
+              Go to Dashboard
+            </Link>
+            <Link
+              href="/biblequiz"
+              className="inline-flex items-center justify-center rounded-md bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/15"
+            >
+              Take the Quiz
+            </Link>
           </div>
         </div>
-      ) : null}
+      )}
+
+      {canceled && (
+        <div className="fc-surface rounded-2xl border border-yellow-500/20 bg-yellow-500/10 p-4 text-white">
+          <div className="font-semibold">Checkout canceled</div>
+          <div className="mt-1 text-sm text-white/80">
+            No charge was made. You can try again anytime.
+          </div>
+        </div>
+      )}
 
       {error ? (
         <div className="fc-surface rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-white">
@@ -148,12 +175,16 @@ export default function PricingClient() {
                   {loaded ? "Go Monthly" : "Checking…"}
                 </button>
               </div>
-              <div className="mt-2 text-xs text-white/45">Auto-renews • Cancel anytime</div>
+              <div className="mt-2 text-xs text-white/45">
+                Auto-renews • Cancel anytime
+              </div>
             </div>
 
             {/* Yearly / Lifetime */}
             <div className="fc-surface rounded-2xl p-6">
-              <div className="text-sm font-semibold text-white/70">Yearly / Lifetime</div>
+              <div className="text-sm font-semibold text-white/70">
+                Yearly / Lifetime
+              </div>
               <div className="mt-2 grid gap-3">
                 <button
                   type="button"

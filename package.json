@@ -7,14 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-
     "seed": "tsx prisma/seed.ts",
     "studio": "prisma studio",
-
     "typecheck": "tsc --noEmit",
     "prisma:validate": "prisma validate",
     "predeploy": "npm run lint && npm run typecheck && npm run prisma:validate && npm run build",
-
     "admin:make-premium": "tsx scripts/make-premium.ts",
     "admin:revoke-premium": "tsx scripts/revoke-premium.ts",
     "admin:count-questions": "tsx scripts/count-questions.ts",
@@ -23,6 +20,7 @@
   "dependencies": {
     "@prisma/client": "^6.14.0",
     "next": "14.2.5",
+    "openai": "^6.16.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },

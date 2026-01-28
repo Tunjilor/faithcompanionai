@@ -15,7 +15,7 @@ model User {
   isPremium          Boolean   @default(false)
   premiumUntil       DateTime?
   createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  updatedAt          DateTime  @updatedAt 
 
   quizAttempts QuizAttempt[]
 }
@@ -57,6 +57,14 @@ model QuizAttempt {
 
   user      User?                 @relation(fields: [userId], references: [id], onDelete: SetNull)
   questions QuizAttemptQuestion[]
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  source    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model QuizAttemptQuestion {

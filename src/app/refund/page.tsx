@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
+import BrandHeader from "@/components/BrandHeader";
 
 export const metadata: Metadata = {
-  title: "FAQ",
+  title: "Refund Policy | Faith Companion AI",
   description:
-    "Answers to common questions about Faith Companion AI, premium subscriptions, privacy, and features.",
-  alternates: { canonical: "/faq" },
+    "Understand how cancellations and refund requests work for Faith Companion AI subscriptions processed via Stripe.",
+  alternates: { canonical: "/refund" },
 };
-
-import BrandHeader from "@/components/BrandHeader";
 
 export default function RefundPage() {
   return (
@@ -21,20 +20,17 @@ export default function RefundPage() {
         {/* Introduction */}
         <section>
           <p className="text-white/80 leading-relaxed">
-            Because Faith Companion AI provides instant access to digital content
-            upon subscription, subscription payments are non-refundable.
+            Because Faith Companion AI provides instant access to digital content upon subscription,
+            subscription payments are generally non-refundable.
           </p>
         </section>
 
         {/* Digital Content Nature */}
         <section>
-          <h2 className="text-lg font-semibold text-white mb-2">
-            Digital Content Nature
-          </h2>
+          <h2 className="text-lg font-semibold text-white mb-2">Digital Content Nature</h2>
           <p className="text-white/80 leading-relaxed">
-            As a digital service providing immediate access to AI-generated Bible
-            verses, prayers, and devotionals, all premium subscriptions are final
-            upon purchase.
+            As a digital service providing immediate access to AI-generated verses, prayers,
+            and devotionals, premium subscriptions are considered final upon purchase.
           </p>
         </section>
 
@@ -42,9 +38,8 @@ export default function RefundPage() {
         <section>
           <h2 className="text-lg font-semibold text-white mb-2">Cancellation</h2>
           <p className="text-white/80 leading-relaxed">
-            You may cancel your subscription at any time through your Stripe
-            account to prevent future billing. Your access will continue until the
-            end of your current billing period.
+            You may cancel your subscription at any time to prevent future billing. Your access
+            will continue until the end of your current billing period.
           </p>
         </section>
 
@@ -54,11 +49,13 @@ export default function RefundPage() {
           <p className="text-white/80 leading-relaxed">
             Refunds may be considered on a case-by-case basis for:
           </p>
-
           <ul className="mt-3 list-disc list-inside text-white/70 space-y-1">
             <li>Technical errors resulting in duplicate charges</li>
             <li>Service unavailability for extended periods</li>
           </ul>
+          <p className="mt-3 text-white/80 leading-relaxed">
+            If approved, refunds are issued back to the original payment method via Stripe.
+          </p>
         </section>
 
         {/* Contact */}
@@ -67,7 +64,7 @@ export default function RefundPage() {
           <p className="text-white/80">
             For questions or exceptional circumstances, contact:
           </p>
-          <p className="mt-2 font-medium text-white">shoptunji@gmail.com</p>
+          <p className="mt-2 font-medium text-white">support@faithcompanionai.com</p>
         </section>
 
         {/* Last Updated */}
@@ -80,4 +77,3 @@ export default function RefundPage() {
     </div>
   );
 }
-

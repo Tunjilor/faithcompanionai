@@ -7,12 +7,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ verified: false }, { status: 400 });
   }
 
-  // TODO: later replace with real PayPal REST verification
+  // TODO: later replace with real Stripe REST verification
   // For now: trust approved capture + log
-  console.log("Verified PayPal order:", orderId);
+  console.log("Verified Stripe order:", orderId);
 
   return NextResponse.json({
     verified: true,
-    source: "paypal",
+    source: "Stripe",
   });
 }

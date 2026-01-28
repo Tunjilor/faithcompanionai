@@ -42,7 +42,7 @@ export default function RefundPage() {
         <section>
           <h2 className="text-lg font-semibold text-white mb-2">Cancellation</h2>
           <p className="text-white/80 leading-relaxed">
-            You may cancel your subscription at any time through your PayPal
+            You may cancel your subscription at any time through your Stripe
             account to prevent future billing. Your access will continue until the
             end of your current billing period.
           </p>

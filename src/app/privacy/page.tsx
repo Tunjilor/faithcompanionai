@@ -37,7 +37,7 @@ export default function PrivacyPage() {
             <li>Favorites and saved content stored locally in your browser</li>
             <li>Usage data to help improve our service</li>
             <li>
-              Payment information (processed securely by PayPal — we never store
+              Payment information (processed securely by Stripe — we never store
               payment details)
             </li>
           </ul>
@@ -63,7 +63,7 @@ export default function PrivacyPage() {
           <p className="text-white/80 leading-relaxed">
             We do not sell or share your personal information with third parties.
             All payments are processed securely through trusted third-party
-            providers such as PayPal.
+            providers such as Stripe.
           </p>
         </section>
 

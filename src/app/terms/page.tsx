@@ -44,7 +44,7 @@ export default function TermsPage() {
           </h2>
           <p className="text-white/80 leading-relaxed">
             Premium content is available through a monthly subscription of $5.99
-            paid via PayPal. Subscriptions automatically renew each month unless
+            paid via Stripe. Subscriptions automatically renew each month unless
             cancelled.
           </p>
         </section>
@@ -55,7 +55,7 @@ export default function TermsPage() {
             Cancellation
           </h2>
           <p className="text-white/80 leading-relaxed">
-            You may cancel your subscription at any time through your PayPal
+            You may cancel your subscription at any time through your Stripe
             account. Cancellation stops future charges but does not refund past
             payments. Access continues until the end of your current billing
             period.

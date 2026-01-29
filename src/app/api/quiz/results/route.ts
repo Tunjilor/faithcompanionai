@@ -1,26 +1,39 @@
+// src/app/api/quiz/results/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { cookies } from "next/headers";
-import { readSessionToken, sessionCookieName } from "@/lib/session";
-
-type SessionPayload = { uid: string; exp: number };
+import { db } from "@/lib/prisma";
 
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => null);
-  const category = String(body?.category || "general");
-  const mode = String(body?.mode || "trivia");
-  const score = Number(body?.score || 0);
-  const total = Number(body?.total || 0);
+  try {
+    const body = await req.json();
 
-  // optional attach to user if logged in
-  const secret = process.env.SESSION_SECRET!;
-  const token = (await cookies()).get(sessionCookieName())?.value;
-  const payload = token ? readSessionToken<SessionPayload>(token, secret) : null;
-  const userId = payload && Date.now() < payload.exp ? payload.uid : null;
+    const email =
+      typeof body?.email === "string" && body.email.trim()
+        ? body.email.trim()
+        : null;
 
-  const result = await db.quizResult.create({
-    data: { category, mode, score, total, userId: userId || undefined },
-  });
+    const category =
+      typeof body?.category === "string" && body.category.trim()
+        ? body.category.trim()
+        : "general";
 
-  return NextResponse.json({ id: result.id });
+    const score = Number(body?.score ?? 0);
+    const total = Number(body?.total ?? 0);
+
+    if (!Number.isFinite(score) || !Number.isFinite(total)) {
+      return NextResponse.json({ error: "Invalid score/total" }, { status: 400 });
+    }
+
+    const result = await db.quizResult.create({
+      data: {
+        category,
+        score,
+        total,
+        ...(email ? { email } : {}),
+      },
+    });
+
+    return NextResponse.json({ id: result.id });
+  } catch {
+    return NextResponse.json({ error: "Failed to save result" }, { status: 500 });
+  }
 }

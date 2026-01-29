@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/lib/prisma";
 
 const QUESTIONS_PER_QUIZ = 10;
 const FREE_ATTEMPTS_PER_DAY = 3;
@@ -24,14 +24,14 @@ export async function POST(req: Request) {
     }
 
     // email-based user lookup for now
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await db.user.findUnique({ where: { email } });
     const isPremium = user?.isPremium === true;
 
     // ----- Free user daily limit -----
     if (!isPremium) {
       const { start, end } = getUtcDayRange();
 
-      const attemptsToday = await prisma.quizAttempt.count({
+      const attemptsToday = await db.quizAttempt.count({
         where: {
           email,
           createdAt: { gte: start, lt: end },
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
     }
 
     // ----- Create quiz attempt first -----
-    const attempt = await prisma.quizAttempt.create({
+    const attempt = await db.quizAttempt.create({
       data: {
         email,
         category,
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
     });
 
     // ----- Get 10 random questions (SQLite: RANDOM()) -----
-    const questions = await prisma.$queryRaw<
+    const questions = await db.$queryRaw<
       {
         id: string;
         category: string;
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
 
     if (questions.length < QUESTIONS_PER_QUIZ) {
       // rollback attempt so you don't create empty attempts
-      await prisma.quizAttempt.delete({ where: { id: attempt.id } });
+      await db.quizAttempt.delete({ where: { id: attempt.id } });
 
       return NextResponse.json(
         { error: "Not enough questions in this category" },
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
     }
 
     // ----- Link questions to attempt -----
-    await prisma.quizAttemptQuestion.createMany({
+    await db.quizAttemptQuestion.createMany({
       data: questions.map((q) => ({
         attemptId: attempt.id,
         questionId: q.id,
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
     let remainingAttempts: number | null = null;
     if (!isPremium) {
       const { start, end } = getUtcDayRange();
-      const attemptsToday = await prisma.quizAttempt.count({
+      const attemptsToday = await db.quizAttempt.count({
         where: { email, createdAt: { gte: start, lt: end } },
       });
       remainingAttempts = Math.max(0, FREE_ATTEMPTS_PER_DAY - attemptsToday);

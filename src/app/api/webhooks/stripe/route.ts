@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
-import { db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 
-export const runtime = "nodejs"; // ensure Node runtime (needed for Stripe + raw body)
+export const runtime = "nodejs"; // Stripe needs Node runtime
 
 export async function POST(req: Request) {
   const sig = req.headers.get("stripe-signature");
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   let event: Stripe.Event;
 
   try {
-    const body = await req.text(); // IMPORTANT: raw body
+    const body = await req.text(); // MUST be raw body for signature verification
     event = stripe.webhooks.constructEvent(body, sig, secret);
   } catch (err: any) {
     console.error("Stripe webhook signature verification failed:", err?.message || err);
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
   try {
     switch (event.type) {
-      // ✅ Payment Links + Checkout (one-time OR subscription) will often hit this
+      // ✅ Checkout completed (Payment Link / Checkout one-time OR subscription)
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
 
@@ -38,40 +38,52 @@ export async function POST(req: Request) {
 
         if (!email) break;
 
-        // If subscription: premium remains true while subscription is active
-        // If one-time: you can set premiumUntil far out, or just set isPremium true forever.
         const isSubscription = !!subscriptionId;
+
+        // One-time purchase: set premiumUntil far out (or remove and just keep isPremium true)
         const premiumUntil = isSubscription
-          ? null
-          : new Date(Date.now() + 3650 * 24 * 60 * 60 * 1000); // ~10 years (placeholder)
+          ? undefined
+          : new Date(Date.now() + 3650 * 24 * 60 * 60 * 1000); // ~10 years
 
         await db.user.upsert({
           where: { email },
           update: {
             isPremium: true,
-            stripeCustomerId: customerId,
+            stripeCustomerId: customerId ?? undefined,
             stripeSubscriptionId: subscriptionId ?? undefined,
-            premiumUntil: premiumUntil ?? undefined,
+            premiumUntil,
           },
           create: {
             email,
             isPremium: true,
-            stripeCustomerId: customerId,
+            stripeCustomerId: customerId ?? undefined,
             stripeSubscriptionId: subscriptionId ?? undefined,
-            premiumUntil: premiumUntil ?? undefined,
+            premiumUntil,
           },
         });
 
         break;
       }
 
-      // ✅ Subscription renewals succeeded (keeps premium active)
+      // ✅ Subscription renewal/payment succeeded
       case "invoice.payment_succeeded": {
-        const invoice = event.data.object as Stripe.Invoice;
-        const customerId = typeof invoice.customer === "string" ? invoice.customer : undefined;
-        const subscriptionId = typeof invoice.subscription === "string" ? invoice.subscription : undefined;
+        // Stripe typings can be strict here, so safely read from any:
+        const obj = event.data.object as any;
 
-        // If you want: look up customer email and ensure premium stays on
+        const customerId =
+          typeof obj.customer === "string"
+            ? (obj.customer as string)
+            : typeof obj.customer?.id === "string"
+              ? (obj.customer.id as string)
+              : undefined;
+
+        const subscriptionId =
+          typeof obj.subscription === "string"
+            ? (obj.subscription as string)
+            : typeof obj.subscription?.id === "string"
+              ? (obj.subscription.id as string)
+              : undefined;
+
         if (customerId) {
           const customer = (await stripe.customers.retrieve(customerId)) as Stripe.Customer;
           const email = customer.email || undefined;
@@ -98,7 +110,7 @@ export async function POST(req: Request) {
         break;
       }
 
-      // ✅ Subscription cancelled (turn premium off)
+      // ✅ Subscription cancelled -> turn off premium
       case "customer.subscription.deleted": {
         const sub = event.data.object as Stripe.Subscription;
         const customerId = typeof sub.customer === "string" ? sub.customer : undefined;
@@ -113,6 +125,7 @@ export async function POST(req: Request) {
               data: {
                 isPremium: false,
                 stripeSubscriptionId: null,
+                premiumUntil: null,
               },
             });
           }
@@ -122,7 +135,6 @@ export async function POST(req: Request) {
       }
 
       default:
-        // ignore other events
         break;
     }
 

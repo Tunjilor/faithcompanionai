@@ -2,6 +2,16 @@
 
 import React, { useMemo, useState } from "react";
 
+import VerseOfDay from "@/components/VerseOfDay";
+
+export default function HomePage() {
+  return (
+    <main className="p-6">
+      <VerseOfDay />
+    </main>
+  );
+}
+
 type Topic =
   | "Anxiety / Fear"
   | "Guidance / Decision"

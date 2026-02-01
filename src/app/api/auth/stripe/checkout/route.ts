@@ -1,6 +1,7 @@
-// src/app/api/auth/stripe/checkout/route.ts
 import { NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
+
+export const runtime = "nodejs";
 
 type PlanId = "monthly" | "yearly" | "lifetime";
 
@@ -11,6 +12,8 @@ function getPriceId(plan: PlanId) {
 }
 
 export async function GET(req: Request) {
+  const stripe = getStripe();
+
   const url = new URL(req.url);
   const plan = (url.searchParams.get("plan") || "monthly") as PlanId;
 
@@ -22,7 +25,6 @@ export async function GET(req: Request) {
     return NextResponse.redirect(new URL(`/pricing?error=missing_price_${plan}`, origin));
   }
 
-  // lifetime = one-time payment, others = subscription
   const mode = plan === "lifetime" ? "payment" : "subscription";
 
   try {
@@ -37,7 +39,7 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.redirect(session.url!);
-  } catch (e) {
+  } catch {
     return NextResponse.redirect(new URL(`/pricing?error=checkout_failed`, origin));
   }
 }

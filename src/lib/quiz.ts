@@ -6,14 +6,10 @@ export const FREE_ATTEMPTS_PER_DAY = 3;
 export const QUESTIONS_PER_ATTEMPT = 10;
 
 function utcDayStart(d = new Date()) {
-  return new Date(
-    Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 0, 0, 0)
-  );
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 0, 0, 0));
 }
 function utcDayEnd(d = new Date()) {
-  return new Date(
-    Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1, 0, 0, 0)
-  );
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1, 0, 0, 0));
 }
 
 export async function canStartQuiz(params: {
@@ -22,17 +18,14 @@ export async function canStartQuiz(params: {
 }) {
   if (params.isPremium) return { ok: true as const, remaining: null as number | null };
 
-  // If we don't have an email, we can't reliably enforce daily limits with your current schema.
+  // With your schema, we can only enforce daily limits reliably if we have an email.
   if (!params.email) return { ok: true as const, remaining: FREE_ATTEMPTS_PER_DAY };
 
   const start = utcDayStart();
   const end = utcDayEnd();
 
   const count = await db.quizAttempt.count({
-    where: {
-      email: params.email,
-      createdAt: { gte: start, lt: end },
-    },
+    where: { email: params.email, createdAt: { gte: start, lt: end } },
   });
 
   const remaining = Math.max(0, FREE_ATTEMPTS_PER_DAY - count);
@@ -54,7 +47,6 @@ export async function createAttemptAndServeQuestions(params: {
       ? params.category.trim()
       : "general";
 
-  // Create attempt first
   const attempt = await db.quizAttempt.create({
     data: {
       userId: params.userId ?? null,
@@ -67,7 +59,7 @@ export async function createAttemptAndServeQuestions(params: {
     },
   });
 
-  // SQLite random selection via $queryRaw (SAFE with Prisma.sql)
+  // SQLite random selection via $queryRaw using Prisma.sql (safe)
   const whereCategory =
     category && category !== "general"
       ? Prisma.sql`WHERE category = ${category}`
@@ -93,17 +85,13 @@ export async function createAttemptAndServeQuestions(params: {
     LIMIT ${QUESTIONS_PER_ATTEMPT}
   `);
 
-  if (!rows.length) {
-    throw new Error("No questions found for the selected category.");
-  }
-
   // Store served questions in join table
   await db.quizAttemptQuestion.createMany({
-  data: rows.map((q) => ({
-    attemptId: attempt.id,
-    questionId: q.id,
-  })),
-});
+    data: rows.map((q) => ({
+      attemptId: attempt.id,
+      questionId: q.id,
+    })),
+  });
 
   // Return safe questions (no correct answer)
   const safeQuestions = rows.map((q) => ({
@@ -123,16 +111,14 @@ export async function createAttemptAndServeQuestions(params: {
 
 export async function gradeAndSaveAttempt(params: {
   attemptId: string;
-  answers: Record<string, "A" | "B" | "C" | "D">; // questionId -> choice
+  answers: Record<string, "A" | "B" | "C" | "D">;
 }) {
   const served = await db.quizAttemptQuestion.findMany({
     where: { attemptId: params.attemptId },
     include: { question: true },
   });
 
-  if (served.length === 0) {
-    throw new Error("Attempt not found or has no questions.");
-  }
+  if (served.length === 0) throw new Error("Attempt not found or has no questions.");
 
   let score = 0;
 

@@ -1,11 +1,11 @@
 {
   "crons": [
     {
-      "path": "/api/cron/stripe-event-retention?secret=@cron_secret",
+      "path": "/api/cron/stripe-event-retention?secret=@CRON_SECRET",
       "schedule": "0 6 * * *"
     },
     {
-      "path": "/api/cron/daily-verse?secret=@cron_secret",
+      "path": "/api/cron/daily-verse?secret=@CRON_SECRET",
       "schedule": "5 6 * * *"
     }
   ]

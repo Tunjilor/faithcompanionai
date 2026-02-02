@@ -19,6 +19,17 @@ model User {
 
   quizAttempts QuizAttempt[]
 }
+model AiUsage {
+  id        String   @id @default(cuid())
+  dayKey    String   // "YYYY-MM-DD"
+  userKey   String   // hashed anon key OR email hash
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([dayKey, userKey])
+  @@index([dayKey])
+}
 
 model Question {
   id          String   @id @default(cuid())

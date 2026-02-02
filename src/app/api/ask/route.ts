@@ -1,8 +1,8 @@
+// src/app/api/ask/route.ts
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
+import { extractOutputText, getModel, getOpenAI } from "@/lib/openai-ts";
 
 export const runtime = "nodejs";
-
 export const dynamic = "force-dynamic";
 
 type Mode = "verse" | "prayer" | "devotional";
@@ -21,7 +21,8 @@ function systemForMode(mode: Mode, tone: Tone) {
   switch (mode) {
     case "verse":
       return `You are a helpful Christian faith assistant. ${toneLine}
-Return 3–5 Bible references relevant to the user's request (references only, no long quotes), plus a 1–2 sentence encouragement.`;
+Return 3–5 Bible references relevant to the user's request (references only, no long quotes), plus a 1–2 sentence encouragement.
+Do not include long scripture quotations.`;
     case "prayer":
       return `You are a helpful Christian prayer assistant. ${toneLine}
 Write a prayer. Include 1–3 Bible references (references only). Avoid long scripture quotations.`;
@@ -42,6 +43,7 @@ Avoid long scripture quotations.`;
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+
     const prompt = body?.prompt as string | undefined;
     const mode = (body?.mode ?? "verse") as Mode;
     const name = (body?.name ?? "") as string;
@@ -52,36 +54,27 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing 'prompt' (string)." }, { status: 400 });
     }
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json({ error: "OPENAI_API_KEY is missing on the server." }, { status: 500 });
-    }
+    const client = getOpenAI();
+    const model = getModel();
 
-    const openai = new OpenAI({ apiKey });
-
-    const personalization = [
-      name ? `User name: ${name}` : null,
-      situation ? `User situation: ${situation}` : null,
-    ]
+    const personalization = [name ? `User name: ${name}` : null, situation ? `User situation: ${situation}` : null]
       .filter(Boolean)
       .join("\n");
 
-    const userMessage = personalization
-      ? `${personalization}\n\nUser request: ${prompt}`
-      : prompt;
+    const userMessage = personalization ? `${personalization}\n\nUser request: ${prompt}` : prompt;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
+    const resp = await client.responses.create({
+      model,
+      input: [
         { role: "system", content: systemForMode(mode, tone) },
         { role: "user", content: userMessage },
       ],
       temperature: tone === "short" ? 0.4 : 0.7,
     });
 
-    return NextResponse.json({
-      answer: response.choices[0]?.message?.content ?? "",
-    });
+    const answer = extractOutputText(resp);
+
+    return NextResponse.json({ answer });
   } catch (err: any) {
     return NextResponse.json({ error: err?.message || "Server error" }, { status: 500 });
   }

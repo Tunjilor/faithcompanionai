@@ -1,16 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-
 import VerseOfDay from "@/components/VerseOfDay";
-
-export default function HomePage() {
-  return (
-    <main className="p-6">
-      <VerseOfDay />
-    </main>
-  );
-}
 
 type Topic =
   | "Anxiety / Fear"
@@ -24,7 +15,11 @@ type Topic =
 
 type Tone = "Encouraging" | "Gentle" | "Direct" | "Hopeful" | "Comforting";
 
-type OutputStyle = "Headings + short paragraphs" | "Bullet points" | "Short + simple" | "Prayer-first";
+type OutputStyle =
+  | "Headings + short paragraphs"
+  | "Bullet points"
+  | "Short + simple"
+  | "Prayer-first";
 
 type Audience = "Everyday (no jargon)" | "Teen" | "New believer" | "In-depth study";
 
@@ -40,7 +35,12 @@ const TOPICS: Topic[] = [
 ];
 
 const TONES: Tone[] = ["Encouraging", "Gentle", "Direct", "Hopeful", "Comforting"];
-const OUTPUTS: OutputStyle[] = ["Headings + short paragraphs", "Bullet points", "Short + simple", "Prayer-first"];
+const OUTPUTS: OutputStyle[] = [
+  "Headings + short paragraphs",
+  "Bullet points",
+  "Short + simple",
+  "Prayer-first",
+];
 const AUDIENCES: Audience[] = ["Everyday (no jargon)", "Teen", "New believer", "In-depth study"];
 
 function classNames(...xs: Array<string | false | null | undefined>) {
@@ -100,12 +100,11 @@ export default function Home() {
     setAnswer("");
   }
 
-  // Placeholder: today we simulate output. Next step we’ll replace this with a real OpenAI API route.
+  // Placeholder: we’ll replace this with a real API call to /api/ask
   async function getAnswer() {
     setIsLoading(true);
     setAnswer("");
 
-    // small delay to feel “real”
     await new Promise((r) => setTimeout(r, 700));
 
     const mock = [
@@ -145,8 +144,6 @@ export default function Home() {
         <div className="absolute -bottom-40 left-1/3 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/5 blur-3xl" />
       </div>
 
-      {/* Top Nav */}
-      
       <main className="mx-auto max-w-6xl px-4 pb-16 pt-10">
         {/* Hero */}
         <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur md:p-10">
@@ -158,13 +155,19 @@ export default function Home() {
                 <Pill>Save + download (coming)</Pill>
               </div>
 
-              <h1 className="mt-4 text-3xl font-semibold leading-tight md:text-5xl">
+              {/* ✅ Daily Verse insert (good placement) */}
+              <section className="mt-8">
+                <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur">
+                  <VerseOfDay />
+                </div>
+              </section>
+
+              <h1 className="mt-6 text-3xl font-semibold leading-tight md:text-5xl">
                 Your daily spiritual companion—<span className="text-orange-300">all in one place</span>.
               </h1>
 
               <p className="mt-3 max-w-xl text-sm leading-6 text-white/75 md:text-base">
                 Ask a question, get Bible references, and receive a short prayer—without having to search all over the internet.
-                (We’ll connect this to your OpenAI + Supabase next.)
               </p>
 
               <div className="mt-5 flex flex-col gap-2 sm:flex-row">
@@ -184,16 +187,8 @@ export default function Home() {
             </div>
 
             <div className="grid w-full gap-3 md:w-[360px]">
-              <Card
-                title="Daily Verse"
-                desc="Fresh verse + reflection each day."
-                cta="Open Daily Verse"
-              />
-              <Card
-                title="Prayer Generator"
-                desc="Personalized short prayers by topic."
-                cta="Create a Prayer"
-              />
+              <Card title="Daily Verse" desc="Fresh verse + reflection each day." cta="Open Daily Verse" />
+              <Card title="Prayer Generator" desc="Personalized short prayers by topic." cta="Create a Prayer" />
             </div>
           </div>
         </section>
@@ -223,9 +218,7 @@ export default function Home() {
                     disabled={!canSubmit}
                     className={classNames(
                       "rounded-xl px-5 py-3 text-sm font-semibold",
-                      canSubmit
-                        ? "bg-white text-black hover:opacity-95"
-                        : "bg-white/20 text-white/50 cursor-not-allowed"
+                      canSubmit ? "bg-white text-black hover:opacity-95" : "bg-white/20 text-white/50 cursor-not-allowed"
                     )}
                   >
                     {isLoading ? "Working..." : "Get Answer"}
@@ -248,14 +241,9 @@ export default function Home() {
                         disabled={!answer}
                         className={classNames(
                           "rounded-lg border px-3 py-1.5 text-xs",
-                          answer
-                            ? "border-white/15 bg-white/5 text-white hover:bg-white/10"
-                            : "border-white/10 bg-white/5 text-white/35 cursor-not-allowed"
+                          answer ? "border-white/15 bg-white/5 text-white hover:bg-white/10" : "border-white/10 bg-white/5 text-white/35 cursor-not-allowed"
                         )}
-                        onClick={() => {
-                          // Placeholder for Supabase save
-                          alert("Next step: we’ll save this to Supabase (SavedContent) per user.");
-                        }}
+                        onClick={() => alert("Next step: wire Save to Favorites table (no full auth needed).")}
                       >
                         Save
                       </button>
@@ -264,9 +252,7 @@ export default function Home() {
                         disabled={!answer}
                         className={classNames(
                           "rounded-lg border px-3 py-1.5 text-xs",
-                          answer
-                            ? "border-white/15 bg-white/5 text-white hover:bg-white/10"
-                            : "border-white/10 bg-white/5 text-white/35 cursor-not-allowed"
+                          answer ? "border-white/15 bg-white/5 text-white hover:bg-white/10" : "border-white/10 bg-white/5 text-white/35 cursor-not-allowed"
                         )}
                         onClick={downloadTxt}
                       >
@@ -276,16 +262,11 @@ export default function Home() {
                   </div>
 
                   <div className="mt-3 min-h-[120px] whitespace-pre-wrap rounded-xl border border-white/10 bg-black/30 p-4 text-sm text-white/80">
-                    {isLoading
-                      ? "Generating… (we’ll wire this to OpenAI next)"
-                      : answer
-                      ? answer
-                      : "No answer yet. Ask a question above."}
+                    {isLoading ? "Generating…" : answer ? answer : "No answer yet. Ask a question above."}
                   </div>
 
                   <p className="mt-3 text-xs text-white/50">
-                    Note: Today this is a placeholder response. Next we’ll connect your OpenAI key and generate real answers.
-                    After that we’ll store conversations per user and support full conversation downloads.
+                    Note: This is still placeholder output until /api/ask is wired up.
                   </p>
                 </div>
               </div>
@@ -300,16 +281,6 @@ export default function Home() {
                     <Select label="Tone" value={tone} setValue={setTone} options={TONES} />
                     <Select label="Output style" value={outputStyle} setValue={setOutputStyle} options={OUTPUTS} />
                     <Select label="Audience" value={audience} setValue={setAudience} options={AUDIENCES} />
-                  </div>
-
-                  <div className="mt-4 rounded-xl border border-white/10 bg-black/30 p-3 text-xs text-white/65">
-                    <div className="font-medium text-white/80">Coming next</div>
-                    <ul className="mt-2 list-disc space-y-1 pl-4">
-                      <li>Real OpenAI responses (API route)</li>
-                      <li>User accounts (Supabase Auth)</li>
-                      <li>Saved conversations (Supabase DB)</li>
-                      <li>Download as TXT/PDF</li>
-                    </ul>
                   </div>
                 </div>
               </div>
@@ -326,30 +297,12 @@ export default function Home() {
                 Structured journeys that help users build daily habits.
               </p>
             </div>
-            <button className="hidden rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 md:block">
-              See starter plans
-            </button>
           </div>
 
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             <PlanCard title="7 Days of Peace" desc="Anxiety → calm through daily Scripture + prayer." />
             <PlanCard title="21 Days of Gratitude" desc="Daily prompts to build joy and perspective." />
             <PlanCard title="30 Days in Proverbs" desc="Practical wisdom for everyday decisions." />
-          </div>
-        </section>
-
-        {/* Footer-ish */}
-        <section className="mt-12 rounded-3xl border border-white/10 bg-white/5 p-6 text-sm text-white/70 md:p-8">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <div className="text-white/90 font-semibold">Faith Companion AI</div>
-              <div className="mt-1">Built with Next.js + Supabase + Vercel.</div>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Pill>Privacy-first</Pill>
-              <Pill>Room for expansion</Pill>
-              <Pill>Fast + reliable</Pill>
-            </div>
           </div>
         </section>
       </main>

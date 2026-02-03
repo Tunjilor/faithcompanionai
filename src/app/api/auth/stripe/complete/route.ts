@@ -1,47 +1,71 @@
 // src/app/api/auth/stripe/complete/route.ts
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { getStripe } from "@/lib/stripe";
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"; // your db.ts exports `db`
+import { stripe } from "@/lib/stripe"; // ensure src/lib/stripe.ts exports `stripe`
 import { makeSessionToken, sessionCookieName } from "@/lib/session";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+function getBaseUrl(req: Request) {
+  // Works on Vercel + local
+  const url = new URL(req.url);
+  return `${url.protocol}//${url.host}`;
+}
 
 export async function GET(req: Request) {
-  try {
-    const url = new URL(req.url);
+  const url = new URL(req.url);
 
-    // Stripe typically returns you here with ?session_id=cs_...
-    const sessionId = url.searchParams.get("session_id");
+  try {
+    const sessionId =
+      url.searchParams.get("session_id") ||
+      url.searchParams.get("checkout_session_id") ||
+      "";
+
     if (!sessionId) {
-      return NextResponse.redirect(new URL("/pricing?status=missing_session", url));
+      return NextResponse.redirect(
+        new URL("/pricing?status=error&message=missing_session_id", getBaseUrl(req))
+      );
     }
 
-    const stripe = getStripe();
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.redirect(
+        new URL("/pricing?status=error&message=missing_stripe_key", getBaseUrl(req))
+      );
+    }
 
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+    if (!process.env.SESSION_SECRET) {
+      return NextResponse.redirect(
+        new URL("/pricing?status=error&message=missing_session_secret", getBaseUrl(req))
+      );
+    }
+
+    // Retrieve the checkout session
+    const cs = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ["customer", "subscription"],
     });
 
+    // Determine email (required for your User upsert)
     const email =
-      session.customer_details?.email ||
-      (typeof session.customer_email === "string" ? session.customer_email : null);
+      cs.customer_details?.email ||
+      cs.customer_email ||
+      (typeof cs.customer === "object" ? (cs.customer.email ?? null) : null);
 
     if (!email) {
-      return NextResponse.redirect(new URL("/pricing?status=missing_email", url));
+      return NextResponse.redirect(
+        new URL("/pricing?status=error&message=missing_email", getBaseUrl(req))
+      );
     }
 
     const customerId =
-      typeof session.customer === "string"
-        ? session.customer
-        : session.customer?.id ?? null;
+      typeof cs.customer === "string" ? cs.customer : (cs.customer?.id ?? null);
 
     const subscriptionId =
-      typeof session.subscription === "string"
-        ? session.subscription
-        : session.subscription?.id ?? null;
+      typeof cs.subscription === "string"
+        ? cs.subscription
+        : (cs.subscription?.id ?? null);
 
-    // Mark user premium (simple starter approach)
+    // Mark user premium (you can refine premiumUntil later from subscription current_period_end)
     const user = await db.user.upsert({
       where: { email },
       update: {
@@ -51,33 +75,40 @@ export async function GET(req: Request) {
       },
       create: {
         email,
-        stripeCustomerId: customerId,
-        stripeSubscriptionId: subscriptionId,
+        stripeCustomerId: customerId ?? undefined,
+        stripeSubscriptionId: subscriptionId ?? undefined,
         isPremium: true,
       },
     });
 
-    // Issue your app session cookie
-    const token = await makeSessionToken({
-      userId: user.id,
-      email: user.email,
-      isPremium: user.isPremium ?? false,
-    });
+    // Issue your app session cookie (30 days)
+    const token = makeSessionToken(
+      {
+        uid: user.id,
+        exp: Date.now() + 1000 * 60 * 60 * 24 * 30, // 30 days (ms)
+      },
+      process.env.SESSION_SECRET
+    );
 
-    cookies().set(sessionCookieName, token, {
+    const res = NextResponse.redirect(
+      new URL("/dashboard?status=success", getBaseUrl(req))
+    );
+
+    // IMPORTANT: In route handlers, set cookies on the response object.
+    res.cookies.set(sessionCookieName(), token, {
       httpOnly: true,
       sameSite: "lax",
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      // Next expects seconds here:
+      maxAge: 60 * 60 * 24 * 30,
     });
 
-    return NextResponse.redirect(new URL("/dashboard?status=success", url));
+    return res;
   } catch (err: any) {
-    // If stripe env var missing, or retrieve fails, don't white-screen
-    const url = new URL(req.url);
+    const msg = encodeURIComponent(err?.message || "error");
     return NextResponse.redirect(
-      new URL(`/pricing?status=error&message=${encodeURIComponent(err?.message || "error")}`, url)
+      new URL(`/pricing?status=error&message=${msg}`, getBaseUrl(req))
     );
   }
 }

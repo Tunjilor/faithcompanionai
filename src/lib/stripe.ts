@@ -8,12 +8,12 @@ export function getStripe() {
 
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
-    // Important: fail fast, but only when actually used.
+    // IMPORTANT: don't crash build time; crash only if this route is actually hit
     throw new Error("Missing STRIPE_SECRET_KEY environment variable.");
   }
 
   _stripe = new Stripe(key, {
-    apiVersion: "2025-12-15.clover",
+    apiVersion: "2024-06-20",
   });
 
   return _stripe;

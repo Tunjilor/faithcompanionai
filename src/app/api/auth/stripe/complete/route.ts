@@ -1,59 +1,83 @@
+// src/app/api/auth/stripe/complete/route.ts
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { db } from "@/lib/db";
 import { makeSessionToken, sessionCookieName } from "@/lib/session";
 
+export const runtime = "nodejs";
+
 export async function GET(req: Request) {
-  const url = new URL(req.url);
-  const sessionId = url.searchParams.get("session_id");
-  const redirect = url.searchParams.get("redirect") || "/pricing?success=1";
+  try {
+    const url = new URL(req.url);
 
-  const secret = process.env.SESSION_SECRET;
-  if (!secret) return NextResponse.redirect(new URL("/pricing?error=server", url.origin));
+    // Stripe typically returns you here with ?session_id=cs_...
+    const sessionId = url.searchParams.get("session_id");
+    if (!sessionId) {
+      return NextResponse.redirect(new URL("/pricing?status=missing_session", url));
+    }
 
-  if (!sessionId) return NextResponse.redirect(new URL("/pricing?error=missing_session", url.origin));
+    const stripe = getStripe();
 
-  // Retrieve checkout session from Stripe
-  const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ["customer", "subscription"],
+    });
 
-  const email = session.customer_details?.email || session.customer_email;
-  const customerId = typeof session.customer === "string" ? session.customer : null;
+    const email =
+      session.customer_details?.email ||
+      (typeof session.customer_email === "string" ? session.customer_email : null);
 
-  if (!email) return NextResponse.redirect(new URL("/pricing?error=no_email", url.origin));
+    if (!email) {
+      return NextResponse.redirect(new URL("/pricing?status=missing_email", url));
+    }
 
-  const paid = session.payment_status === "paid";
-  const isSubscription = !!session.subscription;
+    const customerId =
+      typeof session.customer === "string"
+        ? session.customer
+        : session.customer?.id ?? null;
 
-  const premium = paid; // for subscriptions + one-time, paid means premium
-  const premiumUntil = isSubscription
-    ? null
-    : new Date(Date.now() + 3650 * 24 * 60 * 60 * 1000); // ~10 years placeholder
+    const subscriptionId =
+      typeof session.subscription === "string"
+        ? session.subscription
+        : session.subscription?.id ?? null;
 
-  const user = await db.user.upsert({
-    where: { email },
-    update: {
-      stripeCustomerId: customerId || undefined,
-      isPremium: premium ? true : undefined,
-      premiumUntil: premiumUntil || undefined,
-    },
-    create: {
-      email,
-      stripeCustomerId: customerId || undefined,
-      isPremium: premium,
-      premiumUntil: premiumUntil || undefined,
-    },
-  });
+    // Mark user premium (simple starter approach)
+    const user = await db.user.upsert({
+      where: { email },
+      update: {
+        stripeCustomerId: customerId ?? undefined,
+        stripeSubscriptionId: subscriptionId ?? undefined,
+        isPremium: true,
+      },
+      create: {
+        email,
+        stripeCustomerId: customerId,
+        stripeSubscriptionId: subscriptionId,
+        isPremium: true,
+      },
+    });
 
-  // 7-day session cookie
-  const token = makeSessionToken({ uid: user.id, exp: Date.now() + 7 * 24 * 60 * 60 * 1000 }, secret);
+    // Issue your app session cookie
+    const token = await makeSessionToken({
+      userId: user.id,
+      email: user.email,
+      isPremium: user.isPremium ?? false,
+    });
 
-  (await cookies()).set(sessionCookieName(), token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-  });
+    cookies().set(sessionCookieName, token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    });
 
-  return NextResponse.redirect(new URL(redirect, url.origin));
+    return NextResponse.redirect(new URL("/dashboard?status=success", url));
+  } catch (err: any) {
+    // If stripe env var missing, or retrieve fails, don't white-screen
+    const url = new URL(req.url);
+    return NextResponse.redirect(
+      new URL(`/pricing?status=error&message=${encodeURIComponent(err?.message || "error")}`, url)
+    );
+  }
 }

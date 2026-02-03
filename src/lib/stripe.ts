@@ -1,20 +1,14 @@
 // src/lib/stripe.ts
 import Stripe from "stripe";
 
-let _stripe: Stripe | null = null;
+const globalForStripe = globalThis as unknown as { stripe?: Stripe };
 
-export function getStripe() {
-  if (_stripe) return _stripe;
-
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) {
-    // IMPORTANT: don't crash build time; crash only if this route is actually hit
-    throw new Error("Missing STRIPE_SECRET_KEY environment variable.");
-  }
-
-  _stripe = new Stripe(key, {
-    apiVersion: "2024-06-20",
+export const stripe =
+  globalForStripe.stripe ??
+  new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+    apiVersion: "2024-06-20", // ok even if Stripe updates later
   });
 
-  return _stripe;
+if (process.env.NODE_ENV !== "production") {
+  globalForStripe.stripe = stripe;
 }

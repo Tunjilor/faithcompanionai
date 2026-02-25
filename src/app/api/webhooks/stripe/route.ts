@@ -1,12 +1,13 @@
 // src/app/api/webhooks/stripe/route.ts
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { getStripe } from "@/lib/stripe";
-import { db } from "@/lib/prisma";
+import { stripe } from "@/lib/stripe";
+import { db } from "@/lib/db";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-const STRIPE_TOLERANCE_SECONDS = 300; // 5 min (timestamp tolerance)
+const STRIPE_TOLERANCE_SECONDS = 300; // 5 minutes
 
 export async function POST(req: Request) {
   const signature = req.headers.get("stripe-signature");
@@ -19,16 +20,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing STRIPE_WEBHOOK_SECRET" }, { status: 500 });
   }
 
-  const stripe = getStripe();
-
   let event: Stripe.Event;
-  let rawBody: string;
 
   try {
     // Must be raw body for signature verification
-    rawBody = await req.text();
+    const rawBody = await req.text();
 
-    // Signature verification + replay window (tolerance)
     event = stripe.webhooks.constructEvent(
       rawBody,
       signature,
@@ -40,13 +37,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  // ✅ Hard idempotency: dedupe Stripe event deliveries
+  // ✅ Idempotency: record event id once
   try {
     await db.stripeEvent.create({
       data: { id: event.id, type: event.type },
     });
   } catch (e: any) {
-    // Prisma unique violation (already processed)
+    // Prisma unique violation => already processed
     if (e?.code === "P2002") {
       return NextResponse.json({ received: true, deduped: true });
     }
@@ -56,7 +53,9 @@ export async function POST(req: Request) {
 
   try {
     switch (event.type) {
-      // Checkout completed (one-time OR subscription)
+      /**
+       * Checkout completed (one-time OR subscription)
+       */
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
 
@@ -68,10 +67,14 @@ export async function POST(req: Request) {
         if (!email) break;
 
         const customerId =
-          typeof session.customer === "string" ? session.customer : undefined;
+          typeof session.customer === "string"
+            ? session.customer
+            : (session.customer?.id ?? undefined);
 
         const subscriptionId =
-          typeof session.subscription === "string" ? session.subscription : undefined;
+          typeof session.subscription === "string"
+            ? session.subscription
+            : (session.subscription?.id ?? undefined);
 
         const isSubscription = Boolean(subscriptionId);
 
@@ -84,15 +87,15 @@ export async function POST(req: Request) {
           where: { email },
           update: {
             isPremium: true,
-            stripeCustomerId: customerId ?? undefined,
-            stripeSubscriptionId: subscriptionId ?? undefined,
+            stripeCustomerId: customerId,
+            stripeSubscriptionId: subscriptionId,
             premiumUntil,
           },
           create: {
             email,
             isPremium: true,
-            stripeCustomerId: customerId ?? undefined,
-            stripeSubscriptionId: subscriptionId ?? undefined,
+            stripeCustomerId: customerId,
+            stripeSubscriptionId: subscriptionId,
             premiumUntil,
           },
         });
@@ -100,17 +103,27 @@ export async function POST(req: Request) {
         break;
       }
 
-      // Subscription renewal succeeded
+      /**
+       * Subscription renewal succeeded
+       * NOTE: Stripe typings can vary; we safely read subscription from raw payload.
+       */
       case "invoice.payment_succeeded": {
         const invoice = event.data.object as Stripe.Invoice;
 
         const customerId =
-          typeof invoice.customer === "string" ? invoice.customer : invoice.customer?.id;
+          typeof invoice.customer === "string"
+            ? invoice.customer
+            : (invoice.customer?.id ?? null);
+
+        // Stripe Invoice subscription can be string or object depending on expansion.
+        // Use raw event payload to avoid TS type mismatch.
+        const rawInvoice = event.data.object as any;
+        const rawSub = rawInvoice?.subscription ?? null;
 
         const subscriptionId =
-          typeof invoice.subscription === "string"
-            ? invoice.subscription
-            : (invoice.subscription as any)?.id;
+          typeof rawSub === "string"
+            ? rawSub
+            : (rawSub?.id ?? null);
 
         if (!customerId) break;
 
@@ -138,12 +151,16 @@ export async function POST(req: Request) {
         break;
       }
 
-      // Subscription cancelled
+      /**
+       * Subscription cancelled
+       */
       case "customer.subscription.deleted": {
         const sub = event.data.object as Stripe.Subscription;
 
         const customerId =
-          typeof sub.customer === "string" ? sub.customer : undefined;
+          typeof sub.customer === "string"
+            ? sub.customer
+            : (sub.customer?.id ?? null);
 
         if (!customerId) break;
 
@@ -164,7 +181,6 @@ export async function POST(req: Request) {
       }
 
       default:
-        // ignore other event types
         break;
     }
 

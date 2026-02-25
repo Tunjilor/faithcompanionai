@@ -1,16 +1,21 @@
 // src/app/api/auth/stripe/complete/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db"; // your db.ts exports `db`
-import { stripe } from "@/lib/stripe"; // ensure src/lib/stripe.ts exports `stripe`
 import { makeSessionToken, sessionCookieName } from "@/lib/session";
+import type Stripe from "stripe";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 function getBaseUrl(req: Request) {
-  // Works on Vercel + local
   const url = new URL(req.url);
   return `${url.protocol}//${url.host}`;
+}
+
+// Type guard: Stripe.Customer (not DeletedCustomer)
+function isStripeCustomer(
+  c: Stripe.Customer | Stripe.DeletedCustomer
+): c is Stripe.Customer {
+  return !("deleted" in c);
 }
 
 export async function GET(req: Request) {
@@ -40,16 +45,28 @@ export async function GET(req: Request) {
       );
     }
 
-    // Retrieve the checkout session
+    const [{ db }, { stripe }] = await Promise.all([
+      import("@/lib/db"),
+      import("@/lib/stripe"),
+    ]);
+
     const cs = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ["customer", "subscription"],
     });
 
-    // Determine email (required for your User upsert)
+    const customerExpanded =
+      cs.customer && typeof cs.customer === "object" ? cs.customer : null;
+
+    const customerEmail =
+      customerExpanded && isStripeCustomer(customerExpanded)
+        ? customerExpanded.email ?? null
+        : null;
+
     const email =
       cs.customer_details?.email ||
       cs.customer_email ||
-      (typeof cs.customer === "object" ? (cs.customer.email ?? null) : null);
+      customerEmail ||
+      null;
 
     if (!email) {
       return NextResponse.redirect(
@@ -58,14 +75,18 @@ export async function GET(req: Request) {
     }
 
     const customerId =
-      typeof cs.customer === "string" ? cs.customer : (cs.customer?.id ?? null);
+      typeof cs.customer === "string"
+        ? cs.customer
+        : customerExpanded?.id ?? null;
+
+    const subscriptionExpanded =
+      cs.subscription && typeof cs.subscription === "object" ? cs.subscription : null;
 
     const subscriptionId =
       typeof cs.subscription === "string"
         ? cs.subscription
-        : (cs.subscription?.id ?? null);
+        : subscriptionExpanded?.id ?? null;
 
-    // Mark user premium (you can refine premiumUntil later from subscription current_period_end)
     const user = await db.user.upsert({
       where: { email },
       update: {
@@ -81,12 +102,8 @@ export async function GET(req: Request) {
       },
     });
 
-    // Issue your app session cookie (30 days)
     const token = makeSessionToken(
-      {
-        uid: user.id,
-        exp: Date.now() + 1000 * 60 * 60 * 24 * 30, // 30 days (ms)
-      },
+      { uid: user.id, exp: Date.now() + 1000 * 60 * 60 * 24 * 30 },
       process.env.SESSION_SECRET
     );
 
@@ -94,13 +111,11 @@ export async function GET(req: Request) {
       new URL("/dashboard?status=success", getBaseUrl(req))
     );
 
-    // IMPORTANT: In route handlers, set cookies on the response object.
     res.cookies.set(sessionCookieName(), token, {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      // Next expects seconds here:
       maxAge: 60 * 60 * 24 * 30,
     });
 

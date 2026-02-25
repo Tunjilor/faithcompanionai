@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { getStripe } from "@/lib/stripe";
+import { stripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 type PlanId = "monthly" | "yearly" | "lifetime";
 
@@ -12,8 +13,6 @@ function getPriceId(plan: PlanId) {
 }
 
 export async function GET(req: Request) {
-  const stripe = getStripe();
-
   const url = new URL(req.url);
   const plan = (url.searchParams.get("plan") || "monthly") as PlanId;
 
@@ -22,7 +21,9 @@ export async function GET(req: Request) {
 
   const priceId = getPriceId(plan);
   if (!priceId) {
-    return NextResponse.redirect(new URL(`/pricing?error=missing_price_${plan}`, origin));
+    return NextResponse.redirect(
+      new URL(`/pricing?error=missing_price_${plan}`, origin)
+    );
   }
 
   const mode = plan === "lifetime" ? "payment" : "subscription";
@@ -35,11 +36,12 @@ export async function GET(req: Request) {
       success_url: `${origin}/api/auth/stripe/complete?session_id={CHECKOUT_SESSION_ID}&redirect=${encodeURIComponent(
         redirect
       )}`,
-      cancel_url: `${origin}/pricing?canceled=1`,
+      cancel_url: `${origin}/pricing?canceled=1`
     });
 
     return NextResponse.redirect(session.url!);
-  } catch {
-    return NextResponse.redirect(new URL(`/pricing?error=checkout_failed`, origin));
+  } catch (err: any) {
+    const msg = encodeURIComponent(err?.message || "checkout_failed");
+    return NextResponse.redirect(new URL(`/pricing?error=${msg}`, origin));
   }
 }

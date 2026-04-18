@@ -60,7 +60,7 @@ export default function PricingClient() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <section className="rounded-3xl bg-gradient-to-r from-purple-600 to-orange-500 p-[1px]">
         <div className="rounded-3xl bg-black/35 px-6 py-10 text-center backdrop-blur">
           <h1 className="text-4xl font-extrabold text-white md:text-5xl">
@@ -158,7 +158,7 @@ export default function PricingClient() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {/* Free */}
             <div className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)' }}>
               <div className="text-sm font-semibold text-white">Free</div>

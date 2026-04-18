@@ -119,7 +119,7 @@ export default function PricingPage() {
   ];
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-14">
+    <main className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
       <JsonLd data={schema} />
 
       <section className="rounded-[28px] border border-white/10 bg-gradient-to-r from-violet-700/80 via-fuchsia-700/70 to-orange-600/80 p-8 text-center shadow-2xl">
@@ -158,7 +158,7 @@ export default function PricingPage() {
         </p>
       </section>
 
-      <section className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr_0.9fr]">
+      <section className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
         {/* Monthly — most popular */}
         <div className="rounded-[28px] p-6 shadow-2xl" style={{ background: 'rgba(139, 92, 246, 0.25)', border: '1px solid rgba(139, 92, 246, 0.5)' }}>
           <div className="flex items-center justify-between gap-3">
@@ -242,7 +242,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="mt-10">
+      <section className="mt-6">
         <h2 className="text-2xl font-bold text-white md:text-3xl">
           Frequently asked questions
         </h2>

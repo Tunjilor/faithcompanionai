@@ -122,7 +122,7 @@ export default function PrayerWallPage() {
       </header>
 
       {/* Submit form */}
-      <section className="rounded-[24px] border border-white/10 bg-white/5 p-6 md:p-8">
+      <section className="rounded-[24px] p-6 md:p-8" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
         <h2 className="text-lg font-bold text-white">Submit a prayer request</h2>
         <p className="mt-1 text-sm text-white/50">
           Share what's on your heart. Posts are public. Max 200 characters.
@@ -185,7 +185,7 @@ export default function PrayerWallPage() {
         </div>
 
         {loading ? (
-          <div className="rounded-[22px] border border-white/10 bg-white/5 p-6 text-sm text-white/50">
+          <div className="rounded-[22px] p-6 text-sm text-white/50" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
             Loading prayers…
           </div>
         ) : prayers.length === 0 ? (
@@ -199,7 +199,8 @@ export default function PrayerWallPage() {
               return (
                 <article
                   key={prayer.id}
-                  className="rounded-[22px] border border-white/10 bg-white/5 p-5"
+                  className="rounded-[22px] p-5"
+                  style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">

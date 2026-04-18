@@ -156,7 +156,7 @@ export default function HomePage() {
     <main className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-14">
       <JsonLd data={schema} />
 
-      <section className="rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur md:p-12">
+      <section className="rounded-[32px] p-8 shadow-2xl md:p-12" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
         <div className="mx-auto max-w-4xl text-center">
           <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/70">
             Daily verses • prayers • devotionals • Bible quiz
@@ -209,7 +209,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      <section className="mt-10 rounded-[30px] border border-white/10 bg-white/5 p-8 md:p-10">
+      <section className="mt-10 rounded-[30px] p-8 md:p-10" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <h2 className="text-2xl font-bold text-white md:text-3xl">
@@ -242,7 +242,7 @@ export default function HomePage() {
             {reasons.map((item) => (
               <div
                 key={item.title}
-                className="rounded-[24px] border border-white/10 bg-black/15 p-5"
+                className="rounded-[24px] p-5" style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.08)' }}
               >
                 <h3 className="text-lg font-bold text-white">{item.title}</h3>
                 <p className="mt-2 text-sm leading-7 text-white/70">
@@ -255,7 +255,7 @@ export default function HomePage() {
       </section>
 
       <section className="mt-10 grid gap-6 lg:grid-cols-[1fr_1fr]">
-        <div className="rounded-[28px] border border-white/10 bg-white/5 p-8">
+        <div className="rounded-[28px] p-8" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div className="text-sm font-semibold text-orange-300">Quiz + Growth Loop</div>
           <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">
             Test your Bible knowledge and challenge others
@@ -275,7 +275,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="rounded-[28px] border border-white/10 bg-white/5 p-8">
+        <div className="rounded-[28px] p-8" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div className="text-sm font-semibold text-orange-300">Premium</div>
           <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">
             Keep your journey in one place
@@ -296,7 +296,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mt-10 rounded-[30px] border border-white/10 bg-white/5 p-8 md:p-10">
+      <section className="mt-10 rounded-[30px] p-8 md:p-10" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
         <div className="max-w-3xl">
           <h2 className="text-2xl font-bold text-white md:text-3xl">
             A calmer, more consistent faith experience
@@ -317,7 +317,8 @@ export default function HomePage() {
           {faqItems.map((item) => (
             <details
               key={item.q}
-              className="rounded-[22px] border border-white/10 bg-white/5 p-5"
+              className="rounded-[22px] p-5"
+              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
               <summary className="cursor-pointer list-none text-sm font-semibold text-white md:text-base">
                 {item.q}
@@ -331,7 +332,7 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="mt-10 rounded-[30px] border border-white/10 bg-white/5 p-8 md:p-10">
+      <section className="mt-10 rounded-[30px] p-8 md:p-10" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
         <div className="text-center">
           <div className="text-xs font-semibold uppercase tracking-widest text-orange-400">
             How it works
@@ -419,7 +420,8 @@ export default function HomePage() {
           ].map((t) => (
             <div
               key={t.name}
-              className="flex flex-col justify-between rounded-[24px] border border-white/10 bg-white/5 p-6"
+              className="flex flex-col justify-between rounded-[24px] p-6"
+              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
               <p className="text-sm leading-7 text-white/75 italic">"{t.quote}"</p>
               <div className="mt-5 border-t border-white/10 pt-4">

@@ -24,6 +24,8 @@ export async function GET() {
         content: true,
         reference: true,
         createdAt: true,
+        answeredAt: true,
+        answerNote: true,
       },
     });
 

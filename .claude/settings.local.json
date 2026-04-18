@@ -8,7 +8,8 @@
       "Bash(taskkill //F //IM node.exe)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git mv *)"
+      "Bash(git mv *)",
+      "Bash(node *)"
     ]
   }
 }

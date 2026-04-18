@@ -119,7 +119,7 @@ export default function PricingPage() {
   ];
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
+    <>
       <JsonLd data={schema} />
 
       <section className="rounded-[28px] border border-white/10 bg-gradient-to-r from-violet-700/80 via-fuchsia-700/70 to-orange-600/80 p-8 text-center shadow-2xl">
@@ -263,6 +263,6 @@ export default function PricingPage() {
           ))}
         </div>
       </section>
-    </main>
+    </>
   );
 }

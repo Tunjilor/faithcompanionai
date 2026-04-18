@@ -158,14 +158,16 @@ export default function PricingClient() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {/* Free */}
             <div className="fc-surface rounded-2xl p-6">
               <div className="text-sm font-semibold text-white/70">Free</div>
               <div className="mt-2 text-3xl font-extrabold text-white">$0</div>
+              <div className="mt-1 text-sm text-white/50">forever</div>
               <ul className="mt-4 space-y-2 text-sm text-white/75">
-                <li>• Daily verses, prayers, devotionals (limited)</li>
-                <li>• 3 quizzes/day</li>
-                <li>• Standard categories</li>
+                <li>• Daily verses, prayers & devotionals</li>
+                <li>• Bible quiz (free categories)</li>
+                <li>• No account required</li>
               </ul>
               <div className="mt-5">
                 <Link
@@ -177,18 +179,20 @@ export default function PricingClient() {
               </div>
             </div>
 
+            {/* Monthly */}
             <div className="fc-surface rounded-2xl border border-orange-500/30 bg-white/[0.03] p-6">
-              <div className="text-sm font-semibold text-orange-300">
-                Monthly
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-sm font-semibold text-orange-300">Monthly</div>
+                <div className="rounded-full bg-orange-500/15 px-2 py-0.5 text-xs font-bold text-orange-200">
+                  Popular
+                </div>
               </div>
-              <div className="mt-2 text-3xl font-extrabold text-white">
-                $4.99
-              </div>
+              <div className="mt-2 text-3xl font-extrabold text-white">$4.99</div>
               <div className="mt-1 text-sm text-white/60">per month</div>
               <ul className="mt-4 space-y-2 text-sm text-white/75">
-                <li>• Unlimited tools</li>
-                <li>• Unlimited quizzes</li>
-                <li>• Premium quiz packs</li>
+                <li>• Unlimited tools & quizzes</li>
+                <li>• All premium quiz categories</li>
+                <li>• Save to faith journal</li>
               </ul>
               <div className="mt-5">
                 <button
@@ -203,52 +207,64 @@ export default function PricingClient() {
                   {loading ? "Checking…" : "Go Monthly"}
                 </button>
               </div>
-              <div className="mt-2 text-xs text-white/45">
-                Auto-renews • Cancel anytime
-              </div>
+              <div className="mt-2 text-xs text-white/45">Auto-renews • Cancel anytime</div>
             </div>
 
-            <div className="fc-surface rounded-2xl p-6">
-              <div className="text-sm font-semibold text-white/70">
-                Yearly / Lifetime
+            {/* Yearly */}
+            <div className="fc-surface rounded-2xl border border-violet-500/30 bg-white/[0.03] p-6">
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-sm font-semibold text-violet-300">Yearly</div>
+                <div className="rounded-full bg-violet-500/15 px-2 py-0.5 text-xs font-bold text-violet-200">
+                  Save 33%
+                </div>
               </div>
-
-              <div className="mt-2 grid gap-3">
+              <div className="mt-2 text-3xl font-extrabold text-white">$39.99</div>
+              <div className="mt-1 text-sm text-white/60">per year</div>
+              <ul className="mt-4 space-y-2 text-sm text-white/75">
+                <li>• Everything in Monthly</li>
+                <li>• Better value for daily users</li>
+                <li>• ~$3.33/month billed yearly</li>
+              </ul>
+              <div className="mt-5">
                 <button
                   type="button"
                   disabled={loading}
                   onClick={() => goToStripe("yearly")}
                   className={classNames(
-                    "rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white/85 hover:bg-white/10 hover:text-white",
+                    "w-full rounded-md bg-gradient-to-r from-violet-600 to-purple-500 px-4 py-3 text-sm font-semibold text-white hover:opacity-95",
                     loading && "opacity-60"
                   )}
                 >
-                  Go Yearly
+                  {loading ? "Checking…" : "Go Yearly"}
                 </button>
+              </div>
+              <div className="mt-2 text-xs text-white/45">Auto-renews • Cancel anytime</div>
+            </div>
 
+            {/* Lifetime */}
+            <div className="fc-surface rounded-2xl p-6">
+              <div className="text-sm font-semibold text-white/70">Lifetime</div>
+              <div className="mt-2 text-3xl font-extrabold text-white">$79.99</div>
+              <div className="mt-1 text-sm text-white/50">one-time payment</div>
+              <ul className="mt-4 space-y-2 text-sm text-white/75">
+                <li>• Everything in Monthly</li>
+                <li>• No renewals ever</li>
+                <li>• Best for early supporters</li>
+              </ul>
+              <div className="mt-5">
                 <button
                   type="button"
                   disabled={loading}
                   onClick={() => goToStripe("lifetime")}
                   className={classNames(
-                    "rounded-md border border-orange-500/30 bg-orange-500/10 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-500/15",
+                    "w-full rounded-md border border-orange-500/30 bg-orange-500/10 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-500/15",
                     loading && "opacity-60"
                   )}
                 >
-                  Get Lifetime
+                  {loading ? "Checking…" : "Get Lifetime"}
                 </button>
               </div>
-
-              <ul className="mt-4 space-y-2 text-sm text-white/75">
-                <li>• Best value plans</li>
-                <li>• Premium quiz packs included</li>
-                <li>• Priority updates</li>
-              </ul>
-
-              <div className="mt-2 text-xs text-white/45">
-                Lifetime is a one-time payment. Monthly and yearly renew
-                automatically until canceled.
-              </div>
+              <div className="mt-2 text-xs text-white/45">One payment, permanent access</div>
             </div>
           </div>
 

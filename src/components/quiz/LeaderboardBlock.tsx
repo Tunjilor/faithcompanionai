@@ -116,11 +116,11 @@ export default function LeaderboardBlock({
         </div>
       ) : (
         <div className="mt-5 overflow-hidden rounded-2xl border border-white/10">
-          <div className="grid grid-cols-[56px_1fr_86px_78px] bg-black/30 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-white/50">
+          <div className="grid grid-cols-[48px_1fr_72px] sm:grid-cols-[56px_1fr_86px_78px] bg-black/30 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-white/50">
             <div>Rank</div>
             <div>Player</div>
             <div>Score</div>
-            <div>Date</div>
+            <div className="hidden sm:block">Date</div>
           </div>
 
           <div className="divide-y divide-white/10">
@@ -129,7 +129,7 @@ export default function LeaderboardBlock({
 
               const rowContent = (
                 <div
-                  className={`grid grid-cols-[56px_1fr_86px_78px] items-center px-4 py-3 text-sm transition ${
+                  className={`grid grid-cols-[48px_1fr_72px] sm:grid-cols-[56px_1fr_86px_78px] items-center px-4 py-3 text-sm transition ${
                     isCurrent
                       ? "bg-amber-400/10 text-white"
                       : "bg-white/5 text-white/85 hover:bg-white/10"
@@ -155,7 +155,7 @@ export default function LeaderboardBlock({
                     {item.score}/{item.total}
                   </div>
 
-                  <div className="text-white/55">{formatDate(item.createdAt)}</div>
+                  <div className="hidden text-white/55 sm:block">{formatDate(item.createdAt)}</div>
                 </div>
               );
 

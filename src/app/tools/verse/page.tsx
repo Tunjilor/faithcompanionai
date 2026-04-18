@@ -179,7 +179,7 @@ export default function VersePage() {
   function handleReset() {
     setTopic("");
     setLength("short");
-    setResult("");
+    setResult(null);
     setError("");
     setSuccess("");
   }

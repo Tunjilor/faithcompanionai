@@ -294,7 +294,7 @@ export async function POST(req: Request) {
       questionId: row.questionId,
       prompt: row.question.prompt,
       category: row.question.category,
-      chosen: row.chosen,
+      chosen: row.chosen as Choice | null,
       correctAnswer: row.question.answer as Choice,
       isCorrect: row.isCorrect,
       explanation: row.question.explanation ?? null,

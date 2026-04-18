@@ -194,11 +194,11 @@ export async function POST(req: Request) {
       );
     }
 
-    const category = typeof body?.category === "string" ? body.category.trim() : "";
+    const rawCategory = typeof body?.category === "string" ? body.category.trim() : "";
     const timed = Boolean(body?.timed);
 
     const validCategories = new Set<string>(Object.keys(CATEGORY_LABELS));
-    if (!category || !validCategories.has(category)) {
+    if (!rawCategory || !validCategories.has(rawCategory)) {
       return NextResponse.json(
         {
           ok: false,
@@ -208,6 +208,9 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    // Narrowed to CategoryId after the set check above
+    const category = rawCategory as CategoryId;
 
     const ident = await getActorAndPremium();
     if (!ident.ok) {

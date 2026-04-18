@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { POSTS } from "./content";
+import AdSenseSlot from "@/components/AdSenseSlot";
 
 export const metadata: Metadata = {
   title: "Blog — Bible Study Tips, Prayer Guides & Faith Resources | Faith Companion AI",
@@ -32,6 +33,8 @@ export default function BlogPage() {
           devotionals, and daily faith practice.
         </p>
       </header>
+
+      <AdSenseSlot className="mb-4" />
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {POSTS.map((post) => (

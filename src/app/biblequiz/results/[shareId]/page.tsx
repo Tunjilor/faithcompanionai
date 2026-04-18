@@ -6,6 +6,8 @@ import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import ShareButtons from "./share-buttons";
 import LeaderboardBlock from "@/components/quiz/LeaderboardBlock";
+import EmailCaptureBanner from "@/components/EmailCaptureBanner";
+import QuizUpgradeNudge from "@/components/QuizUpgradeNudge";
 
 type AttemptWithQuestions = Prisma.QuizAttemptGetPayload<{
   include: {
@@ -154,6 +156,12 @@ export default async function Page({ params }: PageProps) {
           </Link>
         </div>
       </div>
+
+      {/* Upgrade nudge for free/guest users — checks /api/me client-side */}
+      <QuizUpgradeNudge />
+
+      {/* Email capture for guests */}
+      {!attempt.userId && <EmailCaptureBanner />}
 
       <LeaderboardBlock
         category={attempt.category}

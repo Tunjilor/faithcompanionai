@@ -89,6 +89,7 @@ export async function GET() {
       (!user.premiumUntil || user.premiumUntil.getTime() > now.getTime());
 
     const displayName = makeUserDisplayName(user.email);
+    const referralCount = await db.user.count({ where: { referredBy: user.id } });
 
     return NextResponse.json({
       premium,
@@ -103,6 +104,7 @@ export async function GET() {
       actorKey: `user:${user.id}`,
       guestName: displayName,
       displayName,
+      referralCount,
       guest: null,
       debug: { step: "ok_authed" },
     });

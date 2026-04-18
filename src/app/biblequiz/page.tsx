@@ -2,6 +2,7 @@
 
 import type { Metadata } from "next";
 import QuizClient from "./quiz-client";
+import AdSenseSlot from "@/components/AdSenseSlot";
 
 export const metadata: Metadata = {
   title: "Free Bible Quiz Online — Test Your Scripture Knowledge | Faith Companion AI",
@@ -39,6 +40,7 @@ export default function Page() {
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:px-6">
       <QuizClient />
+      <AdSenseSlot className="mt-8" />
     </main>
   );
 }

@@ -6,6 +6,23 @@ import Script from "next/script";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SpiritualAssistant from "@/components/SpiritualAssistant";
+import ExitIntentModal from "@/components/ExitIntentModal";
+import ReferralTracker from "@/components/ReferralTracker";
+
+// ── Google AdSense ────────────────────────────────────────────────────────────
+// When your AdSense account is approved, paste this inside <head> below:
+//
+//   <Script
+//     async
+//     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+//     crossOrigin="anonymous"
+//     strategy="afterInteractive"
+//   />
+//
+// Replace ca-pub-XXXXXXXXXXXXXXXX with your real publisher ID from:
+//   AdSense dashboard → Account → Account information → Publisher ID
+// Also update the dataAdClient prop in each <AdSenseSlot /> component.
+// ─────────────────────────────────────────────────────────────────────────────
 
 const GA_ID = "G-5WYYE098DH";
 
@@ -118,6 +135,8 @@ export default function RootLayout({
         </main>
         <Footer />
         <SpiritualAssistant />
+        <ExitIntentModal />
+        <ReferralTracker />
       </body>
     </html>
   );

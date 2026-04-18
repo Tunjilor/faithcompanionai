@@ -14,9 +14,11 @@ type MeResponse = {
   premium?: boolean;
   premiumUntil?: string | null;
   email?: string | null;
+  userId?: string | null;
   actorKey?: string | null;
   customerId?: string | null;
   subscriptionId?: string | null;
+  referralCount?: number;
   guest?: {
     id?: string;
     createdAt?: number;
@@ -545,6 +547,40 @@ export default function DashboardPage() {
           <UpgradeCTA variant="dashboard" title="Unlock your full faith journal"
             description="Premium removes interruptions, unlocks unlimited use, streak tracking, and your complete prayer journal in one place."
             primaryHref="/pricing" primaryLabel="Upgrade to Premium" secondaryHref="/tools/verse" secondaryLabel="Keep Exploring" showFeatures />
+        </section>
+      )}
+
+      {/* ── Referral section ── */}
+      {signedIn && me?.userId && (
+        <section className="mt-8 rounded-[24px] p-6" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-white">Share Faith Companion AI</h2>
+              <p className="mt-1 text-sm text-white/60">
+                Share your unique link. Every friend who joins is tracked — rewards coming soon.
+              </p>
+              {typeof me.referralCount === "number" && (
+                <div className="mt-2 text-sm font-semibold text-orange-300">
+                  🙌 You've invited {me.referralCount} friend{me.referralCount !== 1 ? "s" : ""}
+                </div>
+              )}
+            </div>
+
+            <div className="flex shrink-0 flex-col gap-2">
+              <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-xs text-white/70 font-mono break-all">
+                faithcompanionai.com?ref={me.userId}
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(`https://faithcompanionai.com?ref=${me!.userId}`);
+                }}
+                className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white hover:bg-white/10 transition"
+              >
+                Copy link
+              </button>
+            </div>
+          </div>
         </section>
       )}
 

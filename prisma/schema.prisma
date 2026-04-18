@@ -233,6 +233,16 @@ model Lead {
   updatedAt DateTime @updatedAt
 }
 
+model PrayerRequest {
+  id        String   @id @default(cuid())
+  name      String?
+  text      String
+  prayCount Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
 model playing_with_neon {
   id    Int    @id @default(autoincrement())
   name  String

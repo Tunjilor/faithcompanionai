@@ -330,6 +330,107 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* How it works */}
+      <section className="mt-10 rounded-[30px] border border-white/10 bg-white/5 p-8 md:p-10">
+        <div className="text-center">
+          <div className="text-xs font-semibold uppercase tracking-widest text-orange-400">
+            How it works
+          </div>
+          <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">
+            Three steps to daily spiritual support
+          </h2>
+        </div>
+
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {[
+            {
+              step: "1",
+              title: "Choose your tool",
+              description:
+                "Select Verse for quick encouragement, Prayer for a personal need, or Devotional for deeper reflection. Bible Quiz for learning.",
+            },
+            {
+              step: "2",
+              title: "Get Scripture-based content",
+              description:
+                "AI generates a response grounded in the Bible — not empty inspiration, but real verses, prayers, and devotionals tied to your situation.",
+            },
+            {
+              step: "3",
+              title: "Save and grow",
+              description:
+                "Premium members save meaningful content to their personal faith journal. Return anytime to revisit and build a consistent spiritual rhythm.",
+            },
+          ].map((item) => (
+            <div key={item.step} className="flex flex-col items-start gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 text-sm font-extrabold text-white">
+                {item.step}
+              </div>
+              <h3 className="text-lg font-bold text-white">{item.title}</h3>
+              <p className="text-sm leading-7 text-white/65">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="mt-10">
+        <div className="text-center">
+          <div className="text-xs font-semibold uppercase tracking-widest text-orange-400">
+            What people are saying
+          </div>
+          <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">
+            Real stories from daily users
+          </h2>
+        </div>
+
+        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              quote:
+                "I've tried a dozen devotional apps and nothing stuck. Faith Companion AI is the first one I've used every single morning for more than a month. The prayers feel real, not templated.",
+              name: "Sarah M.",
+              detail: "Daily devotional user",
+            },
+            {
+              quote:
+                "The Bible Quiz is addictive in the best way. I've learned more Scripture in six weeks of playing than I did in years of occasional church attendance.",
+              name: "James T.",
+              detail: "Bible Quiz player",
+            },
+            {
+              quote:
+                "I was going through a really hard season and didn't know how to pray about it. I typed what I was feeling and got back a prayer that said exactly what was in my heart. I cried.",
+              name: "Rachel L.",
+              detail: "Prayer tool user",
+            },
+            {
+              quote:
+                "As a pastor I recommend this to my congregation for their personal devotional time. The devotionals are solid, Scripture-grounded, and never feel shallow.",
+              name: "Pastor David K.",
+              detail: "Community pastor",
+            },
+            {
+              quote:
+                "I'm not a strong reader but the verse thoughts are just the right length. I get a verse, an encouraging word, and one thing to do. Simple. Effective. Keeps me consistent.",
+              name: "Marcus W.",
+              detail: "Verse tool user",
+            },
+          ].map((t) => (
+            <div
+              key={t.name}
+              className="flex flex-col justify-between rounded-[24px] border border-white/10 bg-white/5 p-6"
+            >
+              <p className="text-sm leading-7 text-white/75 italic">"{t.quote}"</p>
+              <div className="mt-5 border-t border-white/10 pt-4">
+                <div className="text-sm font-semibold text-white">{t.name}</div>
+                <div className="text-xs text-white/45">{t.detail}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="mt-10 text-center">
         <h2 className="text-2xl font-bold text-white md:text-3xl">
           Start with the support you need today

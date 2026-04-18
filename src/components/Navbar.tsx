@@ -47,6 +47,8 @@ const NAV: NavItem[] = [
     label: "More",
     items: [
       { label: "Saved", href: "/saved" },
+      { label: "Blog", href: "/blog" },
+      { label: "Topics", href: "/topics/anxiety" },
       { label: "Pricing", href: "/pricing" },
       { label: "About", href: "/about" },
       { label: "FAQ", href: "/faq" },

@@ -4,6 +4,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import DenominationSelect, { getDenominationNote, readDenomination } from "@/components/DenominationSelect";
 
 type Length = "short" | "medium" | "long";
 
@@ -46,6 +47,7 @@ function resultToText(data: ResultData): string {
 export default function VersePage() {
   const [topic, setTopic] = useState("");
   const [length, setLength] = useState<Length>("short");
+  const [denomination, setDenomination] = useState("non-denominational");
   const [result, setResult] = useState<ResultData | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -74,6 +76,13 @@ export default function VersePage() {
     };
   }, []);
 
+  useEffect(() => {
+    setDenomination(readDenomination());
+    const onChanged = () => setDenomination(readDenomination());
+    window.addEventListener("denomination-changed", onChanged);
+    return () => window.removeEventListener("denomination-changed", onChanged);
+  }, []);
+
   async function handleGenerate() {
     setError("");
     setSuccess("");
@@ -86,7 +95,7 @@ export default function VersePage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          topic,
+          topic: topic + getDenominationNote(denomination),
           length,
         }),
       });
@@ -244,6 +253,13 @@ export default function VersePage() {
               </option>
             </select>
             <p className="mt-2 text-xs text-slate-500">{lengthHelp}</p>
+          </div>
+
+          <div className="md:col-span-3">
+            <label className="block text-sm font-medium text-slate-700">
+              Tradition
+            </label>
+            <DenominationSelect className="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-100 px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-500" />
           </div>
         </div>
 

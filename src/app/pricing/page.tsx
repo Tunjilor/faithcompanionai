@@ -4,9 +4,9 @@ import Link from "next/link";
 import JsonLd from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Pricing",
+  title: "Pricing — Faith Companion AI Premium | Unlimited Bible Study from $4.99/month",
   description:
-    "Upgrade to Faith Companion AI Premium for unlimited verses, prayers, devotionals, and your personal faith journal.",
+    "Upgrade to Faith Companion AI Premium for unlimited Bible verses, prayers, and devotionals. Save your faith journey, unlock all quiz categories. Monthly from $4.99, lifetime available.",
   alternates: {
     canonical: "/pricing",
   },

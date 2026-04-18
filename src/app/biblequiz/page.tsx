@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import QuizClient from "./quiz-client";
 
 export const metadata: Metadata = {
-  title: "Bible Quiz Online — Free & Premium | Faith Companion AI",
+  title: "Free Bible Quiz Online — Test Your Scripture Knowledge | Faith Companion AI",
   description:
-    "Take a free Bible quiz online and test your Scripture knowledge. Multiple categories including General Bible, Women of the Bible, Parables, and Theology. Share your score and challenge friends.",
+    "Take a free Bible quiz online and test your Scripture knowledge across 6 categories: General Bible, Women of the Bible, Parables, Theology, Church History, and AI questions. Share your score and challenge friends.",
   keywords: [
     "Bible quiz online",
     "free Bible quiz",

@@ -2,9 +2,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AI Prayer Generator — Faith Companion AI",
+  title: "AI Prayer Generator — Write a Personal Prayer in Seconds | Faith Companion AI",
   description:
-    "Generate a personal, Scripture-grounded prayer for any situation. Free AI prayer generator for peace, healing, strength, family, and daily faith.",
+    "Generate a personal, Scripture-grounded prayer for any situation in seconds. Free AI prayer generator for peace, healing, strength, family, and daily faith — any tone, any need.",
   keywords: [
     "AI prayer generator",
     "Christian prayer app",

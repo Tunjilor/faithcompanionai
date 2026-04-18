@@ -3,6 +3,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import DenominationSelect, { readDenomination } from "@/components/DenominationSelect";
 
 type Choice = "A" | "B" | "C" | "D";
 type CategoryId = "general" | "women" | "parables" | "ai" | "theology" | "history";
@@ -165,6 +166,7 @@ export default function QuizClient() {
   const [userDisplayName, setUserDisplayName] = useState<string>("");
 
   const [category, setCategory] = useState<CategoryId>("general");
+  const [denomination, setDenomination] = useState("non-denominational");
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [questions, setQuestions] = useState<ServerQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -201,6 +203,13 @@ export default function QuizClient() {
       }
     })();
     return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    setDenomination(readDenomination());
+    const onChanged = () => setDenomination(readDenomination());
+    window.addEventListener("denomination-changed", onChanged);
+    return () => window.removeEventListener("denomination-changed", onChanged);
   }, []);
 
   useEffect(() => {
@@ -408,6 +417,8 @@ export default function QuizClient() {
             <div className="rounded-full bg-white/10 px-3 py-1 text-sm text-white/80">
               {statusLabel}
             </div>
+
+            <DenominationSelect className="rounded-full bg-white/10 px-3 py-1.5 text-sm text-white/80 border-0 outline-none" />
 
             <button
               onClick={restartQuiz}

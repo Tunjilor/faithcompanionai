@@ -1,10 +1,13 @@
 // src/app/layout.tsx
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Script from "next/script";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SpiritualAssistant from "@/components/SpiritualAssistant";
+
+const GA_ID = "G-5WYYE098DH";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://faithcompanionai.com"),

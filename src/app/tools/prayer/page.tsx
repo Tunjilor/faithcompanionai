@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import UpgradeCTA from "@/components/UpgradeCTA";
+import DenominationSelect, { getDenominationNote, readDenomination } from "@/components/DenominationSelect";
 
 type Tone = "gentle" | "firm" | "short" | "detailed";
 
@@ -45,6 +46,7 @@ export default function PrayerPage() {
   const [name, setName] = useState("");
   const [situation, setSituation] = useState("");
   const [tone, setTone] = useState<Tone>("gentle");
+  const [denomination, setDenomination] = useState("non-denominational");
 
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
@@ -75,15 +77,23 @@ export default function PrayerPage() {
     };
   }, []);
 
+  useEffect(() => {
+    setDenomination(readDenomination());
+    const onChanged = () => setDenomination(readDenomination());
+    window.addEventListener("denomination-changed", onChanged);
+    return () => window.removeEventListener("denomination-changed", onChanged);
+  }, []);
+
   async function handleGenerate() {
     setError("");
     setSuccess("");
     setHardStopped(false);
 
+    const denomNote = getDenominationNote(denomination);
     const prompt =
       topic.trim().length > 0
-        ? `Write a sincere Christian prayer about ${topic.trim()}. ${situation.trim() ? `The situation is: ${situation.trim()}.` : ""} Include 1-3 Bible references and make it suitable for daily encouragement.`
-        : `Write a sincere Christian prayer for today. ${situation.trim() ? `The situation is: ${situation.trim()}.` : ""} Include 1-3 Bible references and make it suitable for daily encouragement.`;
+        ? `Write a sincere Christian prayer about ${topic.trim()}. ${situation.trim() ? `The situation is: ${situation.trim()}.` : ""} Include 1-3 Bible references and make it suitable for daily encouragement.${denomNote}`
+        : `Write a sincere Christian prayer for today. ${situation.trim() ? `The situation is: ${situation.trim()}.` : ""} Include 1-3 Bible references and make it suitable for daily encouragement.${denomNote}`;
 
     setIsLoading(true);
 
@@ -292,6 +302,11 @@ export default function PrayerPage() {
               placeholder="e.g., anxiety, family stress, grief, uncertainty"
               className="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-black/10"
             />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-slate-700">Tradition</label>
+            <DenominationSelect className="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-black/10" />
           </div>
         </div>
 

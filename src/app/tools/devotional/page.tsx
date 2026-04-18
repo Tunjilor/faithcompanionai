@@ -6,6 +6,7 @@ import React from "react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import UpgradeCTA from "@/components/UpgradeCTA";
+import DenominationSelect, { getDenominationNote, readDenomination } from "@/components/DenominationSelect";
 
 function inlineBold(text: string): React.ReactNode {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -113,6 +114,7 @@ export default function DevotionalPage() {
   const [name, setName] = useState("");
   const [situation, setSituation] = useState("");
   const [tone, setTone] = useState<Tone>("gentle");
+  const [denomination, setDenomination] = useState("non-denominational");
 
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
@@ -143,19 +145,27 @@ export default function DevotionalPage() {
     };
   }, []);
 
+  useEffect(() => {
+    setDenomination(readDenomination());
+    const onChanged = () => setDenomination(readDenomination());
+    window.addEventListener("denomination-changed", onChanged);
+    return () => window.removeEventListener("denomination-changed", onChanged);
+  }, []);
+
   async function handleGenerate() {
     setError("");
     setSuccess("");
     setHardStopped(false);
 
+    const denomNote = getDenominationNote(denomination);
     const prompt =
       topic.trim().length > 0
         ? `Write a Christian devotional about ${topic.trim()}. ${
             situation.trim() ? `The user is dealing with: ${situation.trim()}.` : ""
-          } Include a title, 1-3 Bible references, a reflection, a short prayer, and 2 action steps.`
+          } Include a title, 1-3 Bible references, a reflection, a short prayer, and 2 action steps.${denomNote}`
         : `Write a Christian devotional for today. ${
             situation.trim() ? `The user is dealing with: ${situation.trim()}.` : ""
-          } Include a title, 1-3 Bible references, a reflection, a short prayer, and 2 action steps.`;
+          } Include a title, 1-3 Bible references, a reflection, a short prayer, and 2 action steps.${denomNote}`;
 
     setIsLoading(true);
 
@@ -364,6 +374,11 @@ export default function DevotionalPage() {
               placeholder="e.g., discouragement, uncertainty, fear, waiting"
               className="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-black/10"
             />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-slate-700">Tradition</label>
+            <DenominationSelect className="mt-2 w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-black/10" />
           </div>
         </div>
 

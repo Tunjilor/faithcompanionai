@@ -80,7 +80,7 @@ export default function PricingClient() {
       </section>
 
       {success && (
-        <div className="fc-surface rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-white">
+        <div className="rounded-2xl border border-white/25 bg-white/15 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-white">
           <div className="font-semibold">Payment successful — welcome 🎉</div>
           <div className="mt-1 text-sm text-white/80">
             Your Premium access should activate automatically. If you do not
@@ -105,7 +105,7 @@ export default function PricingClient() {
       )}
 
       {canceled && (
-        <div className="fc-surface rounded-2xl border border-yellow-500/20 bg-yellow-500/10 p-4 text-white">
+        <div className="rounded-2xl border border-white/25 bg-white/15 rounded-2xl border border-yellow-500/20 bg-yellow-500/10 p-4 text-white">
           <div className="font-semibold">Checkout canceled</div>
           <div className="mt-1 text-sm text-white/80">
             No charge was made. You can try again anytime.
@@ -114,7 +114,7 @@ export default function PricingClient() {
       )}
 
       {error && (
-        <div className="fc-surface rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-white">
+        <div className="rounded-2xl border border-white/25 bg-white/15 rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-white">
           <div className="font-semibold">Something went wrong</div>
           <div className="mt-1 text-sm text-white/80">
             Error: {error}
@@ -123,7 +123,7 @@ export default function PricingClient() {
       )}
 
       {premium ? (
-        <div className="fc-surface rounded-2xl p-6">
+        <div className="rounded-2xl border border-white/25 bg-white/15 rounded-2xl p-6">
           <div className="text-xl font-extrabold text-white">
             You’re Premium ✅
           </div>
@@ -160,11 +160,11 @@ export default function PricingClient() {
         <>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {/* Free */}
-            <div className="fc-surface rounded-2xl p-6">
-              <div className="text-sm font-semibold text-white/70">Free</div>
+            <div className="rounded-2xl border border-white/25 bg-white/15 p-6">
+              <div className="text-sm font-semibold text-white">Free</div>
               <div className="mt-2 text-3xl font-extrabold text-white">$0</div>
-              <div className="mt-1 text-sm text-white/50">forever</div>
-              <ul className="mt-4 space-y-2 text-sm text-white/75">
+              <div className="mt-1 text-sm text-white">forever</div>
+              <ul className="mt-4 space-y-2 text-sm text-white">
                 <li>• Daily verses, prayers & devotionals</li>
                 <li>• Bible quiz (free categories)</li>
                 <li>• No account required</li>
@@ -172,7 +172,7 @@ export default function PricingClient() {
               <div className="mt-5">
                 <Link
                   href="/"
-                  className="inline-flex w-full items-center justify-center rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white/85 hover:bg-white/10 hover:text-white"
+                  className="inline-flex w-full items-center justify-center rounded-md border border-white/30 bg-white/10 px-4 py-3 text-sm font-semibold text-white hover:bg-white/20"
                 >
                   Continue Free
                 </Link>
@@ -180,16 +180,16 @@ export default function PricingClient() {
             </div>
 
             {/* Monthly */}
-            <div className="fc-surface rounded-2xl border border-orange-500/30 bg-white/10 p-6">
+            <div className="rounded-2xl border-2 border-purple-400 bg-white/15 p-6">
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-semibold text-orange-300">Monthly</div>
-                <div className="rounded-full bg-orange-500/15 px-2 py-0.5 text-xs font-bold text-orange-200">
+                <div className="rounded-full bg-orange-500/30 px-2 py-0.5 text-xs font-bold text-orange-200">
                   Popular
                 </div>
               </div>
               <div className="mt-2 text-3xl font-extrabold text-white">$4.99</div>
-              <div className="mt-1 text-sm text-white/60">per month</div>
-              <ul className="mt-4 space-y-2 text-sm text-white/75">
+              <div className="mt-1 text-sm text-white">per month</div>
+              <ul className="mt-4 space-y-2 text-sm text-white">
                 <li>• Unlimited tools & quizzes</li>
                 <li>• All premium quiz categories</li>
                 <li>• Save to faith journal</li>
@@ -207,20 +207,20 @@ export default function PricingClient() {
                   {loading ? "Checking…" : "Go Monthly"}
                 </button>
               </div>
-              <div className="mt-2 text-xs text-white/45">Auto-renews • Cancel anytime</div>
+              <div className="mt-2 text-xs text-white/70">Auto-renews • Cancel anytime</div>
             </div>
 
             {/* Yearly */}
-            <div className="fc-surface rounded-2xl border border-violet-500/30 bg-white/10 p-6">
+            <div className="rounded-2xl border-2 border-violet-400 bg-white/15 p-6">
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-semibold text-violet-300">Yearly</div>
-                <div className="rounded-full bg-violet-500/15 px-2 py-0.5 text-xs font-bold text-violet-200">
+                <div className="rounded-full bg-violet-500/30 px-2 py-0.5 text-xs font-bold text-violet-200">
                   Save 33%
                 </div>
               </div>
               <div className="mt-2 text-3xl font-extrabold text-white">$39.99</div>
-              <div className="mt-1 text-sm text-white/60">per year</div>
-              <ul className="mt-4 space-y-2 text-sm text-white/75">
+              <div className="mt-1 text-sm text-white">per year</div>
+              <ul className="mt-4 space-y-2 text-sm text-white">
                 <li>• Everything in Monthly</li>
                 <li>• Better value for daily users</li>
                 <li>• ~$3.33/month billed yearly</li>
@@ -238,15 +238,15 @@ export default function PricingClient() {
                   {loading ? "Checking…" : "Go Yearly"}
                 </button>
               </div>
-              <div className="mt-2 text-xs text-white/45">Auto-renews • Cancel anytime</div>
+              <div className="mt-2 text-xs text-white/70">Auto-renews • Cancel anytime</div>
             </div>
 
             {/* Lifetime */}
-            <div className="fc-surface rounded-2xl p-6">
-              <div className="text-sm font-semibold text-white/70">Lifetime</div>
+            <div className="rounded-2xl border border-white/25 bg-white/15 p-6">
+              <div className="text-sm font-semibold text-white">Lifetime</div>
               <div className="mt-2 text-3xl font-extrabold text-white">$79.99</div>
-              <div className="mt-1 text-sm text-white/50">one-time payment</div>
-              <ul className="mt-4 space-y-2 text-sm text-white/75">
+              <div className="mt-1 text-sm text-white">one-time payment</div>
+              <ul className="mt-4 space-y-2 text-sm text-white">
                 <li>• Everything in Monthly</li>
                 <li>• No renewals ever</li>
                 <li>• Best for early supporters</li>
@@ -257,18 +257,18 @@ export default function PricingClient() {
                   disabled={loading}
                   onClick={() => goToStripe("lifetime")}
                   className={classNames(
-                    "w-full rounded-md border border-orange-500/30 bg-orange-500/10 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-500/15",
+                    "w-full rounded-md border border-orange-400 bg-orange-500/20 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-500/30",
                     loading && "opacity-60"
                   )}
                 >
                   {loading ? "Checking…" : "Get Lifetime"}
                 </button>
               </div>
-              <div className="mt-2 text-xs text-white/45">One payment, permanent access</div>
+              <div className="mt-2 text-xs text-white/70">One payment, permanent access</div>
             </div>
           </div>
 
-          <div className="fc-surface rounded-2xl p-6 text-sm text-white/70">
+          <div className="rounded-2xl border border-white/25 bg-white/15 p-6 text-sm text-white">
             Payments are processed securely by Stripe. Premium access is
             verified server-side.
           </div>

@@ -159,20 +159,21 @@ export default function PricingPage() {
       </section>
 
       <section className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr_0.9fr]">
-        <div className="rounded-[28px] border border-orange-400/30 bg-white/10 p-6 shadow-2xl ring-1 ring-orange-400/20">
+        {/* Monthly — most popular */}
+        <div className="rounded-[28px] border-2 border-purple-400 bg-white/15 p-6 shadow-2xl">
           <div className="flex items-center justify-between gap-3">
             <div className="text-sm font-semibold text-orange-300">Best place to start</div>
-            <div className="rounded-full bg-orange-400/15 px-3 py-1 text-xs font-bold text-orange-200">
+            <div className="rounded-full bg-orange-400/20 px-3 py-1 text-xs font-bold text-orange-200">
               Most Popular
             </div>
           </div>
 
           <div className="mt-4 text-5xl font-bold text-white">$4.99</div>
-          <div className="mt-1 text-sm text-white/70">per month</div>
+          <div className="mt-1 text-sm text-white">per month</div>
 
           <div className="mt-6 space-y-3">
             {premiumFeatures.map((feature) => (
-              <div key={feature} className="text-sm text-white/85">
+              <div key={feature} className="text-sm text-white">
                 • {feature}
               </div>
             ))}
@@ -187,38 +188,44 @@ export default function PricingPage() {
             Go Monthly
           </a>
 
-          <p className="mt-2 text-center text-xs text-white/60">
+          <p className="mt-2 text-center text-xs text-white/70">
             Auto-renews • Cancel anytime
           </p>
         </div>
 
-        <div className="rounded-[28px] border border-white/10 bg-white/10 p-6 shadow-xl">
-          <div className="text-sm font-semibold text-white/70">Yearly</div>
+        {/* Yearly */}
+        <div className="rounded-[28px] border-2 border-violet-400 bg-white/15 p-6 shadow-xl">
+          <div className="text-sm font-semibold text-violet-300">Yearly</div>
           <div className="mt-4 text-5xl font-bold text-white">$39.99</div>
-          <div className="mt-1 text-sm text-white/70">per year</div>
+          <div className="mt-1 text-sm text-white">per year</div>
 
-          <div className="mt-6 space-y-3 text-sm text-white/80">
+          <div className="mt-6 space-y-3 text-sm text-white">
             <p>• Better value for consistent users</p>
             <p>• Full Premium access included</p>
-            <p>• Good choice after trying Monthly</p>
+            <p>• ~$3.33/month billed yearly</p>
           </div>
 
           <a
             href="https://buy.stripe.com/7sYdRb9ho8Sv7TSbo38Vi05"
             target="_blank"
             rel="noreferrer"
-            className="mt-8 inline-flex min-h-[48px] w-full items-center justify-center rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/15"
+            className="mt-8 inline-flex min-h-[48px] w-full items-center justify-center rounded-2xl bg-gradient-to-r from-violet-600 to-purple-500 px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95"
           >
             Go Yearly
           </a>
+
+          <p className="mt-2 text-center text-xs text-white/70">
+            Auto-renews • Cancel anytime
+          </p>
         </div>
 
-        <div className="rounded-[28px] border border-white/10 bg-white/10 p-6 shadow-xl">
-          <div className="text-sm font-semibold text-white/70">Lifetime</div>
+        {/* Lifetime */}
+        <div className="rounded-[28px] border border-white/25 bg-white/15 p-6 shadow-xl">
+          <div className="text-sm font-semibold text-white">Lifetime</div>
           <div className="mt-4 text-5xl font-bold text-white">$79.99</div>
-          <div className="mt-1 text-sm text-white/70">one-time payment</div>
+          <div className="mt-1 text-sm text-white">one-time payment</div>
 
-          <div className="mt-6 space-y-3 text-sm text-white/80">
+          <div className="mt-6 space-y-3 text-sm text-white">
             <p>• Best for early supporters</p>
             <p>• One payment, no renewal</p>
             <p>• Full Premium access included</p>
@@ -228,7 +235,7 @@ export default function PricingPage() {
             href="https://buy.stripe.com/3cI28tals8Sv2zybo38Vi04"
             target="_blank"
             rel="noreferrer"
-            className="mt-8 inline-flex min-h-[48px] w-full items-center justify-center rounded-2xl border border-orange-500/30 bg-orange-500/10 px-5 py-3 text-sm font-semibold text-orange-100 transition hover:bg-orange-500/15"
+            className="mt-8 inline-flex min-h-[48px] w-full items-center justify-center rounded-2xl border border-orange-400 bg-orange-500/20 px-5 py-3 text-sm font-semibold text-white transition hover:bg-orange-500/30"
           >
             Get Lifetime
           </a>

@@ -158,7 +158,7 @@ export default function HomePage() {
 
       <section className="rounded-[32px] p-8 shadow-2xl md:p-12" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
         <div className="mx-auto max-w-4xl text-center">
-          <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/70">
+          <div className="inline-flex rounded-full px-3 py-1 text-xs font-semibold text-white/70" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.12)' }}>
             Daily verses • prayers • devotionals • Bible quiz
           </div>
 
@@ -190,7 +190,8 @@ export default function HomePage() {
           <Link
             key={card.title}
             href={card.href}
-            className="group rounded-[26px] border border-white/10 bg-white/5 p-6 transition hover:bg-white/10"
+            className="group rounded-[26px] p-6 transition"
+            style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}
           >
             <div className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/70">
               {card.tag}

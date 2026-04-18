@@ -60,9 +60,13 @@ export async function GET() {
   const isAuthed = !!payload && Date.now() <= payload.exp;
 
   if (isAuthed) {
-    const user = await db.user.findUnique({
-      where: { id: payload!.uid },
-    });
+    // 3-second timeout — a slow Neon cold start must not block the entire page.
+    // If DB is unavailable, return a guest-like response so the UI still renders.
+    const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000));
+    const user = await Promise.race([
+      db.user.findUnique({ where: { id: payload!.uid } }).catch(() => null),
+      timeout,
+    ]);
 
     if (!user) {
       return NextResponse.json({
@@ -89,7 +93,7 @@ export async function GET() {
       (!user.premiumUntil || user.premiumUntil.getTime() > now.getTime());
 
     const displayName = makeUserDisplayName(user.email);
-    const referralCount = await db.user.count({ where: { referredBy: user.id } });
+    const referralCount = await db.user.count({ where: { referredBy: user.id } }).catch(() => 0);
 
     return NextResponse.json({
       premium,

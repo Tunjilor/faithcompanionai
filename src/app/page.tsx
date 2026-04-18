@@ -1,357 +1,364 @@
-"use client";
+// src/app/page.tsx
+import type { Metadata } from "next";
+import Link from "next/link";
+import HomeCtaLayer from "@/components/home/HomeCtaLayer";
+import JsonLd from "@/components/seo/JsonLd";
 
-import React, { useMemo, useState } from "react";
-import VerseOfDay from "@/components/VerseOfDay";
+export const metadata: Metadata = {
+  title: "Faith Companion AI",
+  description:
+    "Get Scripture-based verses, prayers, devotionals, and Bible quizzes designed to support your daily walk with God.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Faith Companion AI",
+    description:
+      "Scripture-based verses, prayers, devotionals, and Bible quizzes for daily encouragement and growth.",
+    url: "https://faithcompanionai.com",
+    siteName: "Faith Companion AI",
+    type: "website",
+    images: [
+      {
+        url: "/brand/og-quiz.png",
+        width: 1200,
+        height: 630,
+        alt: "Faith Companion AI",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Faith Companion AI",
+    description:
+      "Scripture-based verses, prayers, devotionals, and Bible quizzes for daily encouragement and growth.",
+    images: ["/brand/og-quiz.png"],
+  },
+};
 
-type Topic =
-  | "Anxiety / Fear"
-  | "Guidance / Decision"
-  | "Healing"
-  | "Grief / Loss"
-  | "Relationships"
-  | "Forgiveness"
-  | "Purpose"
-  | "Faith / Doubt";
-
-type Tone = "Encouraging" | "Gentle" | "Direct" | "Hopeful" | "Comforting";
-
-type OutputStyle =
-  | "Headings + short paragraphs"
-  | "Bullet points"
-  | "Short + simple"
-  | "Prayer-first";
-
-type Audience = "Everyday (no jargon)" | "Teen" | "New believer" | "In-depth study";
-
-const TOPICS: Topic[] = [
-  "Anxiety / Fear",
-  "Guidance / Decision",
-  "Healing",
-  "Grief / Loss",
-  "Relationships",
-  "Forgiveness",
-  "Purpose",
-  "Faith / Doubt",
+const featureCards = [
+  {
+    title: "Verse",
+    description:
+      "Get a Scripture-focused verse thought with encouragement and a simple next step.",
+    href: "/tools/verse",
+    tag: "Quick help",
+  },
+  {
+    title: "Prayer",
+    description:
+      "Generate a personal prayer for what you are facing, with a calm and faith-filled tone.",
+    href: "/tools/prayer",
+    tag: "Daily support",
+  },
+  {
+    title: "Devotional",
+    description:
+      "Receive a devotional with reflection, prayer, Scripture references, and action steps.",
+    href: "/tools/devotional",
+    tag: "Go deeper",
+  },
 ];
 
-const TONES: Tone[] = ["Encouraging", "Gentle", "Direct", "Hopeful", "Comforting"];
-const OUTPUTS: OutputStyle[] = [
-  "Headings + short paragraphs",
-  "Bullet points",
-  "Short + simple",
-  "Prayer-first",
+const reasons = [
+  {
+    title: "Scripture-grounded",
+    description:
+      "Built to encourage daily faith through Bible-based reflection, not empty inspiration.",
+  },
+  {
+    title: "Fast and personal",
+    description:
+      "Start with what you need right now — peace, guidance, strength, hope, healing, or prayer.",
+  },
+  {
+    title: "Designed for consistency",
+    description:
+      "Move from one-time inspiration to a repeatable rhythm of prayer, reflection, and growth.",
+  },
 ];
-const AUDIENCES: Audience[] = ["Everyday (no jargon)", "Teen", "New believer", "In-depth study"];
 
-function classNames(...xs: Array<string | false | null | undefined>) {
-  return xs.filter(Boolean).join(" ");
-}
+const faqItems = [
+  {
+    q: "What is Faith Companion AI?",
+    a: "Faith Companion AI is a Christian-focused app experience that helps you generate Scripture-based verses, prayers, devotionals, and Bible quiz results for daily encouragement and growth.",
+  },
+  {
+    q: "Is this denominational?",
+    a: "It is designed to be broadly Christian, Scripture-grounded, and helpful across a wide range of believers.",
+  },
+  {
+    q: "Can I use it for free?",
+    a: "Yes. Free users can explore the tools with limits. Premium unlocks unlimited usage and saved faith journal access.",
+  },
+  {
+    q: "What should I start with first?",
+    a: "Most people start with Verse for encouragement, Prayer for a current burden, or Devotional for deeper reflection.",
+  },
+];
 
-function Pill({ children }: { children: React.ReactNode }) {
+export default function HomePage() {
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Faith Companion AI",
+      url: "https://faithcompanionai.com",
+      description:
+        "Scripture-based verses, prayers, devotionals, and Bible quizzes for daily encouragement and growth.",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://faithcompanionai.com/resources",
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Faith Companion AI",
+      url: "https://faithcompanionai.com",
+      logo: "https://faithcompanionai.com/brand/icon-192.png",
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "support@faithcompanionai.com",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "Faith Companion AI",
+      applicationCategory: "LifestyleApplication",
+      operatingSystem: "Web",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      description:
+        "A Christian-focused web app for verses, prayers, devotionals, and Bible quizzes.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.a,
+        },
+      })),
+    },
+  ];
+
   return (
-    <span className="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-white/80">
-      {children}
-    </span>
-  );
-}
+    <main className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-14">
+      <JsonLd data={schema} />
 
-function Card({
-  title,
-  desc,
-  cta,
-}: {
-  title: string;
-  desc: string;
-  cta: string;
-}) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h3 className="text-base font-semibold text-white">{title}</h3>
-          <p className="mt-1 text-sm text-white/70">{desc}</p>
+      <section className="rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur md:p-12">
+        <div className="mx-auto max-w-4xl text-center">
+          <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/70">
+            Daily verses • prayers • devotionals • Bible quiz
+          </div>
+
+          <h1 className="mt-5 text-4xl font-bold tracking-tight text-white md:text-6xl">
+            Scripture-based support for your daily walk with God
+          </h1>
+
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/70 md:text-lg">
+            Faith Companion AI helps you find a verse, write a prayer, go deeper with a devotional,
+            and build a more consistent spiritual rhythm — all in one calm, mobile-friendly experience.
+          </p>
+
+          <div className="mt-8">
+            <HomeCtaLayer />
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-white/50 sm:text-sm">
+            <span>Free to try</span>
+            <span>•</span>
+            <span>Built for mobile and desktop</span>
+            <span>•</span>
+            <span>Designed for daily use</span>
+          </div>
         </div>
-        <span className="rounded-xl bg-white/10 px-2.5 py-1 text-xs text-white/80">New</span>
-      </div>
-      <button
-        className="mt-4 w-full rounded-xl bg-white/10 px-4 py-2.5 text-sm font-medium text-white hover:bg-white/15 active:bg-white/20"
-        type="button"
-      >
-        {cta}
-      </button>
-    </div>
-  );
-}
+      </section>
 
-export default function Home() {
-  const [question, setQuestion] = useState("need a scripture about anxiety");
-  const [topic, setTopic] = useState<Topic>("Guidance / Decision");
-  const [tone, setTone] = useState<Tone>("Encouraging");
-  const [outputStyle, setOutputStyle] = useState<OutputStyle>("Headings + short paragraphs");
-  const [audience, setAudience] = useState<Audience>("Everyday (no jargon)");
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [answer, setAnswer] = useState<string>("");
-
-  const canSubmit = useMemo(() => question.trim().length > 3 && !isLoading, [question, isLoading]);
-
-  function clear() {
-    setQuestion("");
-    setAnswer("");
-  }
-
-  // Placeholder: we’ll replace this with a real API call to /api/ask
-  async function getAnswer() {
-    setIsLoading(true);
-    setAnswer("");
-
-    await new Promise((r) => setTimeout(r, 700));
-
-    const mock = [
-      `## Scripture to anchor you`,
-      `- **Philippians 4:6–7** — bring your requests to God; His peace will guard your heart and mind.`,
-      `- **1 Peter 5:7** — cast your anxieties on Him because He cares for you.`,
-      ``,
-      `## A simple next step (today)`,
-      `Take one worry and turn it into a one-sentence prayer. Then breathe slowly and repeat the verse once.`,
-      ``,
-      `## Short prayer (${tone})`,
-      `Father, I bring You my anxious thoughts. Please steady my mind, guard my heart, and guide my next step. Help me trust You more than my feelings. Amen.`,
-      ``,
-      `*Topic: ${topic} • Output: ${outputStyle} • Audience: ${audience}*`,
-    ].join("\n");
-
-    setAnswer(mock);
-    setIsLoading(false);
-  }
-
-  function downloadTxt() {
-    const content = answer || "No answer yet.";
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "faith-companion-ai-response.txt";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  return (
-    <div className="min-h-screen bg-[#07070a] text-white">
-      {/* Subtle background */}
-      <div className="pointer-events-none fixed inset-0 opacity-70">
-        <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
-        <div className="absolute -bottom-40 left-1/3 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-white/5 blur-3xl" />
-      </div>
-
-      <main className="mx-auto max-w-6xl px-4 pb-16 pt-10">
-        {/* Hero */}
-        <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur md:p-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-2xl">
-              <div className="flex flex-wrap gap-2">
-                <Pill>Scripture + prayer in seconds</Pill>
-                <Pill>Mobile-first</Pill>
-                <Pill>Save + download (coming)</Pill>
-              </div>
-
-              {/* ✅ Daily Verse insert (good placement) */}
-              <section className="mt-8">
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur">
-                  <VerseOfDay />
-                </div>
-              </section>
-
-              <h1 className="mt-6 text-3xl font-semibold leading-tight md:text-5xl">
-                Your daily spiritual companion—<span className="text-orange-300">all in one place</span>.
-              </h1>
-
-              <p className="mt-3 max-w-xl text-sm leading-6 text-white/75 md:text-base">
-                Ask a question, get Bible references, and receive a short prayer—without having to search all over the internet.
-              </p>
-
-              <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-                <a
-                  href="#ask"
-                  className="rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-black hover:opacity-95"
-                >
-                  Ask the Bible
-                </a>
-                <a
-                  href="#plans"
-                  className="rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-center text-sm font-semibold text-white hover:bg-white/10"
-                >
-                  Explore guided plans
-                </a>
-              </div>
+      <section className="mt-10 grid gap-5 md:grid-cols-3">
+        {featureCards.map((card) => (
+          <Link
+            key={card.title}
+            href={card.href}
+            className="group rounded-[26px] border border-white/10 bg-white/5 p-6 transition hover:bg-white/10"
+          >
+            <div className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/70">
+              {card.tag}
             </div>
 
-            <div className="grid w-full gap-3 md:w-[360px]">
-              <Card title="Daily Verse" desc="Fresh verse + reflection each day." cta="Open Daily Verse" />
-              <Card title="Prayer Generator" desc="Personalized short prayers by topic." cta="Create a Prayer" />
+            <h2 className="mt-4 text-2xl font-bold text-white">{card.title}</h2>
+
+            <p className="mt-3 text-sm leading-7 text-white/70">
+              {card.description}
+            </p>
+
+            <div className="mt-5 text-sm font-semibold text-orange-300">
+              Open {card.title.toLowerCase()} →
             </div>
-          </div>
-        </section>
-
-        {/* Ask the Bible */}
-        <section id="ask" className="mt-10">
-          <div className="rounded-3xl border border-white/10 bg-black/50 p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] md:p-8">
-            <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-              <div className="w-full md:flex-1">
-                <h2 className="text-xl font-semibold">Ask the Bible</h2>
-                <p className="mt-1 text-sm text-white/70">
-                  Type a question. Get Scripture references + a short prayer.
-                </p>
-
-                <label className="mt-4 block text-xs text-white/70">Your question</label>
-                <textarea
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  rows={5}
-                  placeholder="Example: I feel anxious and can’t sleep. What does the Bible say?"
-                  className="mt-2 w-full resize-none rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/20"
-                />
-
-                <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-                  <button
-                    onClick={getAnswer}
-                    disabled={!canSubmit}
-                    className={classNames(
-                      "rounded-xl px-5 py-3 text-sm font-semibold",
-                      canSubmit ? "bg-white text-black hover:opacity-95" : "bg-white/20 text-white/50 cursor-not-allowed"
-                    )}
-                  >
-                    {isLoading ? "Working..." : "Get Answer"}
-                  </button>
-                  <button
-                    onClick={clear}
-                    type="button"
-                    className="rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10"
-                  >
-                    Clear
-                  </button>
-                </div>
-
-                <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="font-medium text-white/85">Result</div>
-                    <div className="flex gap-2">
-                      <button
-                        type="button"
-                        disabled={!answer}
-                        className={classNames(
-                          "rounded-lg border px-3 py-1.5 text-xs",
-                          answer ? "border-white/15 bg-white/5 text-white hover:bg-white/10" : "border-white/10 bg-white/5 text-white/35 cursor-not-allowed"
-                        )}
-                        onClick={() => alert("Next step: wire Save to Favorites table (no full auth needed).")}
-                      >
-                        Save
-                      </button>
-                      <button
-                        type="button"
-                        disabled={!answer}
-                        className={classNames(
-                          "rounded-lg border px-3 py-1.5 text-xs",
-                          answer ? "border-white/15 bg-white/5 text-white hover:bg-white/10" : "border-white/10 bg-white/5 text-white/35 cursor-not-allowed"
-                        )}
-                        onClick={downloadTxt}
-                      >
-                        Download
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 min-h-[120px] whitespace-pre-wrap rounded-xl border border-white/10 bg-black/30 p-4 text-sm text-white/80">
-                    {isLoading ? "Generating…" : answer ? answer : "No answer yet. Ask a question above."}
-                  </div>
-
-                  <p className="mt-3 text-xs text-white/50">
-                    Note: This is still placeholder output until /api/ask is wired up.
-                  </p>
-                </div>
-              </div>
-
-              {/* Right Controls */}
-              <div className="w-full md:w-[320px]">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <h3 className="text-sm font-semibold text-white">Settings</h3>
-
-                  <div className="mt-3 space-y-3">
-                    <Select label="Topic" value={topic} setValue={setTopic} options={TOPICS} />
-                    <Select label="Tone" value={tone} setValue={setTone} options={TONES} />
-                    <Select label="Output style" value={outputStyle} setValue={setOutputStyle} options={OUTPUTS} />
-                    <Select label="Audience" value={audience} setValue={setAudience} options={AUDIENCES} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Guided Plans */}
-        <section id="plans" className="mt-10">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <h2 className="text-xl font-semibold">Guided Plans</h2>
-              <p className="mt-1 text-sm text-white/70">
-                Structured journeys that help users build daily habits.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-4 grid gap-4 md:grid-cols-3">
-            <PlanCard title="7 Days of Peace" desc="Anxiety → calm through daily Scripture + prayer." />
-            <PlanCard title="21 Days of Gratitude" desc="Daily prompts to build joy and perspective." />
-            <PlanCard title="30 Days in Proverbs" desc="Practical wisdom for everyday decisions." />
-          </div>
-        </section>
-      </main>
-    </div>
-  );
-}
-
-function Select<T extends string>({
-  label,
-  value,
-  setValue,
-  options,
-}: {
-  label: string;
-  value: T;
-  setValue: (v: T) => void;
-  options: readonly T[];
-}) {
-  return (
-    <div>
-      <label className="block text-xs text-white/60">{label}</label>
-      <select
-        value={value}
-        onChange={(e) => setValue(e.target.value as T)}
-        className="mt-1 w-full rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-white/20"
-      >
-        {options.map((o) => (
-          <option key={o} value={o} className="bg-[#07070a]">
-            {o}
-          </option>
+          </Link>
         ))}
-      </select>
-    </div>
-  );
-}
+      </section>
 
-function PlanCard({ title, desc }: { title: string; desc: string }) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-5 hover:bg-white/7">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h3 className="text-base font-semibold text-white">{title}</h3>
-          <p className="mt-1 text-sm text-white/70">{desc}</p>
+      <section className="mt-10 rounded-[30px] border border-white/10 bg-white/5 p-8 md:p-10">
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <h2 className="text-2xl font-bold text-white md:text-3xl">
+              Built for the moments when you need direction, peace, or a place to begin
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-white/70 md:text-base">
+              Some days you need a quick verse. Some days you need a prayer for what you are carrying.
+              Some days you want a fuller devotional to slow down and reflect. Faith Companion AI is designed
+              to meet you in all three.
+            </p>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/tools/prayer"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:opacity-90"
+              >
+                Try Prayer
+              </Link>
+
+              <Link
+                href="/tools/devotional"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                Try Devotional
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid gap-4">
+            {reasons.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-[24px] border border-white/10 bg-black/15 p-5"
+              >
+                <h3 className="text-lg font-bold text-white">{item.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-white/70">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-        <span className="rounded-xl bg-white/10 px-2.5 py-1 text-xs text-white/80">Plan</span>
-      </div>
-      <button className="mt-4 w-full rounded-xl bg-white/10 px-4 py-2.5 text-sm font-medium text-white hover:bg-white/15">
-        Open Plan
-      </button>
-    </div>
+      </section>
+
+      <section className="mt-10 grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <div className="rounded-[28px] border border-white/10 bg-white/5 p-8">
+          <div className="text-sm font-semibold text-orange-300">Quiz + Growth Loop</div>
+          <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">
+            Test your Bible knowledge and challenge others
+          </h2>
+          <p className="mt-4 text-sm leading-7 text-white/70 md:text-base">
+            The Bible Quiz adds a fun layer to the experience. Take a quiz, review your answers,
+            and share your score so friends can try to beat it.
+          </p>
+
+          <div className="mt-6">
+            <Link
+              href="/biblequiz"
+              className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95"
+            >
+              Take the Quiz
+            </Link>
+          </div>
+        </div>
+
+        <div className="rounded-[28px] border border-white/10 bg-white/5 p-8">
+          <div className="text-sm font-semibold text-orange-300">Premium</div>
+          <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">
+            Keep your journey in one place
+          </h2>
+          <p className="mt-4 text-sm leading-7 text-white/70 md:text-base">
+            Premium is for people who want more than occasional inspiration. It unlocks unlimited use and lets you
+            save meaningful verses, prayers, and devotionals in your personal faith journal.
+          </p>
+
+          <div className="mt-6">
+            <Link
+              href="/pricing"
+              className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:opacity-90"
+            >
+              View Pricing
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-10 rounded-[30px] border border-white/10 bg-white/5 p-8 md:p-10">
+        <div className="max-w-3xl">
+          <h2 className="text-2xl font-bold text-white md:text-3xl">
+            A calmer, more consistent faith experience
+          </h2>
+          <p className="mt-4 text-sm leading-7 text-white/70 md:text-base">
+            Faith Companion AI is built to reduce friction. Instead of wondering where to begin,
+            you can open the app, choose the kind of support you need, and keep moving in the right direction.
+          </p>
+        </div>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-2xl font-bold text-white md:text-3xl">
+          Frequently asked questions
+        </h2>
+
+        <div className="mt-6 space-y-4">
+          {faqItems.map((item) => (
+            <details
+              key={item.q}
+              className="rounded-[22px] border border-white/10 bg-white/5 p-5"
+            >
+              <summary className="cursor-pointer list-none text-sm font-semibold text-white md:text-base">
+                {item.q}
+              </summary>
+              <p className="mt-3 text-sm leading-7 text-white/70 md:text-base">
+                {item.a}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-10 text-center">
+        <h2 className="text-2xl font-bold text-white md:text-3xl">
+          Start with the support you need today
+        </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-white/70 md:text-base">
+          Choose a verse for encouragement, a prayer for your current burden, or a devotional for deeper reflection.
+        </p>
+
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Link
+            href="/tools/verse"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:opacity-90"
+          >
+            Verse
+          </Link>
+          <Link
+            href="/tools/prayer"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Prayer
+          </Link>
+          <Link
+            href="/tools/devotional"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Devotional
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }

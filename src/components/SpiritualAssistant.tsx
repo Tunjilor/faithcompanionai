@@ -30,6 +30,7 @@ function downloadText(filename: string, text: string) {
 export default function SpiritualAssistant() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [thinking, setThinking] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -84,21 +85,49 @@ export default function SpiritualAssistant() {
       .join("\n\n");
   }, [msgs]);
 
-  function addUserMessage(text: string) {
+  async function addUserMessage(text: string) {
     const trimmed = text.trim();
-    if (!trimmed) return;
+    if (!trimmed || thinking) return;
 
-    setMsgs((prev) => [
-      ...prev,
-      { role: "user", content: trimmed, ts: Date.now() },
-      {
-        role: "assistant",
-        content:
-          "Thanks — I’m ready. (Next step: we’ll wire this to your AI endpoint. For now this is a UI + transcript saver.)",
-        ts: Date.now() + 1,
-      },
-    ]);
+    const userMsg: Msg = { role: "user", content: trimmed, ts: Date.now() };
+    setMsgs((prev) => [...prev, userMsg]);
     setInput("");
+    setThinking(true);
+
+    try {
+      // Pass the last 10 messages as history for context (excluding the one we just added)
+      const history = msgs.slice(-10).map((m) => ({ role: m.role, content: m.content }));
+
+      const res = await fetch("/api/assistant", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ message: trimmed, history }),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      const replyContent = res.ok && data?.reply
+        ? data.reply
+        : data?.error === "LIMIT_REACHED" || res.status === 429
+        ? "You’ve reached your daily limit. Upgrade to Premium for unlimited conversations."
+        : data?.error || "Something went wrong. Please try again.";
+
+      setMsgs((prev) => [
+        ...prev,
+        { role: "assistant", content: replyContent, ts: Date.now() },
+      ]);
+    } catch {
+      setMsgs((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "I couldn’t reach the server. Please check your connection and try again.",
+          ts: Date.now(),
+        },
+      ]);
+    } finally {
+      setThinking(false);
+    }
   }
 
   function clearChat() {
@@ -225,6 +254,11 @@ export default function SpiritualAssistant() {
                 {m.content}
               </div>
             ))}
+            {thinking && (
+              <div className="max-w-[92%] rounded-2xl bg-white/5 px-3 py-2 text-sm text-white/50">
+                Thinking…
+              </div>
+            )}
           </div>
 
           {/* Input */}
@@ -244,10 +278,11 @@ export default function SpiritualAssistant() {
               />
               <button
                 type="submit"
-                className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-white hover:bg-white/15"
+                disabled={thinking}
+                className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-white hover:bg-white/15 disabled:opacity-50"
                 aria-label="Send"
               >
-                ➤
+                {thinking ? "…" : "➤"}
               </button>
             </div>
           </form>

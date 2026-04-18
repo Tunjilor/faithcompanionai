@@ -1,50 +1,72 @@
 // src/lib/session.ts
 import crypto from "crypto";
 
-const COOKIE_NAME = "fc_session";
+const SESSION_COOKIE = "fc_session";
 
-function hmac(input: string, secret: string) {
-  return crypto.createHmac("sha256", secret).update(input).digest("hex");
-}
-
-export type SessionTokenPayload = {
+export type SessionPayloadBase = {
   uid: string;
-  exp: number; // ms timestamp
+  exp: number;
 };
 
+function base64url(input: string | Buffer) {
+  return Buffer.from(input).toString("base64url");
+}
+
+function sign(value: string, secret: string) {
+  return crypto.createHmac("sha256", secret).update(value).digest("hex");
+}
+
 export function sessionCookieName() {
-  return COOKIE_NAME;
+  return SESSION_COOKIE;
 }
 
-export function makeSessionToken(payload: SessionTokenPayload, secret: string) {
-  const json = JSON.stringify(payload);
-  const b64 = Buffer.from(json).toString("base64url");
-  const sig = hmac(b64, secret);
-  return `${b64}.${sig}`;
+export function createSessionToken(
+  payload: SessionPayloadBase,
+  secret: string
+) {
+  const body = base64url(JSON.stringify(payload));
+  const sig = sign(body, secret);
+  return `${body}.${sig}`;
 }
 
-export function readSessionToken<T>(token: string | undefined, secret: string): T | null {
-  if (!token) return null;
-
-  const parts = token.split(".");
-  if (parts.length !== 2) return null;
-
-  const [b64, sig] = parts;
-  if (!b64 || !sig) return null;
-
-  const expected = hmac(b64, secret);
-
-  // timingSafeEqual requires equal-length buffers or it throws
-  const sigBuf = Buffer.from(sig);
-  const expBuf = Buffer.from(expected);
-  if (sigBuf.length !== expBuf.length) return null;
-
-  if (!crypto.timingSafeEqual(sigBuf, expBuf)) return null;
-
+export function readSessionToken<T extends SessionPayloadBase>(
+  token: string,
+  secret: string
+): T | null {
   try {
-    const json = Buffer.from(b64, "base64url").toString("utf8");
-    return JSON.parse(json) as T;
+    const [body, sig] = token.split(".");
+    if (!body || !sig) return null;
+
+    const expected = sign(body, secret);
+
+    const sigBuf = Buffer.from(sig, "utf8");
+    const expBuf = Buffer.from(expected, "utf8");
+
+    if (sigBuf.length !== expBuf.length) return null;
+    if (!crypto.timingSafeEqual(sigBuf, expBuf)) return null;
+
+    const json = Buffer.from(body, "base64url").toString("utf8");
+    const payload = JSON.parse(json) as T;
+
+    if (!payload?.uid || !payload?.exp) return null;
+    if (Date.now() > payload.exp) return null;
+
+    return payload;
   } catch {
     return null;
   }
+}
+
+export function makeSessionExpiry(days = 30) {
+  return Date.now() + days * 24 * 60 * 60 * 1000;
+}
+
+export function defaultSessionCookieOptions() {
+  return {
+    httpOnly: true as const,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  };
 }

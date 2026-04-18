@@ -1,43 +1,42 @@
-// src/app/api/verse/route.ts
+//src/app/api/verse/route.ts
+
 import { NextResponse } from "next/server";
-import { extractOutputText, getModel, getOpenAI } from "@/lib/openai-ts";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
 
-/**
- * Generates a short, warm “verse response” (references only) for a user prompt.
- * This route is optional if you're already doing everything via /api/ask.
- */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const prompt = body?.prompt as string | undefined;
 
-    if (!prompt || typeof prompt !== "string") {
-      return NextResponse.json({ error: "Missing 'prompt' (string)." }, { status: 400 });
-    }
+    const topic = typeof body?.topic === "string" ? body.topic.trim() : "";
+    const length = body?.length === "long" ? "long" : "short";
 
-    const client = getOpenAI();
-    const model = getModel();
+    // SIMPLE deterministic output (no OpenAI needed here yet)
+    const verses = [
+      "Philippians 4:6-7",
+      "Matthew 6:34",
+      "1 Peter 5:7",
+      "Psalm 94:19",
+      "Isaiah 41:10",
+    ];
 
-    const resp = await client.responses.create({
-      model,
-      input: [
-        {
-          role: "system",
-          content:
-            "You are a helpful Christian assistant. Return 3–5 relevant Bible references (references only, no long quotes) plus a 1–2 sentence encouragement. Avoid long scripture quotations.",
-        },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.7,
+    const encouragement =
+      length === "long"
+        ? "Trust God with your worries. He cares deeply for you and invites you to rest in His peace, even when life feels overwhelming."
+        : "Trust God with your worries; He cares for you.";
+
+    const nextStep =
+      length === "long"
+        ? "Take 5–10 minutes today to pray honestly. Give each worry to God and ask for His peace to guard your heart."
+        : "Spend a few minutes in prayer, giving your anxiety to God.";
+
+    return NextResponse.json({
+      verses,
+      encouragement,
+      nextStep,
     });
-
-    const answer = extractOutputText(resp);
-
-    return NextResponse.json({ answer });
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message || "Server error" }, { status: 500 });
+  } catch (err) {
+    console.error("Verse error:", err);
+    return NextResponse.json({ error: "Failed" }, { status: 500 });
   }
 }

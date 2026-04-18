@@ -3,27 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "next dev",
-  "build": "prisma generate && next build",
-  "postinstall": "prisma generate",
-  "start": "next start",
-  "lint": "eslint",
-  "seed": "tsx prisma/seed.ts",
-  "studio": "prisma studio",
-  "typecheck": "tsc --noEmit",
-  "prisma:validate": "prisma validate",
-  "predeploy": "npm run lint && npm run typecheck && npm run prisma:validate && npm run build",
-  "admin:make-premium": "tsx scripts/make-premium.ts",
-  "admin:revoke-premium": "tsx scripts/revoke-premium.ts",
-  "admin:count-questions": "tsx scripts/count-questions.ts",
-  "admin:reset-attempts": "tsx scripts/reset-user-attempts.ts"
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
+    "start": "next start",
+    "lint": "eslint",
+    "seed": "tsx prisma/seed.ts",
+    "studio": "prisma studio",
+    "typecheck": "tsc --noEmit",
+    "prisma:validate": "prisma validate",
+    "predeploy": "npm run lint && npm run typecheck && npm run prisma:validate && npm run build",
+    "admin:make-premium": "tsx scripts/make-premium.ts",
+    "admin:revoke-premium": "tsx scripts/revoke-premium.ts",
+    "admin:count-questions": "tsx scripts/count-questions.ts",
+    "admin:reset-attempts": "tsx scripts/reset-user-attempts.ts",
+    "seed:ai": "tsx scripts/seed-questions.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.14.0",
-    "next": "^14.2.35",
-    "openai": "^6.16.0",
+    "@prisma/client": "^6.19.2",
+    "next": "14.2.35",
+    "openai": "^5.16.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "resend": "^6.9.2",
     "stripe": "^20.2.0"
   },
   "devDependencies": {
@@ -34,12 +36,9 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.5",
     "postcss": "^8.4.38",
-    "prisma": "^6.14.0",
+    "prisma": "^6.19.2",
     "tailwindcss": "^3.4.10",
     "tsx": "^4.0.0",
     "typescript": "^5"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
   }
 }

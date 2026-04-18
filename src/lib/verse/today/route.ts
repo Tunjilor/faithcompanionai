@@ -1,3 +1,4 @@
+// src/lib/verse/today/route.tx
 import { NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { dayKeyUTC, pickDailyReference } from "@/lib/verse/pick-daily";

@@ -1,156 +1,137 @@
 // src/lib/quiz.ts
-import { db } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import { db } from "@/lib/db";
 
-export const FREE_ATTEMPTS_PER_DAY = 3;
-export const QUESTIONS_PER_ATTEMPT = 10;
+export type Choice = "A" | "B" | "C" | "D";
+export type AnswerMap = Record<string, unknown>;
 
-function utcDayStart(d = new Date()) {
-  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 0, 0, 0));
-}
-function utcDayEnd(d = new Date()) {
-  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1, 0, 0, 0));
-}
+export type ReviewRow = {
+  questionId: string;
+  prompt: string;
+  choices: { A: string; B: string; C: string; D: string };
+  correct: Choice;
+  chosen: Choice | null;
+  isCorrect: boolean | null; // null if unanswered
+  explanation: string | null;
+};
 
-export async function canStartQuiz(params: {
-  isPremium: boolean;
-  email?: string | null;
-}) {
-  if (params.isPremium) return { ok: true as const, remaining: null as number | null };
-
-  // With your schema, we can only enforce daily limits reliably if we have an email.
-  if (!params.email) return { ok: true as const, remaining: FREE_ATTEMPTS_PER_DAY };
-
-  const start = utcDayStart();
-  const end = utcDayEnd();
-
-  const count = await db.quizAttempt.count({
-    where: { email: params.email, createdAt: { gte: start, lt: end } },
-  });
-
-  const remaining = Math.max(0, FREE_ATTEMPTS_PER_DAY - count);
-  if (remaining <= 0) return { ok: false as const, remaining };
-
-  return { ok: true as const, remaining };
-}
-
-export async function createAttemptAndServeQuestions(params: {
-  isPremium: boolean;
-  email?: string | null;
-  userId?: string | null;
-  category?: string | null;
-  timed?: boolean;
-  durationSeconds?: number | null;
-}) {
-  const category =
-    typeof params.category === "string" && params.category.trim()
-      ? params.category.trim()
-      : "general";
-
-  const attempt = await db.quizAttempt.create({
-    data: {
-      userId: params.userId ?? null,
-      email: params.email ?? null,
-      category,
-      total: QUESTIONS_PER_ATTEMPT,
-      score: 0,
-      timed: Boolean(params.timed),
-      durationSeconds: params.durationSeconds ?? null,
-    },
-  });
-
-  // SQLite random selection via $queryRaw using Prisma.sql (safe)
-  const whereCategory =
-    category && category !== "general"
-      ? Prisma.sql`WHERE category = ${category}`
-      : Prisma.empty;
-
-  const rows = await db.$queryRaw<
-    Array<{
-      id: string;
-      category: string;
-      prompt: string;
-      optionA: string;
-      optionB: string;
-      optionC: string;
-      optionD: string;
-      answer: string;
-      explanation: string | null;
-    }>
-  >(Prisma.sql`
-    SELECT id, category, prompt, optionA, optionB, optionC, optionD, answer, explanation
-    FROM Question
-    ${whereCategory}
-    ORDER BY RANDOM()
-    LIMIT ${QUESTIONS_PER_ATTEMPT}
-  `);
-
-  // Store served questions in join table
-  await db.quizAttemptQuestion.createMany({
-    data: rows.map((q) => ({
-      attemptId: attempt.id,
-      questionId: q.id,
-    })),
-  });
-
-  // Return safe questions (no correct answer)
-  const safeQuestions = rows.map((q) => ({
-    id: q.id,
-    category: q.category,
-    prompt: q.prompt,
-    choices: {
-      A: q.optionA,
-      B: q.optionB,
-      C: q.optionC,
-      D: q.optionD,
-    },
-  }));
-
-  return { attemptId: attempt.id, questions: safeQuestions };
-}
-
-export async function gradeAndSaveAttempt(params: {
+export type GradeResult = {
   attemptId: string;
-  answers: Record<string, "A" | "B" | "C" | "D">;
-}) {
-  const served = await db.quizAttemptQuestion.findMany({
-    where: { attemptId: params.attemptId },
-    include: { question: true },
-  });
+  score: number;
+  total: number;
+  review: ReviewRow[];
+};
 
-  if (served.length === 0) throw new Error("Attempt not found or has no questions.");
+function isChoice(x: unknown): x is Choice {
+  return x === "A" || x === "B" || x === "C" || x === "D";
+}
 
-  let score = 0;
-
-  for (const aq of served) {
-    const chosen = params.answers[aq.questionId] ?? null;
-    const correct = aq.question.answer as "A" | "B" | "C" | "D";
-    const isCorrect = chosen ? chosen === correct : null;
-
-    if (isCorrect) score += 1;
-
-    await db.quizAttemptQuestion.update({
-      where: { id: aq.id },
-      data: { chosen, isCorrect },
-    });
+function normalizeAnswers(input: AnswerMap): Record<string, Choice | null> {
+  const out: Record<string, Choice | null> = {};
+  for (const [qid, raw] of Object.entries(input || {})) {
+    out[qid] = isChoice(raw) ? raw : null;
   }
+  return out;
+}
 
-  const total = served.length;
+type AttemptWithQuestions = Prisma.QuizAttemptGetPayload<{
+  include: {
+    questions: {
+      include: { question: true };
+      orderBy: { id: "asc" };
+    };
+  };
+}>;
 
-  await db.quizAttempt.update({
-    where: { id: params.attemptId },
-    data: { score, total },
+type AttemptQuestionRow = AttemptWithQuestions["questions"][number];
+
+export async function gradeAndSaveAttempt(args: {
+  attemptId: string;
+  answers: AnswerMap;
+}): Promise<GradeResult> {
+  const { attemptId, answers } = args;
+
+  const attempt = (await db.quizAttempt.findUnique({
+    where: { id: attemptId },
+    include: {
+      questions: {
+        include: { question: true },
+        orderBy: { id: "asc" },
+      },
+    },
+  })) as AttemptWithQuestions | null;
+
+  if (!attempt) throw new Error("attempt_not_found");
+
+  const sanitized = normalizeAnswers(answers);
+
+  type ComputedRow = {
+    aqId: string;
+    questionId: string;
+    chosen: Choice | null;
+    correct: Choice;
+    isCorrect: boolean | null;
+    reviewRow: ReviewRow;
+  };
+
+  const computed: ComputedRow[] = attempt.questions.map((aq: AttemptQuestionRow) => {
+    const q = aq.question;
+
+    const correct = q.answer as Choice; // DB should store "A" | "B" | "C" | "D"
+    const incoming = sanitized[q.id] ?? null;
+    const isCorrect: boolean | null = incoming ? incoming === correct : null;
+
+    const reviewRow: ReviewRow = {
+      questionId: q.id,
+      prompt: q.prompt,
+      choices: {
+        A: q.optionA,
+        B: q.optionB,
+        C: q.optionC,
+        D: q.optionD,
+      },
+      correct,
+      chosen: incoming,
+      isCorrect,
+      explanation: q.explanation ?? null,
+    };
+
+    return {
+      aqId: aq.id,
+      questionId: q.id,
+      chosen: incoming,
+      correct,
+      isCorrect,
+      reviewRow,
+    };
   });
+
+  const score = computed.reduce((acc: number, row: ComputedRow) => {
+    return acc + (row.isCorrect === true ? 1 : 0);
+  }, 0);
+
+  const total = attempt.total ?? attempt.questions.length;
+
+  await db.$transaction([
+    ...computed.map((row: ComputedRow) =>
+      db.quizAttemptQuestion.update({
+        where: { id: row.aqId },
+        data: {
+          chosen: row.chosen,
+          isCorrect: row.isCorrect,
+        },
+      })
+    ),
+    db.quizAttempt.update({
+      where: { id: attemptId },
+      data: { score, total },
+    }),
+  ]);
 
   return {
+    attemptId,
     score,
     total,
-    review: served.map((aq) => ({
-      questionId: aq.questionId,
-      prompt: aq.question.prompt,
-      correct: aq.question.answer as "A" | "B" | "C" | "D",
-      chosen: (params.answers[aq.questionId] ?? null) as any,
-      explanation: aq.question.explanation ?? null,
-    })),
+    review: computed.map((row: ComputedRow) => row.reviewRow),
   };
 }

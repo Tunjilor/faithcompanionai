@@ -1,8 +1,10 @@
+// src/app/pricing/PricingClient.tsx
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { usePremium } from "@/components/usePremium";
 
 type PlanId = "monthly" | "yearly" | "lifetime";
 
@@ -10,51 +12,55 @@ function classNames(...xs: Array<string | false | null | undefined>) {
   return xs.filter(Boolean).join(" ");
 }
 
-// ✅ LIVE Stripe Payment Links (your URLs)
+// Stripe Payment Links
 const STRIPE_PAYMENT_LINKS: Record<PlanId, string> = {
   lifetime: "https://buy.stripe.com/3cI28tals8Sv2zybo38Vi04",
   yearly: "https://buy.stripe.com/7sYdRb9ho8Sv7TSbo38Vi05",
   monthly: "https://buy.stripe.com/aFaeVf0KS0lZ3DCajZ8Vi06",
 };
 
+function decodeParam(value: string | null) {
+  if (!value) return null;
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
 export default function PricingClient() {
   const search = useSearchParams();
+  const { isPremium: premium, loading, refresh, me } = usePremium();
 
-  const [premium, setPremium] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const status = search.get("status");
+  const message = decodeParam(search.get("message"));
 
-  // normalize params
-  const success = search.get("success") === "1";
-  const canceled = search.get("canceled") === "1";
-  const error = search.get("error");
+  const success = status === "success";
+  const canceled =
+    status === "canceled" ||
+    status === "cancelled" ||
+    search.get("canceled") === "1";
+  const error = status === "error" ? message || "unknown_error" : null;
 
   useEffect(() => {
-    fetch("/api/me", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((d) => setPremium(!!d?.premium))
-      .catch(() => setPremium(false))
-      .finally(() => setLoaded(true));
-  }, []);
+    if (success) {
+      refresh();
+    }
+  }, [success, refresh]);
 
   const statusLabel = useMemo(() => {
-    if (!loaded) return "Checking account…";
+    if (loading) return "Checking account…";
     return premium ? "Premium is active ✅" : "Free plan";
-  }, [loaded, premium]);
+  }, [loading, premium]);
 
   function goToStripe(plan: PlanId) {
     const url = STRIPE_PAYMENT_LINKS[plan];
     if (!url) return;
-
-    // Same tab (recommended for checkout)
     window.location.href = url;
-
-    // If you prefer new tab, use this instead:
-    // window.open(url, "_blank", "noopener,noreferrer");
   }
 
   return (
     <div className="space-y-8">
-      {/* Hero */}
       <section className="rounded-3xl bg-gradient-to-r from-purple-600 to-orange-500 p-[1px]">
         <div className="rounded-3xl bg-black/35 px-6 py-10 text-center backdrop-blur">
           <h1 className="text-4xl font-extrabold text-white md:text-5xl">
@@ -64,15 +70,22 @@ export default function PricingClient() {
             Unlock premium tools, unlimited use, and AI-powered quiz packs.
           </p>
           <div className="mt-3 text-xs text-white/60">{statusLabel}</div>
+
+          {!loading && me?.email ? (
+            <div className="mt-2 text-xs text-white/45">
+              Signed in as {me.email}
+            </div>
+          ) : null}
         </div>
       </section>
 
-      {/* Success / Cancel / Error banners */}
       {success && (
         <div className="fc-surface rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-white">
-          <div className="font-semibold">Payment successful — you’re Premium 🎉</div>
+          <div className="font-semibold">Payment successful — welcome 🎉</div>
           <div className="mt-1 text-sm text-white/80">
-            Your Premium access should be active now. If it doesn’t update, refresh the page.
+            Your Premium access should activate automatically. If you do not
+            see “Premium is active ✅” above yet, refresh this page once or go
+            to your dashboard.
           </div>
           <div className="mt-3 flex flex-col gap-3 sm:flex-row">
             <Link
@@ -100,20 +113,34 @@ export default function PricingClient() {
         </div>
       )}
 
-      {error ? (
+      {error && (
         <div className="fc-surface rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-white">
           <div className="font-semibold">Something went wrong</div>
-          <div className="mt-1 text-sm text-white/80">Error code: {error}</div>
+          <div className="mt-1 text-sm text-white/80">
+            Error: {error}
+          </div>
         </div>
-      ) : null}
+      )}
 
-      {/* Already premium */}
       {premium ? (
         <div className="fc-surface rounded-2xl p-6">
-          <div className="text-xl font-extrabold text-white">You’re Premium ✅</div>
+          <div className="text-xl font-extrabold text-white">
+            You’re Premium ✅
+          </div>
           <p className="mt-2 text-white/70">
             You have unlimited access to tools and premium quiz categories.
           </p>
+
+          {me?.premiumUntil ? (
+            <div className="mt-2 text-xs text-white/45">
+              Premium until: {me.premiumUntil}
+            </div>
+          ) : (
+            <div className="mt-2 text-xs text-white/45">
+              Active plan: Lifetime or ongoing premium access
+            </div>
+          )}
+
           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/dashboard"
@@ -131,9 +158,7 @@ export default function PricingClient() {
         </div>
       ) : (
         <>
-          {/* Pricing cards */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {/* Free */}
             <div className="fc-surface rounded-2xl p-6">
               <div className="text-sm font-semibold text-white/70">Free</div>
               <div className="mt-2 text-3xl font-extrabold text-white">$0</div>
@@ -152,27 +177,30 @@ export default function PricingClient() {
               </div>
             </div>
 
-            {/* Monthly */}
             <div className="fc-surface rounded-2xl border border-orange-500/30 bg-white/[0.03] p-6">
-              <div className="text-sm font-semibold text-orange-300">Monthly</div>
-              <div className="mt-2 text-3xl font-extrabold text-white">$4.99</div>
+              <div className="text-sm font-semibold text-orange-300">
+                Monthly
+              </div>
+              <div className="mt-2 text-3xl font-extrabold text-white">
+                $4.99
+              </div>
               <div className="mt-1 text-sm text-white/60">per month</div>
               <ul className="mt-4 space-y-2 text-sm text-white/75">
                 <li>• Unlimited tools</li>
                 <li>• Unlimited quizzes</li>
-                <li>• Premium quiz packs (AI / Theology / History)</li>
+                <li>• Premium quiz packs</li>
               </ul>
               <div className="mt-5">
                 <button
                   type="button"
-                  disabled={!loaded}
+                  disabled={loading}
                   onClick={() => goToStripe("monthly")}
                   className={classNames(
                     "w-full rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-3 text-sm font-semibold text-white hover:opacity-95",
-                    !loaded && "opacity-60"
+                    loading && "opacity-60"
                   )}
                 >
-                  {loaded ? "Go Monthly" : "Checking…"}
+                  {loading ? "Checking…" : "Go Monthly"}
                 </button>
               </div>
               <div className="mt-2 text-xs text-white/45">
@@ -180,19 +208,19 @@ export default function PricingClient() {
               </div>
             </div>
 
-            {/* Yearly / Lifetime */}
             <div className="fc-surface rounded-2xl p-6">
               <div className="text-sm font-semibold text-white/70">
                 Yearly / Lifetime
               </div>
+
               <div className="mt-2 grid gap-3">
                 <button
                   type="button"
-                  disabled={!loaded}
+                  disabled={loading}
                   onClick={() => goToStripe("yearly")}
                   className={classNames(
                     "rounded-md border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white/85 hover:bg-white/10 hover:text-white",
-                    !loaded && "opacity-60"
+                    loading && "opacity-60"
                   )}
                 >
                   Go Yearly
@@ -200,11 +228,11 @@ export default function PricingClient() {
 
                 <button
                   type="button"
-                  disabled={!loaded}
+                  disabled={loading}
                   onClick={() => goToStripe("lifetime")}
                   className={classNames(
                     "rounded-md border border-orange-500/30 bg-orange-500/10 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-500/15",
-                    !loaded && "opacity-60"
+                    loading && "opacity-60"
                   )}
                 >
                   Get Lifetime
@@ -218,15 +246,15 @@ export default function PricingClient() {
               </ul>
 
               <div className="mt-2 text-xs text-white/45">
-                Note: Lifetime is a one-time payment (no renewal).
+                Lifetime is a one-time payment. Monthly and yearly renew
+                automatically until canceled.
               </div>
             </div>
           </div>
 
-          {/* Notes */}
           <div className="fc-surface rounded-2xl p-6 text-sm text-white/70">
-            Premium unlocks the AI quiz categories and removes daily limits. Your premium status is verified
-            server-side via your session cookie (no localStorage hacks).
+            Payments are processed securely by Stripe. Premium access is
+            verified server-side.
           </div>
         </>
       )}

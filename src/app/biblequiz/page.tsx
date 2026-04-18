@@ -1,3 +1,5 @@
+// src/app/biblequiz/page.tsx
+
 import type { Metadata } from "next";
 import QuizClient from "./quiz-client";
 

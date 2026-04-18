@@ -1,120 +1,68 @@
+// src/app/terms/page.tsx
 import type { Metadata } from "next";
-import BrandHeader from "@/components/BrandHeader";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Faith Companion AI",
+  title: "Terms of Service",
   description:
-    "Review the Terms of Service for using Faith Companion AI, including subscription billing, cancellations, and content disclaimers.",
-  alternates: { canonical: "/terms" },
+    "Read the Terms of Service for Faith Companion AI.",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsPage() {
   return (
-    <div className="space-y-8">
-      <BrandHeader
-        title="Terms of Service"
-        subtitle="Please review these terms before using Faith Companion AI."
-      />
+    <main className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-14">
+      <div className="rounded-[28px] border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur md:p-10">
+        <h1 className="text-3xl font-bold text-white md:text-4xl">Terms of Service</h1>
 
-      <div className="fc-surface p-6 space-y-6">
-        {/* Introduction */}
-        <section>
-          <p className="text-white/80 leading-relaxed">
-            By using Faith Companion AI, you agree to these Terms of Service. If you do not agree
-            with any part of these terms, please do not use the service.
-          </p>
-        </section>
+        <div className="mt-6 space-y-5 text-sm leading-7 text-white/75 md:text-base">
+          <p>Last updated: April 2026</p>
 
-        {/* Acceptance */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Acceptance of Terms</h2>
-          <p className="text-white/80 leading-relaxed">
-            By accessing and using this website, you accept and agree to be bound by the terms
-            and provisions of this agreement.
-          </p>
-        </section>
-
-        {/* Premium Subscriptions */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Premium Subscriptions</h2>
-          <p className="text-white/80 leading-relaxed">
-            Premium content may be available through paid plans processed via Stripe. Subscriptions
-            (if offered) automatically renew unless cancelled before the next billing date.
-          </p>
-        </section>
-
-        {/* Cancellation */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Cancellation</h2>
-          <p className="text-white/80 leading-relaxed">
-            You may cancel your subscription at any time to stop future charges. Cancellation does
-            not refund past payments. Access continues until the end of your current billing period.
-          </p>
-        </section>
-
-        {/* AI Content Disclaimer */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">AI-Generated Content</h2>
-          <p className="text-white/80 leading-relaxed">
-            Verses, prayers, and devotionals may be generated using artificial intelligence for
-            spiritual encouragement. This content is not intended as professional counseling,
-            medical advice, legal advice, or a substitute for pastoral care.
-          </p>
-        </section>
-
-        {/* Use of Content */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Use of Content</h2>
-          <p className="text-white/80 leading-relaxed">
-            You may use generated content for personal spiritual growth and may share it on social
-            media. Commercial use requires written permission.
-          </p>
-        </section>
-
-        {/* Limitation of Liability */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Limitation of Liability</h2>
-          <p className="text-white/80 leading-relaxed">
-            Faith Companion AI is provided &quot;as is&quot; without warranty of any kind. We are not liable
-            for decisions made based on AI-generated content.
-          </p>
-        </section>
-
-        {/* Service Continuity */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Service Continuity Disclaimer</h2>
-          <p className="text-white/80 leading-relaxed">
-            Faith Companion AI is operated by an independent creator. While we strive to maintain
-            continuous service, we cannot guarantee perpetual availability.
+          <p>
+            By accessing or using Faith Companion AI, you agree to these Terms of Service.
           </p>
 
-          <ul className="mt-3 list-disc list-inside text-white/70 space-y-1">
-            <li>The service may be changed, paused, or discontinued at any time</li>
-            <li>
-              “Lifetime access” (if offered) means access for as long as the service remains
-              operational
-            </li>
-            <li>No partial or full refunds will be provided if the service becomes unavailable</li>
-            <li>You are purchasing access to the service in its current state</li>
-          </ul>
-        </section>
-
-        {/* Contact */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Contact</h2>
-          <p className="text-white/80">
-            For questions about these Terms of Service, please contact us at:
+          <h2 className="text-xl font-bold text-white">Use of the service</h2>
+          <p>
+            Faith Companion AI provides Scripture-based encouragement, prayers, devotionals, and quiz-related content.
+            You agree to use the service lawfully and responsibly.
           </p>
-          <p className="mt-2 font-medium text-white">support@faithcompanionai.com</p>
-        </section>
 
-        {/* Last Updated */}
-        <section className="pt-4 border-t border-white/10">
-          <p className="text-sm text-white/50">
-            Last updated: {new Date().toLocaleDateString()}
+          <h2 className="text-xl font-bold text-white">Accounts</h2>
+          <p>
+            Some features require an account. You are responsible for maintaining access to your email and for using your account appropriately.
           </p>
-        </section>
+
+          <h2 className="text-xl font-bold text-white">Payments and subscriptions</h2>
+          <p>
+            Premium access may be offered through recurring or one-time payment plans. Pricing and billing terms are shown at checkout.
+          </p>
+
+          <h2 className="text-xl font-bold text-white">No guarantee of outcomes</h2>
+          <p>
+            Faith Companion AI is provided for spiritual encouragement and convenience. It is not a replacement for church, pastoral care,
+            counseling, legal advice, medical care, or professional advice of any kind.
+          </p>
+
+          <h2 className="text-xl font-bold text-white">Availability</h2>
+          <p>
+            We may update, suspend, or discontinue features at any time. We do not guarantee uninterrupted access.
+          </p>
+
+          <h2 className="text-xl font-bold text-white">Contact</h2>
+          <p>
+            Questions about these terms can be sent to{" "}
+            <a
+              href="mailto:support@faithcompanionai.com"
+              className="underline underline-offset-4 hover:text-white"
+            >
+              support@faithcompanionai.com
+            </a>
+            .
+          </p>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

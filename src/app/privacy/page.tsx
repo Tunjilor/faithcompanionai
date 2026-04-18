@@ -1,92 +1,75 @@
+// src/app/privacy/page.tsx
 import type { Metadata } from "next";
-import BrandHeader from "@/components/BrandHeader";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Faith Companion AI",
+  title: "Privacy Policy",
   description:
-    "Learn how Faith Companion AI collects, uses, and protects your information, including subscription payments processed securely by Stripe.",
-  alternates: { canonical: "/privacy" },
+    "Read the Privacy Policy for Faith Companion AI.",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 export default function PrivacyPage() {
   return (
-    <div className="space-y-8">
-      <BrandHeader
-        title="Privacy Policy"
-        subtitle="Your privacy matters. Here’s how we protect and respect your information."
-      />
+    <main className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-14">
+      <div className="rounded-[28px] border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur md:p-10">
+        <h1 className="text-3xl font-bold text-white md:text-4xl">Privacy Policy</h1>
 
-      <div className="fc-surface p-6 space-y-6">
-        {/* Introduction */}
-        <section>
-          <p className="text-white/80 leading-relaxed">
-            Faith Companion AI (&quot;we&quot;, &quot;us&quot;) respects your privacy. This Privacy Policy
-            explains how we collect, use, and protect your information when you use
-            our website and services.
+        <div className="mt-6 space-y-5 text-sm leading-7 text-white/75 md:text-base">
+          <p>Last updated: April 2026</p>
+
+          <p>
+            Faith Companion AI respects your privacy. This Privacy Policy explains what information we collect,
+            how we use it, and how we protect it.
           </p>
-        </section>
 
-        {/* Information We Collect */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Information We Collect</h2>
-          <ul className="list-disc list-inside text-white/70 space-y-1">
-            <li>Email address (if you contact us or create an account)</li>
-            <li>Favorites and saved content stored locally in your browser</li>
-            <li>Basic usage data to help improve our service</li>
-            <li>
-              Payment information (processed securely by Stripe — we never store
-              your full payment details)
-            </li>
-          </ul>
-        </section>
-
-        {/* How We Use Information */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">How We Use Your Information</h2>
-          <ul className="list-disc list-inside text-white/70 space-y-1">
-            <li>Provide verses, prayers, and devotionals</li>
-            <li>Maintain your subscription and premium access</li>
-            <li>Improve performance, reliability, and user experience</li>
-            <li>Respond to support requests</li>
-          </ul>
-        </section>
-
-        {/* Data Protection */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Data Protection</h2>
-          <p className="text-white/80 leading-relaxed">
-            We do not sell your personal information. We only share information with
-            trusted service providers when necessary to operate the service
-            (for example, Stripe for payment processing).
+          <h2 className="text-xl font-bold text-white">Information we collect</h2>
+          <p>
+            We may collect information such as your email address, account activity, saved content,
+            subscription status, and limited technical information needed to operate the service.
           </p>
-        </section>
 
-        {/* Cookies / Local Storage */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Cookies &amp; Local Storage</h2>
-          <p className="text-white/80 leading-relaxed">
-            Faith Companion AI may use cookies and/or local storage to support core features
-            such as saving favorites and remembering subscription status. Where local storage
-            is used, that information remains on your device unless you clear your browser data.
+          <h2 className="text-xl font-bold text-white">How we use information</h2>
+          <p>
+            We use information to provide and improve the service, support account access, process payments,
+            deliver saved content, prevent abuse, and respond to support requests.
           </p>
-        </section>
 
-        {/* Contact */}
-        <section>
-          <h2 className="text-lg font-semibold text-white mb-2">Contact Us</h2>
-          <p className="text-white/80">
-            If you have questions about this Privacy Policy, contact us at:
+          <h2 className="text-xl font-bold text-white">Payments</h2>
+          <p>
+            Payments are processed by third-party payment providers such as Stripe. We do not store full payment card details on our servers.
           </p>
-          <p className="mt-2 font-medium text-white">support@faithcompanionai.com</p>
-        </section>
 
-        {/* Last Updated */}
-        <section className="pt-4 border-t border-white/10">
-          <p className="text-sm text-white/50">
-            Last updated: {new Date().toLocaleDateString()}
+          <h2 className="text-xl font-bold text-white">Email and account access</h2>
+          <p>
+            If you sign in with a magic link, we use your email address to authenticate your access and manage your account.
           </p>
-        </section>
+
+          <h2 className="text-xl font-bold text-white">Data retention</h2>
+          <p>
+            We retain information for as long as reasonably necessary to operate the service, comply with legal obligations,
+            resolve disputes, and enforce agreements.
+          </p>
+
+          <h2 className="text-xl font-bold text-white">Your choices</h2>
+          <p>
+            You may contact us to request help with your account or ask questions about your data.
+          </p>
+
+          <h2 className="text-xl font-bold text-white">Contact</h2>
+          <p>
+            Questions about this Privacy Policy can be sent to{" "}
+            <a
+              href="mailto:support@faithcompanionai.com"
+              className="underline underline-offset-4 hover:text-white"
+            >
+              support@faithcompanionai.com
+            </a>
+            .
+          </p>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

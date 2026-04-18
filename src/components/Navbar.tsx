@@ -1,3 +1,5 @@
+// src/components/Navbar.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -13,7 +15,15 @@ type NavItem =
       items: Array<{ label: string; href: string }>;
     };
 
-// Matches your src/app routes (update hrefs as you add pages)
+type MeResponse = {
+  signedIn?: boolean;
+  authed?: boolean;
+  isPremium?: boolean;
+  premium?: boolean;
+  premiumUntil?: string | null;
+  email?: string | null;
+};
+
 const NAV: NavItem[] = [
   { type: "link", label: "Home", href: "/" },
   { type: "link", label: "Dashboard", href: "/dashboard" },
@@ -24,19 +34,9 @@ const NAV: NavItem[] = [
     baseHref: "/tools",
     items: [
       { label: "Verse", href: "/tools/verse" },
-      { label: "Prayer", href: "/tools/prayer" }, // ✅ distinct
-      { label: "Devotional", href: "/tools/devotional" }, // ✅ distinct
-      { label: "Prayer Journal", href: "/tools/prayer-journal" },
-      { label: "Scripture Memory", href: "/tools/scripture-memory" },
-      { label: "Verse Finder", href: "/tools/verse-finder" },
+      { label: "Prayer", href: "/tools/prayer" },
+      { label: "Devotional", href: "/tools/devotional" },
     ],
-  },
-
-  {
-    type: "menu",
-    label: "Community",
-    baseHref: "/community",
-    items: [{ label: "Prayer Wall", href: "/community/prayer-wall" }],
   },
 
   { type: "link", label: "Quiz", href: "/biblequiz" },
@@ -46,8 +46,7 @@ const NAV: NavItem[] = [
     type: "menu",
     label: "More",
     items: [
-      { label: "Christian Living", href: "/resources/christian-living" },
-      { label: "Favorites", href: "/resources/favorites" },
+      { label: "Saved", href: "/saved" },
       { label: "Pricing", href: "/pricing" },
       { label: "About", href: "/about" },
       { label: "FAQ", href: "/faq" },
@@ -66,6 +65,13 @@ function classNames(...xs: Array<string | false | null | undefined>) {
 function isActivePath(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(href + "/");
+}
+
+function isPremiumActive(me: MeResponse | null) {
+  const premiumFlag = !!(me?.isPremium ?? me?.premium);
+  if (!premiumFlag) return false;
+  if (!me?.premiumUntil) return true;
+  return new Date(me.premiumUntil).getTime() > Date.now();
 }
 
 function useOnClickOutside(
@@ -131,7 +137,7 @@ function Dropdown({
           "inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition",
           anyActive
             ? "bg-white/10 text-white"
-            : "text-white/80 hover:text-white hover:bg-white/10"
+            : "text-white/80 hover:bg-white/10 hover:text-white"
         )}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -143,7 +149,7 @@ function Dropdown({
       {open && (
         <div
           role="menu"
-          className="absolute left-0 mt-2 w-60 overflow-hidden rounded-xl border border-white/10 bg-black/70 shadow-lg backdrop-blur"
+          className="absolute left-0 mt-2 w-60 overflow-hidden rounded-xl border border-white/10 bg-black/80 shadow-lg backdrop-blur"
         >
           {items.map((it) => {
             const active = isActivePath(pathname, it.href);
@@ -170,32 +176,185 @@ function Dropdown({
   );
 }
 
+function AccountMenu({ me }: { me: MeResponse | null }) {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+
+  const signedIn = !!(me?.signedIn ?? me?.authed);
+  const premiumActive = isPremiumActive(me);
+
+  useOnClickOutside(wrapRef, () => setOpen(false), open);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
+  async function handleLogout() {
+    try {
+      setLoggingOut(true);
+      const res = await fetch("/api/auth/logout", { method: "POST" });
+      if (!res.ok) throw new Error("Logout failed");
+      window.location.href = "/login";
+    } catch {
+      setLoggingOut(false);
+    }
+  }
+
+  if (!signedIn) {
+    return (
+      <div className="hidden items-center gap-2 md:flex">
+        <Link
+          href="/login"
+          className={classNames(
+            "rounded-md px-3 py-2 text-sm font-medium transition",
+            isActivePath(pathname, "/login")
+              ? "bg-white/10 text-white"
+              : "text-white/80 hover:bg-white/10 hover:text-white"
+          )}
+        >
+          Sign in
+        </Link>
+
+        <Link
+          href="/pricing"
+          className="rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-sm font-semibold text-white hover:opacity-95"
+        >
+          Premium
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative hidden md:block" ref={wrapRef}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white hover:bg-white/10"
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        <span className="max-w-[160px] truncate">{me?.email || "Account"}</span>
+        {premiumActive && (
+          <span className="rounded-full bg-amber-400/20 px-2 py-0.5 text-xs font-semibold text-amber-200">
+            Premium
+          </span>
+        )}
+        <span className={classNames("transition", open && "rotate-180")}>▾</span>
+      </button>
+
+      {open && (
+        <div className="absolute right-0 mt-2 w-64 overflow-hidden rounded-xl border border-white/10 bg-black/80 shadow-lg backdrop-blur">
+          <div className="border-b border-white/10 px-4 py-3">
+            <div className="truncate text-sm font-semibold text-white">
+              {me?.email || "Account"}
+            </div>
+            <div className="mt-1 text-xs text-white/50">
+              {premiumActive ? "Premium active" : "Free account"}
+            </div>
+          </div>
+
+          <Link
+            href="/dashboard"
+            className="block px-4 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
+            onClick={() => setOpen(false)}
+          >
+            Dashboard
+          </Link>
+
+          <Link
+            href="/saved"
+            className="block px-4 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
+            onClick={() => setOpen(false)}
+          >
+            Saved
+          </Link>
+
+          <Link
+            href="/pricing"
+            className="block px-4 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
+            onClick={() => setOpen(false)}
+          >
+            {premiumActive ? "Manage plan" : "Upgrade to Premium"}
+          </Link>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            disabled={loggingOut}
+            className="block w-full px-4 py-2 text-left text-sm text-white/80 transition hover:bg-white/10 hover:text-white disabled:opacity-60"
+          >
+            {loggingOut ? "Logging out..." : "Log out"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSections, setMobileSections] = useState<Record<string, boolean>>({
     Tools: false,
-    Community: false,
     More: false,
   });
+  const [me, setMe] = useState<MeResponse | null>(null);
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadMe() {
+      try {
+        const res = await fetch("/api/me", { cache: "no-store" });
+        const data = res.ok ? await res.json() : null;
+        if (!cancelled) setMe(data);
+      } catch {
+        if (!cancelled) setMe(null);
+      }
+    }
+
+    loadMe();
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname]);
+
+  const signedIn = !!(me?.signedIn ?? me?.authed);
+  const premiumActive = isPremiumActive(me);
+
   function toggleSection(label: string) {
     setMobileSections((prev) => ({ ...prev, [label]: !prev[label] }));
+  }
+
+  async function handleMobileLogout() {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      window.location.href = "/login";
+    } catch {
+      // noop
+    }
   }
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-6">
-        {/* Brand */}
         <Link href="/" className="flex items-center gap-3">
           <img
             src="/brand/logo-dark.png"
             alt="Faith Companion AI"
-            className="h-9 w-9 rounded-lg object-contain" // change to "rounded-none" if you want square
+            className="h-9 w-9 rounded-lg object-contain"
           />
           <div className="hidden leading-tight sm:block">
             <div className="font-extrabold text-white">Faith Companion</div>
@@ -204,7 +363,6 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-2">
-          {/* Desktop nav */}
           <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
             {NAV.map((item) => {
               if (item.type === "menu") {
@@ -227,7 +385,7 @@ export default function Navbar() {
                     "rounded-md px-3 py-2 text-sm font-medium transition",
                     active
                       ? "bg-white/10 text-white"
-                      : "text-white/80 hover:text-white hover:bg-white/10"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
                   )}
                 >
                   {item.label}
@@ -236,15 +394,8 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Premium CTA */}
-          <Link
-            href="/pricing"
-            className="hidden rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-sm font-semibold text-white hover:opacity-95 md:inline-flex"
-          >
-            Premium
-          </Link>
+          <AccountMenu me={me} />
 
-          {/* Mobile toggle */}
           <button
             type="button"
             className="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white md:hidden"
@@ -257,7 +408,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile panel */}
       {mobileOpen && (
         <div className="border-t border-white/10 bg-black/40 backdrop-blur-xl md:hidden">
           <div className="mx-auto max-w-6xl px-4 py-3">
@@ -324,7 +474,7 @@ export default function Navbar() {
                       "rounded-md px-3 py-2 text-sm font-medium transition",
                       active
                         ? "bg-white/10 text-white"
-                        : "text-white/80 hover:text-white hover:bg-white/10"
+                        : "text-white/80 hover:bg-white/10 hover:text-white"
                     )}
                   >
                     {item.label}
@@ -332,13 +482,62 @@ export default function Navbar() {
                 );
               })}
 
-              <Link
-                href="/pricing"
-                onClick={() => setMobileOpen(false)}
-                className="mt-1 rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-center text-sm font-semibold text-white"
-              >
-                Premium
-              </Link>
+              <div className="mt-2 rounded-xl border border-white/10 bg-white/5 p-3">
+                {signedIn ? (
+                  <>
+                    <div className="text-sm font-semibold text-white">
+                      {me?.email || "Account"}
+                    </div>
+                    <div className="mt-1 text-xs text-white/50">
+                      {premiumActive ? "Premium active" : "Free account"}
+                    </div>
+
+                    <div className="mt-3 flex flex-col gap-2">
+                      <Link
+                        href="/saved"
+                        onClick={() => setMobileOpen(false)}
+                        className="rounded-md border border-white/10 px-3 py-2 text-center text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
+                      >
+                        Saved
+                      </Link>
+
+                      <Link
+                        href="/pricing"
+                        onClick={() => setMobileOpen(false)}
+                        className="rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-center text-sm font-semibold text-white"
+                      >
+                        {premiumActive ? "Manage plan" : "Upgrade to Premium"}
+                      </Link>
+
+                      <button
+                        type="button"
+                        onClick={handleMobileLogout}
+                        className="rounded-md border border-white/10 px-3 py-2 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
+                      >
+                        Log out
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <Link
+                      href="/login"
+                      onClick={() => setMobileOpen(false)}
+                      className="rounded-md border border-white/10 px-3 py-2 text-center text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
+                    >
+                      Sign in
+                    </Link>
+
+                    <Link
+                      href="/pricing"
+                      onClick={() => setMobileOpen(false)}
+                      className="rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-center text-sm font-semibold text-white"
+                    >
+                      Premium
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

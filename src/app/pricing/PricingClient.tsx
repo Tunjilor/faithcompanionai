@@ -180,7 +180,7 @@ export default function PricingClient() {
             </div>
 
             {/* Monthly */}
-            <div className="fc-surface rounded-2xl border border-orange-500/30 bg-white/[0.03] p-6">
+            <div className="fc-surface rounded-2xl border border-orange-500/30 bg-white/10 p-6">
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-semibold text-orange-300">Monthly</div>
                 <div className="rounded-full bg-orange-500/15 px-2 py-0.5 text-xs font-bold text-orange-200">
@@ -211,7 +211,7 @@ export default function PricingClient() {
             </div>
 
             {/* Yearly */}
-            <div className="fc-surface rounded-2xl border border-violet-500/30 bg-white/[0.03] p-6">
+            <div className="fc-surface rounded-2xl border border-violet-500/30 bg-white/10 p-6">
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-semibold text-violet-300">Yearly</div>
                 <div className="rounded-full bg-violet-500/15 px-2 py-0.5 text-xs font-bold text-violet-200">

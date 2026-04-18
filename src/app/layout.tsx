@@ -107,7 +107,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen overflow-x-hidden bg-fc text-fc">
+      <body className="min-h-screen bg-fc text-fc">
         <div className="fc-bg" />
         <Navbar />
         <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:px-6">

@@ -160,7 +160,7 @@ export default function PricingClient() {
         <>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {/* Free */}
-            <div className="rounded-2xl border border-white/25 bg-white/15 p-6">
+            <div className="rounded-2xl p-6" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)' }}>
               <div className="text-sm font-semibold text-white">Free</div>
               <div className="mt-2 text-3xl font-extrabold text-white">$0</div>
               <div className="mt-1 text-sm text-white">forever</div>
@@ -180,7 +180,7 @@ export default function PricingClient() {
             </div>
 
             {/* Monthly */}
-            <div className="rounded-2xl border-2 border-purple-400 bg-white/15 p-6">
+            <div className="rounded-2xl p-6" style={{ background: 'rgba(139, 92, 246, 0.25)', border: '1px solid rgba(139, 92, 246, 0.5)' }}>
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-semibold text-orange-300">Monthly</div>
                 <div className="rounded-full bg-orange-500/30 px-2 py-0.5 text-xs font-bold text-orange-200">
@@ -211,7 +211,7 @@ export default function PricingClient() {
             </div>
 
             {/* Yearly */}
-            <div className="rounded-2xl border-2 border-violet-400 bg-white/15 p-6">
+            <div className="rounded-2xl p-6" style={{ background: 'rgba(249, 115, 22, 0.25)', border: '1px solid rgba(249, 115, 22, 0.5)' }}>
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-semibold text-violet-300">Yearly</div>
                 <div className="rounded-full bg-violet-500/30 px-2 py-0.5 text-xs font-bold text-violet-200">
@@ -242,7 +242,7 @@ export default function PricingClient() {
             </div>
 
             {/* Lifetime */}
-            <div className="rounded-2xl border border-white/25 bg-white/15 p-6">
+            <div className="rounded-2xl p-6" style={{ background: 'rgba(16, 185, 129, 0.25)', border: '1px solid rgba(16, 185, 129, 0.5)' }}>
               <div className="text-sm font-semibold text-white">Lifetime</div>
               <div className="mt-2 text-3xl font-extrabold text-white">$79.99</div>
               <div className="mt-1 text-sm text-white">one-time payment</div>
@@ -268,7 +268,7 @@ export default function PricingClient() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-white/25 bg-white/15 p-6 text-sm text-white">
+          <div className="rounded-2xl p-6 text-sm text-white" style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)' }}>
             Payments are processed securely by Stripe. Premium access is
             verified server-side.
           </div>

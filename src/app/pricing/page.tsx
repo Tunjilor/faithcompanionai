@@ -160,7 +160,7 @@ export default function PricingPage() {
 
       <section className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr_0.9fr]">
         {/* Monthly — most popular */}
-        <div className="rounded-[28px] border-2 border-purple-400 bg-white/15 p-6 shadow-2xl">
+        <div className="rounded-[28px] p-6 shadow-2xl" style={{ background: 'rgba(139, 92, 246, 0.25)', border: '1px solid rgba(139, 92, 246, 0.5)' }}>
           <div className="flex items-center justify-between gap-3">
             <div className="text-sm font-semibold text-orange-300">Best place to start</div>
             <div className="rounded-full bg-orange-400/20 px-3 py-1 text-xs font-bold text-orange-200">
@@ -194,7 +194,7 @@ export default function PricingPage() {
         </div>
 
         {/* Yearly */}
-        <div className="rounded-[28px] border-2 border-violet-400 bg-white/15 p-6 shadow-xl">
+        <div className="rounded-[28px] p-6 shadow-xl" style={{ background: 'rgba(249, 115, 22, 0.25)', border: '1px solid rgba(249, 115, 22, 0.5)' }}>
           <div className="text-sm font-semibold text-violet-300">Yearly</div>
           <div className="mt-4 text-5xl font-bold text-white">$39.99</div>
           <div className="mt-1 text-sm text-white">per year</div>
@@ -220,7 +220,7 @@ export default function PricingPage() {
         </div>
 
         {/* Lifetime */}
-        <div className="rounded-[28px] border border-white/25 bg-white/15 p-6 shadow-xl">
+        <div className="rounded-[28px] p-6 shadow-xl" style={{ background: 'rgba(16, 185, 129, 0.25)', border: '1px solid rgba(16, 185, 129, 0.5)' }}>
           <div className="text-sm font-semibold text-white">Lifetime</div>
           <div className="mt-4 text-5xl font-bold text-white">$79.99</div>
           <div className="mt-1 text-sm text-white">one-time payment</div>

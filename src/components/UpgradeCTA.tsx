@@ -1,4 +1,4 @@
-// src/components/UpgradeCTA.tsx
+﻿// src/components/UpgradeCTA.tsx
 import Link from "next/link";
 
 type UpgradeCTAVariant = "default" | "soft" | "hard_stop" | "inline" | "dashboard";
@@ -91,13 +91,13 @@ export default function UpgradeCTA({
       {showFeatures && (
         <div className="mt-4 grid gap-2 text-sm">
           <div className={variant === "dashboard" ? "text-white/85" : "text-slate-800"}>
-            ✔ Unlimited verses, prayers, and devotionals
+            âœ” Unlimited verses, prayers, and devotionals
           </div>
           <div className={variant === "dashboard" ? "text-white/85" : "text-slate-800"}>
-            ✔ Save your spiritual journey to your account
+            âœ” Save your spiritual journey to your account
           </div>
           <div className={variant === "dashboard" ? "text-white/85" : "text-slate-800"}>
-            ✔ Build your personal faith journal over time
+            âœ” Build your personal faith journal over time
           </div>
         </div>
       )}
@@ -119,3 +119,4 @@ export default function UpgradeCTA({
     </div>
   );
 }
+export { UpgradeCTA };

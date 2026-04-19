@@ -1,4 +1,4 @@
-// src/components/AdSenseSlot.tsx
+﻿// src/components/AdSenseSlot.tsx
 // Renders a standard Google AdSense leaderboard unit.
 // The AdSense script in layout.tsx (see comment) fills this automatically.
 // Props: dataAdClient = your publisher ID (e.g. "ca-pub-XXXXXXXXXXXXXXXX")
@@ -26,3 +26,4 @@ export default function AdSenseSlot({
     </div>
   );
 }
+export { AdSenseSlot };

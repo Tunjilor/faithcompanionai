@@ -66,3 +66,4 @@ export default function ExitIntentModal() {
     </div>
   );
 }
+export { ExitIntentModal };

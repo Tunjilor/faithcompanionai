@@ -1,4 +1,4 @@
-// src/components/DenominationSelect.tsx
+﻿// src/components/DenominationSelect.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -63,3 +63,4 @@ export default function DenominationSelect({
     </select>
   );
 }
+export { DenominationSelect };

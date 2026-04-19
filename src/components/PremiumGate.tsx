@@ -1,4 +1,4 @@
-// src/components/PremiumGate.tsx
+﻿// src/components/PremiumGate.tsx
 "use client";
 
 import React from "react";
@@ -21,7 +21,7 @@ export default function PremiumGate({
     return (
       <>
         {loadingFallback ?? (
-          <div style={{ padding: 12, opacity: 0.8 }}>Checking access…</div>
+          <div style={{ padding: 12, opacity: 0.8 }}>Checking accessâ€¦</div>
         )}
       </>
     );
@@ -46,3 +46,4 @@ export default function PremiumGate({
 
   return <>{children}</>;
 }
+export { PremiumGate };

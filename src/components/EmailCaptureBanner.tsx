@@ -1,4 +1,4 @@
-// src/components/EmailCaptureBanner.tsx
+﻿// src/components/EmailCaptureBanner.tsx
 "use client";
 
 import { useState } from "react";
@@ -26,7 +26,7 @@ export default function EmailCaptureBanner() {
   if (status === "done") {
     return (
       <div className="rounded-2xl px-6 py-5 text-center text-sm font-semibold text-emerald-300" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.25)' }}>
-        ✅ You're in! Check your inbox for your first daily verse.
+        âœ… You're in! Check your inbox for your first daily verse.
       </div>
     );
   }
@@ -36,7 +36,7 @@ export default function EmailCaptureBanner() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="text-base font-bold text-white">
-            Get your daily Bible verse by email — free forever
+            Get your daily Bible verse by email â€” free forever
           </div>
           <div className="mt-1 text-sm text-white/60">
             One verse, one prayer, every morning. No spam. Unsubscribe anytime.
@@ -57,7 +57,7 @@ export default function EmailCaptureBanner() {
             disabled={status === "loading"}
             className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-black hover:opacity-90 disabled:opacity-50"
           >
-            {status === "loading" ? "…" : "Subscribe"}
+            {status === "loading" ? "â€¦" : "Subscribe"}
           </button>
         </form>
       </div>
@@ -68,3 +68,4 @@ export default function EmailCaptureBanner() {
     </div>
   );
 }
+export { EmailCaptureBanner };

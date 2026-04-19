@@ -34,3 +34,4 @@ export default function QuizUpgradeNudge() {
     </div>
   );
 }
+export { QuizUpgradeNudge };

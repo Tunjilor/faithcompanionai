@@ -4,7 +4,7 @@ import { useUser } from "@/context/UserContext";
 
 const STORAGE_KEY = "fcai_ref";
 
-export default function ReferralTracker() {
+export function ReferralTracker() {
   const user = useUser();
 
   useEffect(() => {
@@ -29,3 +29,5 @@ export default function ReferralTracker() {
 
   return null;
 }
+
+export default ReferralTracker;

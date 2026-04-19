@@ -36,19 +36,16 @@ const NAV: NavItem[] = [
 function classNames(...xs: Array<string | false | null | undefined>) {
   return xs.filter(Boolean).join(" ");
 }
-
 function isActivePath(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(href + "/");
 }
-
 function isPremiumActive(me: UserData) {
   const premiumFlag = !!(me.isPremium || me.premium);
   if (!premiumFlag) return false;
   if (!me.premiumUntil) return true;
   return new Date(me.premiumUntil).getTime() > Date.now();
 }
-
 function useOnClickOutside(ref: React.RefObject<HTMLElement | null>, handler: () => void, enabled: boolean) {
   useEffect(() => {
     if (!enabled) return;
@@ -87,20 +84,16 @@ function Dropdown({ label, items, baseHref }: { label: string; items: Array<{ la
         className={classNames("inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition",
           anyActive ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}
         aria-haspopup="menu" aria-expanded={open}>
-        {label}
-        <span className={classNames("transition", open && "rotate-180")}>▾</span>
+        {label}<span className={classNames("transition", open && "rotate-180")}>▾</span>
       </button>
       {open && (
         <div role="menu" className="absolute left-0 mt-2 w-60 overflow-hidden rounded-xl border border-white/10 bg-black/80 shadow-lg backdrop-blur">
-          {items.map((it) => {
-            const active = isActivePath(pathname, it.href);
-            return (
-              <Link key={it.href} href={it.href} onClick={() => setOpen(false)}
-                className={classNames("block px-4 py-2 text-sm transition",
-                  active ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}
-                role="menuitem">{it.label}</Link>
-            );
-          })}
+          {items.map((it) => (
+            <Link key={it.href} href={it.href} onClick={() => setOpen(false)}
+              className={classNames("block px-4 py-2 text-sm transition",
+                isActivePath(pathname, it.href) ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}
+              role="menuitem">{it.label}</Link>
+          ))}
         </div>
       )}
     </div>
@@ -133,12 +126,8 @@ function AccountMenu({ me }: { me: UserData }) {
     return (
       <div className="hidden items-center gap-2 md:flex">
         <Link href="/login" className={classNames("rounded-md px-3 py-2 text-sm font-medium transition",
-          isActivePath(pathname, "/login") ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}>
-          Sign in
-        </Link>
-        <Link href="/pricing" className="rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-sm font-semibold text-white hover:opacity-95">
-          Premium
-        </Link>
+          isActivePath(pathname, "/login") ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}>Sign in</Link>
+        <Link href="/pricing" className="rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-sm font-semibold text-white hover:opacity-95">Premium</Link>
       </div>
     );
   }
@@ -184,10 +173,7 @@ export function Navbar() {
     setMobileSections((prev) => ({ ...prev, [label]: !prev[label] }));
   }
   async function handleMobileLogout() {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-      window.location.href = "/login";
-    } catch {}
+    try { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/login"; } catch {}
   }
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-xl">
@@ -203,11 +189,10 @@ export function Navbar() {
           <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
             {NAV.map((item) => {
               if (item.type === "menu") return <Dropdown key={item.label} label={item.label} items={item.items} baseHref={item.baseHref} />;
-              const active = isActivePath(pathname, item.href);
               return (
                 <Link key={item.href} href={item.href}
                   className={classNames("rounded-md px-3 py-2 text-sm font-medium transition",
-                    active ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}>
+                    isActivePath(pathname, item.href) ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}>
                   {item.label}
                 </Link>
               );
@@ -238,26 +223,22 @@ export function Navbar() {
                       </button>
                       {open && (
                         <div className="border-t border-white/10 p-2">
-                          {item.items.map((it) => {
-                            const active = isActivePath(pathname, it.href);
-                            return (
-                              <Link key={it.href} href={it.href} onClick={() => setMobileOpen(false)}
-                                className={classNames("block rounded-md px-3 py-2 text-sm transition",
-                                  active ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}>
-                                {it.label}
-                              </Link>
-                            );
-                          })}
+                          {item.items.map((it) => (
+                            <Link key={it.href} href={it.href} onClick={() => setMobileOpen(false)}
+                              className={classNames("block rounded-md px-3 py-2 text-sm transition",
+                                isActivePath(pathname, it.href) ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}>
+                              {it.label}
+                            </Link>
+                          ))}
                         </div>
                       )}
                     </div>
                   );
                 }
-                const active = isActivePath(pathname, item.href);
                 return (
                   <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                     className={classNames("rounded-md px-3 py-2 text-sm font-medium transition",
-                      active ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}>
+                      isActivePath(pathname, item.href) ? "bg-white/10 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")}>
                     {item.label}
                   </Link>
                 );

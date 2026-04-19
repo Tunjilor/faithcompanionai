@@ -172,29 +172,23 @@ function AccountMenu({ me }: { me: UserData }) {
   );
 }
 
-export function Navbar() {}
-export default function Navbar() {
+export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSections, setMobileSections] = useState<Record<string, boolean>>({ Tools: false, More: false });
   const me = useUser();
-
   useEffect(() => { setMobileOpen(false); }, [pathname]);
-
   const signedIn = !!(me.signedIn || me.authed);
   const premiumActive = isPremiumActive(me);
-
   function toggleSection(label: string) {
     setMobileSections((prev) => ({ ...prev, [label]: !prev[label] }));
   }
-
   async function handleMobileLogout() {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
       window.location.href = "/login";
     } catch {}
   }
-
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-6">
@@ -300,3 +294,5 @@ export default function Navbar() {
     </header>
   );
 }
+
+export default Navbar;

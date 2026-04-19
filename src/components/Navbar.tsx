@@ -1,4 +1,5 @@
-﻿"use client";
+﻿// v2
+"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -277,3 +278,4 @@ export function Navbar() {
 }
 
 export default Navbar;
+

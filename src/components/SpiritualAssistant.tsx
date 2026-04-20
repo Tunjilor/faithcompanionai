@@ -1,7 +1,8 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { RotateCcw, X, Send } from "lucide-react";
 
 type Msg = {
   role: "assistant" | "user";
@@ -51,7 +52,7 @@ export default function SpiritualAssistant() {
       {
         role: "assistant",
         content:
-          "Hello! Iâ€™m your Faith Companion AI assistant. I can help with Scripture-based encouragement, short prayers, and faith questions. What would you like help with today?",
+          "Hello! I'm your Faith Companion AI assistant. I can help with Scripture-based encouragement, short prayers, and faith questions. What would you like help with today?",
         ts: Date.now(),
       },
     ]);
@@ -109,7 +110,7 @@ export default function SpiritualAssistant() {
       const replyContent = res.ok && data?.reply
         ? data.reply
         : data?.error === "LIMIT_REACHED" || res.status === 429
-        ? "Youâ€™ve reached your daily limit. Upgrade to Premium for unlimited conversations."
+        ? "You've reached your daily limit. Upgrade to Premium for unlimited conversations."
         : data?.error || "Something went wrong. Please try again.";
 
       setMsgs((prev) => [
@@ -121,7 +122,7 @@ export default function SpiritualAssistant() {
         ...prev,
         {
           role: "assistant",
-          content: "I couldnâ€™t reach the server. Please check your connection and try again.",
+          content: "I couldn't reach the server. Please check your connection and try again.",
           ts: Date.now(),
         },
       ]);
@@ -135,7 +136,7 @@ export default function SpiritualAssistant() {
       {
         role: "assistant",
         content:
-          "Hello! Iâ€™m your Faith Companion AI assistant. How can I help you today?",
+          "Hello! I'm your Faith Companion AI assistant. How can I help you today?",
         ts: Date.now(),
       },
     ]);
@@ -151,7 +152,7 @@ export default function SpiritualAssistant() {
           className="fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-95"
           aria-label="Open Spiritual Assistant"
         >
-          ðŸ’¬ <span className="hidden sm:inline">Spiritual Assistant</span>
+          {"💬"} <span className="hidden sm:inline">Spiritual Assistant</span>
         </button>
       )}
 
@@ -169,7 +170,7 @@ export default function SpiritualAssistant() {
                 aria-label="Reset conversation"
                 title="Reset"
               >
-                â†»
+                <RotateCcw size={14} />
               </button>
               <button
                 type="button"
@@ -178,7 +179,7 @@ export default function SpiritualAssistant() {
                 aria-label="Close"
                 title="Close"
               >
-                âœ•
+                <X size={14} />
               </button>
             </div>
           </div>
@@ -256,7 +257,7 @@ export default function SpiritualAssistant() {
             ))}
             {thinking && (
               <div className="max-w-[92%] rounded-2xl bg-white/5 px-3 py-2 text-sm text-white/50">
-                Thinkingâ€¦
+                Thinking...
               </div>
             )}
           </div>
@@ -282,7 +283,7 @@ export default function SpiritualAssistant() {
                 className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-white hover:bg-white/15 disabled:opacity-50"
                 aria-label="Send"
               >
-                {thinking ? "â€¦" : "âž¤"}
+                {thinking ? "..." : <Send size={16} />}
               </button>
             </div>
           </form>

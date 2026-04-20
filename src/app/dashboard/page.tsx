@@ -1,11 +1,12 @@
-// src/app/dashboard/page.tsx
+﻿// src/app/dashboard/page.tsx
 "use client";
+import { useUser } from "@/context/UserContext";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import UpgradeCTA from "@/components/UpgradeCTA";
 
-// ── Types ────────────────────────────────────────────────────────────────────
+// â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 type MeResponse = {
   signedIn?: boolean;
@@ -43,7 +44,7 @@ type StreakData = {
   isNewDay: boolean;
 };
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function isPremiumActive(me: MeResponse | null) {
   const premiumFlag = !!(me?.isPremium ?? me?.premium);
@@ -63,10 +64,10 @@ function formatDate(input: string) {
 function truncate(text: string, max = 200) {
   if (!text) return "";
   if (text.length <= max) return text;
-  return text.slice(0, max).trimEnd() + "…";
+  return text.slice(0, max).trimEnd() + "â€¦";
 }
 
-// ── Prayer Journal card ──────────────────────────────────────────────────────
+// â”€â”€ Prayer Journal card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function PrayerCard({
   item,
@@ -134,7 +135,7 @@ function PrayerCard({
           </span>
           {isAnswered && (
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 px-2 py-0.5 text-xs font-semibold text-emerald-300">
-              ✅ Answered
+              âœ… Answered
             </span>
           )}
         </div>
@@ -190,7 +191,7 @@ function PrayerCard({
             disabled={saving}
             className="rounded-full border border-white/10 px-4 py-1.5 text-xs font-semibold text-white/40 hover:text-white/70 disabled:opacity-50"
           >
-            {saving ? "Saving…" : "Unmark"}
+            {saving ? "Savingâ€¦" : "Unmark"}
           </button>
         )}
       </div>
@@ -216,7 +217,7 @@ function PrayerCard({
               disabled={saving}
               className="rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-500 disabled:opacity-60"
             >
-              {saving ? "Saving…" : "Record Answer"}
+              {saving ? "Savingâ€¦" : "Record Answer"}
             </button>
             <button
               type="button"
@@ -232,7 +233,7 @@ function PrayerCard({
   );
 }
 
-// ── Main dashboard ───────────────────────────────────────────────────────────
+// â”€â”€ Main dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function DashboardPage() {
   const [me, setMe] = useState<MeResponse | null>(null);
@@ -348,7 +349,7 @@ export default function DashboardPage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 md:px-6">
 
-      {/* ── Welcome header ── */}
+      {/* â”€â”€ Welcome header â”€â”€ */}
       <section className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur md:p-8">
         <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div>
@@ -395,7 +396,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* ── Stats grid ── */}
+      {/* â”€â”€ Stats grid â”€â”€ */}
       <section className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div className="rounded-[24px] border border-white/10 bg-white/5 p-5">
           <div className="text-sm text-white/60">Plan</div>
@@ -406,28 +407,28 @@ export default function DashboardPage() {
 
         <div className="rounded-[24px] border border-white/10 bg-white/5 p-5">
           <div className="text-sm text-white/60">Saved items</div>
-          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.total : "—"}</div>
+          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.total : "â€”"}</div>
         </div>
 
         <div className="rounded-[24px] border border-white/10 bg-white/5 p-5">
           <div className="text-sm text-white/60">Saved verses</div>
-          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.verses : "—"}</div>
+          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.verses : "â€”"}</div>
         </div>
 
         <div className="rounded-[24px] border border-white/10 bg-white/5 p-5">
           <div className="text-sm text-white/60">Prayers saved</div>
-          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.prayers : "—"}</div>
+          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.prayers : "â€”"}</div>
         </div>
       </section>
 
-      {/* ── Daily Streak ── */}
+      {/* â”€â”€ Daily Streak â”€â”€ */}
       <section className="mt-8">
         {!signedIn ? null : premiumActive ? (
           <div className="rounded-[24px] border border-orange-500/25 bg-gradient-to-r from-orange-500/10 to-amber-500/10 p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-500/20 text-3xl">
-                  🔥
+                  ðŸ”¥
                 </div>
                 <div>
                   {streak ? (
@@ -437,9 +438,9 @@ export default function DashboardPage() {
                       </div>
                       <div className="mt-0.5 text-sm text-white/65">
                         {streak.currentStreak === 1
-                          ? "Great start — come back tomorrow to build your streak!"
+                          ? "Great start â€” come back tomorrow to build your streak!"
                           : streak.currentStreak < 7
-                          ? "Keep it going — consistency is everything."
+                          ? "Keep it going â€” consistency is everything."
                           : streak.currentStreak < 30
                           ? "You're building a real habit. Don't break the chain!"
                           : "Incredible dedication. Your faith is consistent."}
@@ -453,7 +454,7 @@ export default function DashboardPage() {
                   ) : (
                     <>
                       <div className="text-2xl font-extrabold text-white">Streak</div>
-                      <div className="mt-0.5 text-sm text-white/65">Loading your streak…</div>
+                      <div className="mt-0.5 text-sm text-white/65">Loading your streakâ€¦</div>
                     </>
                   )}
                 </div>
@@ -462,7 +463,7 @@ export default function DashboardPage() {
               <div className="flex shrink-0 flex-col gap-2 text-center">
                 <div className="rounded-2xl border border-orange-500/20 bg-black/20 px-5 py-3">
                   <div className="text-3xl font-extrabold text-orange-300">
-                    {streak?.currentStreak ?? "—"}
+                    {streak?.currentStreak ?? "â€”"}
                   </div>
                   <div className="text-xs text-white/50">days in a row</div>
                 </div>
@@ -472,7 +473,7 @@ export default function DashboardPage() {
         ) : (
           <div className="rounded-[24px] border border-white/10 bg-white/5 p-6">
             <div className="flex items-center gap-3">
-              <span className="text-2xl">🔥</span>
+              <span className="text-2xl">ðŸ”¥</span>
               <div>
                 <div className="font-semibold text-white">Daily streak tracker</div>
                 <div className="mt-0.5 text-sm text-white/60">
@@ -480,14 +481,14 @@ export default function DashboardPage() {
                 </div>
               </div>
               <Link href="/pricing" className="ml-auto shrink-0 rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-2 text-xs font-bold text-white hover:opacity-95">
-                🔒 Premium
+                ðŸ”’ Premium
               </Link>
             </div>
           </div>
         )}
       </section>
 
-      {/* ── Billing + Support ── */}
+      {/* â”€â”€ Billing + Support â”€â”€ */}
       {signedIn && (
         <section className="mt-8 grid gap-5 lg:grid-cols-2">
           <div className="rounded-[24px] border border-white/10 bg-white/5 p-6">
@@ -533,7 +534,7 @@ export default function DashboardPage() {
         </section>
       )}
 
-      {/* ── Upgrade prompts ── */}
+      {/* â”€â”€ Upgrade prompts â”€â”€ */}
       {!signedIn && (
         <section className="mt-8">
           <UpgradeCTA variant="dashboard" title="Create a free account to keep your journey"
@@ -550,18 +551,18 @@ export default function DashboardPage() {
         </section>
       )}
 
-      {/* ── Referral section ── */}
+      {/* â”€â”€ Referral section â”€â”€ */}
       {signedIn && me?.userId && (
         <section className="mt-8 rounded-[24px] p-6" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-xl font-bold text-white">Share Faith Companion AI</h2>
               <p className="mt-1 text-sm text-white/60">
-                Share your unique link. Every friend who joins is tracked — rewards coming soon.
+                Share your unique link. Every friend who joins is tracked â€” rewards coming soon.
               </p>
               {typeof me.referralCount === "number" && (
                 <div className="mt-2 text-sm font-semibold text-orange-300">
-                  🙌 You've invited {me.referralCount} friend{me.referralCount !== 1 ? "s" : ""}
+                  ðŸ™Œ You've invited {me.referralCount} friend{me.referralCount !== 1 ? "s" : ""}
                 </div>
               )}
             </div>
@@ -584,14 +585,14 @@ export default function DashboardPage() {
         </section>
       )}
 
-      {/* ── Prayer Journal ── */}
+      {/* â”€â”€ Prayer Journal â”€â”€ */}
       <section className="mt-8">
         <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="text-2xl font-bold text-white">My Prayer Journal</h2>
             <p className="mt-1 text-sm text-white/60">
               {premiumActive && prayers.length > 0
-                ? `${prayers.length} prayer${prayers.length !== 1 ? "s" : ""} saved — ${answeredCount} answered`
+                ? `${prayers.length} prayer${prayers.length !== 1 ? "s" : ""} saved â€” ${answeredCount} answered`
                 : "Save prayers from the Prayer tool to build your journal."}
             </p>
           </div>
@@ -619,7 +620,7 @@ export default function DashboardPage() {
         ) : !premiumActive ? (
           <div className="rounded-[24px] border border-white/10 bg-white/5 p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-              <div className="text-3xl">🙏</div>
+              <div className="text-3xl">ðŸ™</div>
               <div className="flex-1">
                 <div className="font-semibold text-white">Prayer Journal is a Premium feature</div>
                 <p className="mt-2 text-sm leading-6 text-white/65">
@@ -637,7 +638,7 @@ export default function DashboardPage() {
           <div className="rounded-[24px] border border-dashed border-white/10 bg-black/10 p-6 text-sm text-white/60">
             No prayers saved yet. Generate a prayer and save it to start your journal.{" "}
             <Link href="/tools/prayer" className="font-semibold text-orange-400 hover:text-orange-300">
-              Write a prayer →
+              Write a prayer â†’
             </Link>
           </div>
         ) : filteredPrayers.length === 0 ? (
@@ -653,7 +654,7 @@ export default function DashboardPage() {
         )}
       </section>
 
-      {/* ── Saved journey (all types) ── */}
+      {/* â”€â”€ Saved journey (all types) â”€â”€ */}
       <section className="mt-8 rounded-[28px] border border-white/10 bg-white/5 p-6 md:p-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
@@ -692,7 +693,7 @@ export default function DashboardPage() {
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold uppercase tracking-wide text-white/50">{item.type}</span>
                     {item.type === "prayer" && item.answeredAt && (
-                      <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-300">✅ Answered</span>
+                      <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-300">âœ… Answered</span>
                     )}
                   </div>
                   <div className="text-xs text-white/50">{formatDate(item.createdAt)}</div>
@@ -713,3 +714,5 @@ export default function DashboardPage() {
     </main>
   );
 }
+
+

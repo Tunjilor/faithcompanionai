@@ -1,6 +1,7 @@
-// src/app/tools/verse/page.tsx
+﻿// src/app/tools/verse/page.tsx
 
 "use client";
+import { useUser } from "@/context/UserContext";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -288,7 +289,7 @@ export default function VersePage() {
               className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-500 transition hover:bg-slate-50"
               title="Upgrade to Premium to save verses"
             >
-              🔒 Save
+              ðŸ”’ Save
             </Link>
           )}
 
@@ -328,7 +329,7 @@ export default function VersePage() {
                 <ul className="mt-1 space-y-1 pl-1">
                   {result.verses.map((v) => (
                     <li key={v} className="flex gap-2">
-                      <span className="text-slate-400">—</span>
+                      <span className="text-slate-400">â€”</span>
                       <span>{v}</span>
                     </li>
                   ))}
@@ -376,3 +377,4 @@ export default function VersePage() {
     </main>
   );
 }
+

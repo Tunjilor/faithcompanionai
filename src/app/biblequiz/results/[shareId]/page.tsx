@@ -82,7 +82,8 @@ export default async function Page({ params }: PageProps) {
   const shareId = String(params.shareId || "").trim();
   if (!shareId) return notFound();
 
-  const attempt: AttemptWithQuestions | null = await db.quizAttempt.findFirst({
+  const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), 5000));
+  const attempt: AttemptWithQuestions | null = await Promise.race([db.quizAttempt.findFirst({
     where: { shareId },
     include: {
       questions: {

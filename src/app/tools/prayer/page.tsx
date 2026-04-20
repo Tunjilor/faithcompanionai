@@ -1,6 +1,7 @@
-// src/app/tools/prayer/page.tsx
+﻿// src/app/tools/prayer/page.tsx
 
 "use client";
+import { useUser } from "@/context/UserContext";
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -127,7 +128,7 @@ export default function PrayerPage() {
           setQuota(data.quota ?? null);
           setError(
             data.error ||
-              "You’ve reached your free limit. Upgrade to Premium for unlimited prayers, verses, and devotionals."
+              "Youâ€™ve reached your free limit. Upgrade to Premium for unlimited prayers, verses, and devotionals."
           );
           return;
         }
@@ -335,7 +336,7 @@ export default function PrayerPage() {
               className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-500 transition hover:bg-slate-50"
               title="Upgrade to Premium to save prayers"
             >
-              🔒 Save
+              ðŸ”’ Save
             </Link>
           )}
 
@@ -392,7 +393,7 @@ export default function PrayerPage() {
           <div className="mt-5">
             <UpgradeCTA
               variant="soft"
-              title="You’re on your last few free prayer requests."
+              title="Youâ€™re on your last few free prayer requests."
               description="Upgrade now to keep going without interruptions and save your prayers to your faith journal."
               primaryHref="/pricing"
               primaryLabel="Upgrade to Premium"
@@ -408,7 +409,7 @@ export default function PrayerPage() {
               title="Your free prayer limit has been reached"
               description={
                 error ||
-                "You’ve reached your free limit. Upgrade now to continue instantly with unlimited prayers, verses, and devotionals."
+                "Youâ€™ve reached your free limit. Upgrade now to continue instantly with unlimited prayers, verses, and devotionals."
               }
               primaryHref="/pricing"
               primaryLabel="Upgrade Now"
@@ -462,3 +463,4 @@ export default function PrayerPage() {
     </main>
   );
 }
+

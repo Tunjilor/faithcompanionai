@@ -1,5 +1,6 @@
 // src/app/biblequiz/quiz-client.tsx
 "use client";
+import { useUser } from "@/context/UserContext";
 
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -80,7 +81,7 @@ async function postJSON<T>(url: string, body?: unknown): Promise<{ ok: boolean; 
   return { ok: res.ok, data, status: res.status };
 }
 
-// ── Hard stop modal ──────────────────────────────────────────────────────────
+// â”€â”€ Hard stop modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function HardStopModal({
   title,
   message,
@@ -125,7 +126,7 @@ function HardStopModal({
         {/* cta */}
         <div className="space-y-3 p-6">
           <p className="text-sm text-white/70">
-            Premium removes all limits — unlimited quizzes, all categories, and your personal faith journal.
+            Premium removes all limits â€” unlimited quizzes, all categories, and your personal faith journal.
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row">
@@ -153,7 +154,7 @@ function HardStopModal({
   );
 }
 
-// ── Main component ───────────────────────────────────────────────────────────
+// â”€â”€ Main component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function QuizClient() {
   const [busy, setBusy] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -184,26 +185,14 @@ export default function QuizClient() {
   const [displayName, setDisplayName] = useState("");
   const [savingName, setSavingName] = useState(false);
 
+  const _me = useUser();
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch("/api/me", { cache: "no-store" });
-        const data = await res.json().catch(() => null);
-        if (!cancelled) {
-          setPremium(Boolean(data?.premium || data?.isPremium));
-          setSignedIn(Boolean(data?.signedIn || data?.authed));
-          setUserEmail(data?.email ?? null);
-          setUserDisplayName(data?.displayName ?? "");
-        }
-      } catch {
-        // ignore
-      } finally {
-        if (!cancelled) setPremiumLoaded(true);
-      }
-    })();
-    return () => { cancelled = true; };
-  }, []);
+    setPremium(Boolean(_me.premium || _me.isPremium));
+    setSignedIn(Boolean(_me.signedIn || _me.authed));
+    setUserEmail(_me.email ?? null);
+    setUserDisplayName(_me.displayName ?? "");
+    setPremiumLoaded(true);
+  }, [_me]);
 
   useEffect(() => {
     setDenomination(readDenomination());
@@ -219,8 +208,8 @@ export default function QuizClient() {
   }, [toast]);
 
   const statusLabel = useMemo(() => {
-    if (!premiumLoaded) return "Checking…";
-    return premium ? "Premium active ✅" : "Free plan";
+    if (!premiumLoaded) return "Checkingâ€¦";
+    return premium ? "Premium active âœ…" : "Free plan";
   }, [premiumLoaded, premium]);
 
   const activeCategoryName = useMemo(
@@ -366,7 +355,7 @@ export default function QuizClient() {
     setSavingName(false);
 
     if (!ok) { setToast(data?.message || "Could not save name."); return; }
-    setToast("Saved ✅");
+    setToast("Saved âœ…");
   }
 
   function setChoice(qid: string, choice: Choice) {
@@ -406,7 +395,7 @@ export default function QuizClient() {
       )}
 
       <div className="mx-auto w-full max-w-5xl px-4 py-10">
-        {/* ── Header ── */}
+        {/* â”€â”€ Header â”€â”€ */}
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-4xl font-extrabold text-white">Bible Quiz</h1>
@@ -440,17 +429,17 @@ export default function QuizClient() {
           </div>
         </div>
 
-        {/* ── Toast ── */}
+        {/* â”€â”€ Toast â”€â”€ */}
         {toast && (
           <div className="mb-4 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white">
             {toast}
           </div>
         )}
 
-        {/* ── Inline error (non-limit errors) ── */}
+        {/* â”€â”€ Inline error (non-limit errors) â”€â”€ */}
         {inlineError && (
           <div className="mb-6 rounded-2xl border border-yellow-500/20 bg-yellow-500/10 px-4 py-4 text-white">
-            <div className="font-semibold">⚠️ {inlineError}</div>
+            <div className="font-semibold">âš ï¸ {inlineError}</div>
             <div className="mt-3 flex flex-wrap gap-2">
               <Link href="/pricing" className="rounded-md bg-white px-4 py-2 text-sm font-semibold text-black hover:opacity-90">
                 Go Premium
@@ -462,7 +451,7 @@ export default function QuizClient() {
           </div>
         )}
 
-        {/* ── Player info strip ── */}
+        {/* â”€â”€ Player info strip â”€â”€ */}
         <div className="mb-4 rounded-2xl bg-white/5 p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             {signedIn ? (
@@ -471,15 +460,15 @@ export default function QuizClient() {
                 <span className="font-semibold text-white">{userDisplayName || userEmail || "Member"}</span>
                 <span className="ml-2 text-sm">
                   {premium
-                    ? <span className="text-emerald-400">Premium ✅</span>
+                    ? <span className="text-emerald-400">Premium âœ…</span>
                     : <span className="text-white/50">Free plan</span>}
                 </span>
-                <span className="ml-2 text-white/40 text-sm">• {answeredCount}/{QUESTIONS_PER_QUIZ} answered</span>
+                <span className="ml-2 text-white/40 text-sm">â€¢ {answeredCount}/{QUESTIONS_PER_QUIZ} answered</span>
               </div>
             ) : (
               <div className="text-white/80">
                 Playing as <span className="font-semibold text-white">Guest</span>
-                <span className="ml-2 text-white/50 text-sm">(Free mode • {answeredCount}/{QUESTIONS_PER_QUIZ} answered)</span>
+                <span className="ml-2 text-white/50 text-sm">(Free mode â€¢ {answeredCount}/{QUESTIONS_PER_QUIZ} answered)</span>
               </div>
             )}
 
@@ -496,7 +485,7 @@ export default function QuizClient() {
                   disabled={savingName}
                   className="rounded-md bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15 disabled:opacity-60"
                 >
-                  {savingName ? "Saving…" : "Save name"}
+                  {savingName ? "Savingâ€¦" : "Save name"}
                 </button>
                 <Link
                   href="/login?redirect=%2Fbiblequiz"
@@ -508,7 +497,7 @@ export default function QuizClient() {
             )}
           </div>
 
-          {/* Usage tracker — only for free/guest users when we have usage data */}
+          {/* Usage tracker â€” only for free/guest users when we have usage data */}
           {usageDisplay && (
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-white/10 pt-3 text-xs text-white/50">
               <span>
@@ -524,13 +513,13 @@ export default function QuizClient() {
                 </span>
               </span>
               <Link href="/pricing" className="ml-auto text-orange-400 underline underline-offset-2 hover:text-orange-300">
-                Upgrade for unlimited →
+                Upgrade for unlimited â†’
               </Link>
             </div>
           )}
         </div>
 
-        {/* ── Category grid ── */}
+        {/* â”€â”€ Category grid â”€â”€ */}
         <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {categories.map((c) => {
             const isActive = c.id === category;
@@ -570,20 +559,20 @@ export default function QuizClient() {
           })}
         </div>
 
-        {/* ── Quiz area ── */}
+        {/* â”€â”€ Quiz area â”€â”€ */}
         <div className="rounded-2xl bg-white/5 p-5">
           <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-white/80">
               Category: <span className="font-semibold text-white">{activeCategoryName}</span>
             </div>
             <div className="text-sm text-white/50">
-              Attempt: {attemptId ? <span className="text-white/70">{attemptId.slice(0, 8)}…</span> : "—"}
+              Attempt: {attemptId ? <span className="text-white/70">{attemptId.slice(0, 8)}â€¦</span> : "â€”"}
             </div>
           </div>
 
           {busy ? (
             <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-white/80">
-              Loading quiz…
+              Loading quizâ€¦
             </div>
           ) : !attemptId || questions.length === 0 || !currentQuestion ? (
             <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-white/70">
@@ -591,18 +580,18 @@ export default function QuizClient() {
             </div>
           ) : (
             <div className="space-y-5">
-              {/* Soft upgrade prompt — shown at question 8 and 9 (2 or 1 left) */}
+              {/* Soft upgrade prompt â€” shown at question 8 and 9 (2 or 1 left) */}
               {showSoftPrompt && (
                 <div className="rounded-2xl border border-orange-500/20 bg-orange-500/10 px-4 py-3 text-sm text-orange-100">
                   <div className="font-semibold">
                     {questionsLeftInQuiz === 1
-                      ? "Last question — this is your daily free quiz"
+                      ? "Last question â€” this is your daily free quiz"
                       : `${questionsLeftInQuiz} questions left in today's free quiz`}
                   </div>
                   <div className="mt-1 text-orange-200/80">
                     Upgrade to Premium for unlimited daily quizzes across all categories.{" "}
                     <Link href="/pricing" className="font-semibold underline underline-offset-2 hover:text-white">
-                      Upgrade now →
+                      Upgrade now â†’
                     </Link>
                   </div>
                 </div>
@@ -678,3 +667,4 @@ export default function QuizClient() {
     </>
   );
 }
+

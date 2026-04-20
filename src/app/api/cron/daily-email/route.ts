@@ -76,13 +76,19 @@ function subjectFor(type: "verse" | "devotional" | "prayer"): string {
 export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
-    const secret = url.searchParams.get("secret");
     const expected = process.env.CRON_SECRET;
 
     if (!expected) {
       return NextResponse.json({ ok: false, error: "CRON_SECRET not set" }, { status: 500 });
     }
-    if (secret !== expected) {
+
+    // Accept secret via Authorization header (Vercel cron) or ?secret= (manual testing)
+    const authHeader = req.headers.get("authorization") ?? "";
+    const querySecret = url.searchParams.get("secret") ?? "";
+    const authorized =
+      authHeader === `Bearer ${expected}` || querySecret === expected;
+
+    if (!authorized) {
       return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
     }
 

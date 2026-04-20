@@ -5,7 +5,7 @@ export async function sendMagicLinkEmail(opts: {
 }) {
   const resendApiKey = process.env.RESEND_API_KEY;
   const fromEmail =
-    process.env.EMAIL_FROM || "Faith Companion AI <onboarding@resend.dev>";
+    process.env.EMAIL_FROM || "Faith Companion AI <noreply@faithcompanionai.com>";
 
   if (!resendApiKey) {
     console.log("\n[Magic Link Email - DEV FALLBACK]");

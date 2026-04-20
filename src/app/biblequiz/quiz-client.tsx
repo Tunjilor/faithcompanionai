@@ -1,4 +1,4 @@
-// src/app/biblequiz/quiz-client.tsx
+﻿// src/app/biblequiz/quiz-client.tsx
 "use client";
 import { useUser } from "@/context/UserContext";
 
@@ -667,4 +667,5 @@ export default function QuizClient() {
     </>
   );
 }
+
 

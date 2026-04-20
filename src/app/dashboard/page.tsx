@@ -64,7 +64,7 @@ function formatDate(input: string) {
 function truncate(text: string, max = 200) {
   if (!text) return "";
   if (text.length <= max) return text;
-  return text.slice(0, max).trimEnd() + "â€¦";
+  return text.slice(0, max).trimEnd() + "...";
 }
 
 // â”€â”€ Prayer Journal card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -191,7 +191,7 @@ function PrayerCard({
             disabled={saving}
             className="rounded-full border border-white/10 px-4 py-1.5 text-xs font-semibold text-white/40 hover:text-white/70 disabled:opacity-50"
           >
-            {saving ? "Savingâ€¦" : "Unmark"}
+            {saving ? "Saving..." : "Unmark"}
           </button>
         )}
       </div>
@@ -217,7 +217,7 @@ function PrayerCard({
               disabled={saving}
               className="rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-500 disabled:opacity-60"
             >
-              {saving ? "Savingâ€¦" : "Record Answer"}
+              {saving ? "Saving..." : "Record Answer"}
             </button>
             <button
               type="button"
@@ -454,7 +454,7 @@ export default function DashboardPage() {
                   ) : (
                     <>
                       <div className="text-2xl font-extrabold text-white">Streak</div>
-                      <div className="mt-0.5 text-sm text-white/65">Loading your streakâ€¦</div>
+                      <div className="mt-0.5 text-sm text-white/65">Loading your streak...</div>
                     </>
                   )}
                 </div>
@@ -714,5 +714,6 @@ export default function DashboardPage() {
     </main>
   );
 }
+
 
 

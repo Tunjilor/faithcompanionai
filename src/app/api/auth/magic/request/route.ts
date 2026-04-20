@@ -1,4 +1,4 @@
-// src/app/api/auth/magic/request/route.ts
+﻿// src/app/api/auth/magic/request/route.ts
 import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     });
 
     const appUrl =
-      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+      process.env.NEXT_PUBLIC_APP_URL || "https://faithcompanionai.com";
 
     const magicLink = `${appUrl}/api/auth/magic/verify?token=${encodeURIComponent(
       token

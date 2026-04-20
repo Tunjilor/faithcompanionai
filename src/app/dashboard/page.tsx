@@ -44,6 +44,18 @@ type StreakData = {
   isNewDay: boolean;
 };
 
+type EmailPrefs = {
+  emailOptIn: boolean;
+  emailTime: string;
+  emailTimezone: string;
+};
+
+const HOUR_OPTIONS = Array.from({ length: 18 }, (_, i) => {
+  const h = i + 5;
+  const label = h < 12 ? h + ':00 AM' : h === 12 ? '12:00 PM' : (h - 12) + ':00 PM';
+  return { value: String(h).padStart(2, '0') + ':00', label };
+});
+
 // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function isPremiumActive(me: MeResponse | null) {
@@ -243,6 +255,10 @@ export default function DashboardPage() {
   const [loggingOut, setLoggingOut] = useState(false);
   const [error, setError] = useState("");
   const [journalFilter, setJournalFilter] = useState<"all" | "unanswered" | "answered">("all");
+  const [emailPrefs, setEmailPrefs] = useState<EmailPrefs | null>(null);
+  const [emailPrefsDraft, setEmailPrefsDraft] = useState<EmailPrefs | null>(null);
+  const [emailPrefsSaving, setEmailPrefsSaving] = useState(false);
+  const [emailPrefsStatus, setEmailPrefsStatus] = useState<"" | "saved" | "error">("");
 
   useEffect(() => {
     let cancelled = false;
@@ -260,11 +276,23 @@ export default function DashboardPage() {
         const signedIn = !!(meData?.signedIn ?? meData?.authed);
 
         if (signedIn) {
-          const [savedRes] = await Promise.all([
+          const [savedRes, emailPrefsRes] = await Promise.all([
             fetch("/api/saved", { cache: "no-store" }),
+            fetch("/api/me/email-prefs", { cache: "no-store" }),
           ]);
           const savedData = savedRes.ok ? await savedRes.json() : { items: [] };
           if (!cancelled) setSavedItems(savedData.items || []);
+
+          if (emailPrefsRes.ok) {
+            const prefs = await emailPrefsRes.json();
+            if (!cancelled) {
+              const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+              const withTz: EmailPrefs = (prefs.emailTimezone === "UTC" && tz)
+                ? { ...prefs, emailTimezone: tz } : prefs;
+              setEmailPrefs(withTz);
+              setEmailPrefsDraft(withTz);
+            }
+          }
 
           // Ping streak fire-and-forget (don't block UI)
           fetch("/api/streak/ping", { method: "POST", cache: "no-store" })
@@ -299,6 +327,37 @@ export default function DashboardPage() {
       setError(err?.message || "Failed to log out.");
       setLoggingOut(false);
     }
+  }
+
+  async function handleEmailPrefsSave() {
+    if (!emailPrefsDraft) return;
+    setEmailPrefsSaving(true);
+    setEmailPrefsStatus("");
+    try {
+      const res = await fetch("/api/me/email-prefs", {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(emailPrefsDraft),
+      });
+      if (!res.ok) throw new Error("Failed to save");
+      const updated: EmailPrefs = await res.json();
+      setEmailPrefs(updated);
+      setEmailPrefsDraft(updated);
+      setEmailPrefsStatus("saved");
+      setTimeout(() => setEmailPrefsStatus(""), 3000);
+    } catch {
+      setEmailPrefsStatus("error");
+    } finally {
+      setEmailPrefsSaving(false);
+    }
+  }
+
+  function handleEmailPrefsToggle(on: boolean) {
+    setEmailPrefsDraft(d => d ? { ...d, emailOptIn: on } : d);
+  }
+
+  function handleEmailPrefsField(field: keyof EmailPrefs, value: string | boolean) {
+    setEmailPrefsDraft(d => d ? { ...d, [field]: value } : d);
   }
 
   function handlePrayerAnswered(id: string, answeredAt: string, answerNote: string | null) {
@@ -582,6 +641,90 @@ export default function DashboardPage() {
               </button>
             </div>
           </div>
+        </section>
+      )}
+
+      {/* -- Daily Email Devotionals -- */}
+      {signedIn && emailPrefsDraft && (
+        <section className="mt-8 rounded-[24px] border border-white/10 bg-white/5 p-6">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-white">Daily Email Devotionals</h2>
+              <p className="mt-1 text-sm text-white/60">
+                Receive a verse, devotional, or prayer straight to your inbox each morning.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleEmailPrefsToggle(!emailPrefsDraft.emailOptIn)}
+              className={[
+                "mt-3 sm:mt-0 flex h-8 w-14 shrink-0 items-center rounded-full transition-colors",
+                emailPrefsDraft.emailOptIn
+                  ? "bg-gradient-to-r from-purple-600 to-orange-500"
+                  : "bg-white/10",
+              ].join(" ")}
+            >
+              <span
+                className={[
+                  "ml-1 h-6 w-6 rounded-full bg-white shadow transition-transform",
+                  emailPrefsDraft.emailOptIn ? "translate-x-6" : "translate-x-0",
+                ].join(" ")}
+              />
+            </button>
+          </div>
+
+          {emailPrefsDraft.emailOptIn && (
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="block text-xs font-semibold text-white/60">Delivery time</label>
+                <select
+                  value={emailPrefsDraft.emailTime}
+                  onChange={(e) => handleEmailPrefsField("emailTime", e.target.value)}
+                  className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm text-white outline-none"
+                >
+                  {HOUR_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-white/60">Timezone</label>
+                <input
+                  type="text"
+                  value={emailPrefsDraft.emailTimezone}
+                  onChange={(e) => handleEmailPrefsField("emailTimezone", e.target.value)}
+                  placeholder="e.g. America/New_York"
+                  className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm text-white outline-none"
+                />
+                <p className="mt-1 text-xs text-white/35">
+                  Auto-detected. Use IANA format (e.g. Europe/London).
+                </p>
+              </div>
+            </div>
+          )}
+
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={handleEmailPrefsSave}
+              disabled={emailPrefsSaving}
+              className="inline-flex min-h-[40px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-2 text-sm font-semibold text-white hover:opacity-95 disabled:opacity-60"
+            >
+              {emailPrefsSaving ? "Saving..." : "Save preferences"}
+            </button>
+            {emailPrefsStatus === "saved" && (
+              <span className="text-sm font-semibold text-emerald-400">Saved!</span>
+            )}
+            {emailPrefsStatus === "error" && (
+              <span className="text-sm font-semibold text-red-400">Failed to save. Try again.</span>
+            )}
+          </div>
+
+          {!emailPrefsDraft.emailOptIn && (
+            <p className="mt-4 text-xs text-white/35">
+              Schedule: verses Mon and Wed, devotionals Tue and Thu, prayers Fri through Sun.
+            </p>
+          )}
         </section>
       )}
 

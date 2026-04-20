@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "emailOptIn" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "emailTime" TEXT NOT NULL DEFAULT '07:00',
+ADD COLUMN     "emailTimezone" TEXT NOT NULL DEFAULT 'UTC';

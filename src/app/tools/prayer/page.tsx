@@ -38,7 +38,7 @@ type AskResponse = {
 
 function isPremiumActive(me: MeResponse | null) {
   if (!me?.isPremium) return false;
-  if (!me?.premiumUntil) return false;
+  if (!me?.premiumUntil) return true;
   return new Date(me.premiumUntil).getTime() > Date.now();
 }
 
@@ -463,4 +463,5 @@ export default function PrayerPage() {
     </main>
   );
 }
+
 

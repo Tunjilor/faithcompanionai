@@ -41,7 +41,7 @@ export default function Footer() {
                 <div>
                   <div className="font-extrabold text-white">Faith Companion AI</div>
                   <div className="text-sm text-white/60">
-                    Daily verses â€¢ prayers â€¢ devotionals
+                    Daily verses &bull; prayers &bull; devotionals
                   </div>
                 </div>
               </div>
@@ -134,7 +134,7 @@ export default function Footer() {
           </div>
 
           <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
-            <div>Â© {new Date().getFullYear()} Faith Companion AI. All rights reserved.</div>
+            <div>&copy; {new Date().getFullYear()} Faith Companion AI. All rights reserved.</div>
             <div>Scripture-based support for daily encouragement and growth.</div>
           </div>
         </div>

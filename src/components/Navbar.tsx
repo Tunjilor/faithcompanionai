@@ -17,6 +17,7 @@ const NAV: NavItem[] = [
     { label: "Verse", href: "/tools/verse" },
     { label: "Prayer", href: "/tools/prayer" },
     { label: "Devotional", href: "/tools/devotional" },
+    { label: "Bible Search", href: "/tools/bible-search" },
   ]},
   { type: "link", label: "Quiz", href: "/biblequiz" },
   { type: "link", label: "Resources", href: "/resources" },

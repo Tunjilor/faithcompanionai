@@ -6,6 +6,8 @@ import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import DenominationSelect, { getDenominationNote, readDenomination } from "@/components/DenominationSelect";
+import ShareCardModal from "@/components/ShareCardModal";
+import { ImageIcon } from "lucide-react";
 
 type Length = "short" | "medium" | "long";
 
@@ -54,6 +56,7 @@ export default function VersePage() {
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showShareCard, setShowShareCard] = useState(false);
   const [me, setMe] = useState<MeResponse | null>(null);
 
   useEffect(() => {
@@ -300,6 +303,17 @@ export default function VersePage() {
           >
             Reset
           </button>
+
+          {result && (
+            <button
+              type="button"
+              onClick={() => setShowShareCard(true)}
+              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-purple-300 bg-purple-50 px-5 py-3 text-sm font-semibold text-purple-700 transition hover:bg-purple-100"
+            >
+              <ImageIcon size={15} />
+              Share Card
+            </button>
+          )}
         </div>
 
         {error && (
@@ -374,6 +388,13 @@ export default function VersePage() {
           </div>
         )}
       </div>
+      {showShareCard && result && (
+        <ShareCardModal
+          initialText={result.encouragement}
+          initialReference={result.verses[0] ?? ""}
+          onClose={() => setShowShareCard(false)}
+        />
+      )}
     </main>
   );
 }

@@ -7,6 +7,8 @@ import { ExitIntentModal } from "@/components/ExitIntentModal";
 import { ReferralTracker } from "@/components/ReferralTracker";
 import { UserProvider } from "@/context/UserContext";
 import Script from "next/script";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import AddToHomeScreen from "@/components/AddToHomeScreen";
 
 const GA_ID = "G-5WYYE098DH";
 
@@ -21,6 +23,7 @@ export const metadata: Metadata = {
   publisher: "Faith Companion AI",
   category: "Religion & Spirituality",
   alternates: { canonical: "/" },
+  manifest: "/manifest.json",
   icons: {
     icon: [{ url: "/brand/icon-32.png", sizes: "32x32", type: "image/png" },{ url: "/brand/icon-192.png", sizes: "192x192", type: "image/png" }],
     apple: [{ url: "/brand/icon-180.png", sizes: "180x180", type: "image/png" }],
@@ -72,6 +75,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SpiritualAssistant />
           <ExitIntentModal />
           <ReferralTracker />
+          <AddToHomeScreen />
+          <ServiceWorkerRegistration />
         </UserProvider>
       </body>
     </html>

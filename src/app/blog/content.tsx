@@ -1717,6 +1717,122 @@ const post13Body: ReactNode = (
   </article>
 );
 
+// ── Post 14 ──────────────────────────────────────────────────────────────────
+const post14Body: ReactNode = (
+  <article>
+    <p className={p}>
+      December is the most spiritually meaningful month on the Christian calendar — and,
+      paradoxically, one of the hardest months to stay connected to your faith. The Advent
+      season arrives alongside the busiest shopping period of the year, packed calendars,
+      family obligations, year-end pressure at work, and a cultural noise level that makes
+      quiet reflection feel nearly impossible.
+    </p>
+    <p className={p}>
+      The result is that many believers reach Christmas Day having barely engaged with what
+      the season is actually about. The decorations go up, the songs play, the services are
+      attended — but the interior reality of Advent, the waiting and the longing and the
+      quiet wonder, gets crowded out by everything surrounding it.
+    </p>
+    <p className={p}>
+      This post is about how to prevent that — not by adding more to your schedule, but by
+      anchoring your faith in a few small, sustainable practices that survive the busy season.
+    </p>
+
+    <h2 className={h2}>Why Consistency Breaks Down in Busy Seasons</h2>
+    <p className={p}>
+      Spiritual consistency rarely collapses all at once. It erodes gradually. One missed
+      morning, then two, then a week passes and the habit feels too broken to restart. The
+      reasons are predictable and worth naming:
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>Schedule disruption.</strong> Travel, events, and school holidays break the routines that spiritual habits depend on.</li>
+      <li className={li}><strong>Decision fatigue.</strong> By December, most people have made thousands of micro-decisions. Adding one more — even the small decision to open a Bible — can feel like too much.</li>
+      <li className={li}><strong>Emotional noise.</strong> The holiday season brings joy for some and grief for others, often simultaneously. Family complexity, financial stress, and the weight of expectations can crowd out interior stillness.</li>
+      <li className={li}><strong>The illusion of replacement.</strong> Christmas services, carols, and decorations can feel spiritual enough that the quiet daily practice seems less necessary. But they feed a different part of the soul.</li>
+    </ul>
+
+    <h2 className={h2}>What the Advent Season Was Designed For</h2>
+    <p className={p}>
+      Advent — the four weeks before Christmas — was created precisely as a counter to this
+      tendency. It is a season of deliberate slowing, of waiting, of making interior space
+      for something that does not arrive loudly.
+    </p>
+    <div className={blockquote}>
+      &ldquo;For to us a child is born, to us a son is given, and the government will be on his
+      shoulders. And he will be called Wonderful Counselor, Mighty God, Everlasting Father,
+      Prince of Peace.&rdquo; — Isaiah 9:6
+    </div>
+    <p className={p}>
+      The prophet Isaiah wrote these words centuries before the first Christmas. The waiting
+      was long, quiet, and uncertain. The practice of Advent invites us to step into that
+      waiting — not as a historical exercise, but as a spiritual posture for our own lives.
+      What are you waiting for? What in you still longs for peace, for the arrival of something
+      that will make things right?
+    </p>
+
+    <h2 className={h2}>Five Practices for Staying Consistent Through December</h2>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Shrink the commitment, not the intention",
+          "If your normal devotional practice is 15 minutes, make December's version 5. One verse, one prayer, done. Reduced but present is vastly better than absent. You can expand again in January.",
+        ],
+        [
+          "Use the season's natural rhythms",
+          "Advent candles, Christmas music, the nativity — these are prompts, not just traditions. Let them trigger a moment of genuine reflection. When you light a candle, pause for thirty seconds and pray. When you hear a carol you love, let the words land as a real statement about God.",
+        ],
+        [
+          "Pray through the busyness, not around it",
+          "Treat the chaos itself as the content of your prayer. \"God, I feel scattered today. Help me be present where it matters.\" You don't need calm to pray. You need honesty.",
+        ],
+        [
+          "Read Luke 1–2 slowly across the month",
+          "The Advent and Christmas narrative in Luke is short enough to read in pieces throughout December. A few verses a day. Let the story be genuinely new, not just familiar background noise.",
+        ],
+        [
+          "Protect one anchor point",
+          "Choose one moment in the day — morning coffee, the drive to work, ten minutes before sleep — and commit to making it yours for December. One protected point of contact is enough to keep the thread of consistency intact.",
+        ],
+      ].map(([practice, desc], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{i + 1}. {practice}</div>
+          <div className={qaA}>{desc}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>On Missing Days</h2>
+    <p className={p}>
+      You will probably miss some days in December. That is not failure — it is December.
+      The practice that matters is the return. When you miss a day, come back the next one
+      without guilt or ceremony. Do not try to compensate for what you missed. Just begin
+      again from today.
+    </p>
+    <p className={p}>
+      Consistency, across a year or a lifetime, is not an unbroken streak. It is a repeated
+      return to the same anchor point — which is not a habit or a routine but a Person who
+      is always there when you come back.
+    </p>
+    <div className={blockquote}>
+      &ldquo;The Lord himself goes before you and will be with you; he will never leave you nor
+      forsake you. Do not be afraid; do not be discouraged.&rdquo; — Deuteronomy 31:8
+    </div>
+
+    <div className={cta}>
+      <p className="text-base font-bold text-white">Make today&apos;s five minutes count</p>
+      <p className="mt-2 text-sm text-white/65">
+        A personalised Advent devotional in seconds — tailored to where you are this December.
+      </p>
+      <a
+        href="/tools/devotional"
+        className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
+      >
+        Get My Advent Devotional
+      </a>
+    </div>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -1850,9 +1966,9 @@ export const POSTS: BlogPost[] = [
     title: "How to Start a Personal Devotional Practice",
     excerpt:
       "A personal devotional practice doesn't require special equipment, a perfect schedule, or years of Bible knowledge. It requires a few minutes, a willing heart, and one honest prayer.",
-    date: "November 1, 2027",
-    dateISO: "2027-11-01",
-    publishDate: "2027-11-01",
+    date: "January 1, 2027",
+    dateISO: "2027-01-01",
+    publishDate: "2027-01-01",
     readTime: "6 min read",
     keywords: ["how to start a devotional", "personal devotional practice", "daily devotional for beginners", "how to do a devotional", "devotional routine"],
     description:
@@ -1864,9 +1980,9 @@ export const POSTS: BlogPost[] = [
     title: "What to Do When Your Faith Feels Weak",
     excerpt:
       "Weak faith is still faith. When God feels distant and prayer feels hollow, there are honest, practical things you can do — and Scripture is full of people who felt exactly as you do.",
-    date: "October 1, 2027",
-    dateISO: "2027-10-01",
-    publishDate: "2027-10-01",
+    date: "November 1, 2026",
+    dateISO: "2026-11-01",
+    publishDate: "2026-11-01",
     readTime: "6 min read",
     keywords: ["faith feels weak", "struggling with faith", "spiritual dryness", "doubt and faith", "when god feels distant"],
     description:
@@ -1878,9 +1994,9 @@ export const POSTS: BlogPost[] = [
     title: "How to Stay Spiritually Grounded in a Busy World",
     excerpt:
       "Staying spiritually grounded in a busy world isn't about finding more time — it's about what you do with the moments you already have. Six small practices that fit inside an ordinary day.",
-    date: "September 1, 2026",
-    dateISO: "2026-09-01",
-    publishDate: "2026-09-01",
+    date: "October 1, 2026",
+    dateISO: "2026-10-01",
+    publishDate: "2026-10-01",
     readTime: "6 min read",
     keywords: ["stay spiritually grounded", "spiritual grounding", "faith in busy life", "spiritual discipline", "staying connected to god"],
     description:
@@ -1900,6 +2016,20 @@ export const POSTS: BlogPost[] = [
     description:
       "Nine Bible verses for strength during difficult times — covering exhaustion, fear, grief, and perseverance. Each verse includes an honest reflection and a simple way to pray it.",
     body: post13Body,
+  },
+  {
+    slug: "stay-consistent-faith-busy-seasons",
+    title: "How to Stay Consistent in Your Faith During Busy Seasons",
+    excerpt:
+      "December is the most spiritually meaningful month on the calendar — and one of the hardest to stay connected to your faith. Five simple practices to keep the thread of consistency through the holiday season.",
+    date: "December 1, 2026",
+    dateISO: "2026-12-01",
+    publishDate: "2026-12-01",
+    readTime: "6 min read",
+    keywords: ["stay consistent in faith", "faith during busy season", "advent devotional", "christmas faith", "spiritual consistency"],
+    description:
+      "How to stay consistent in your faith during the busy Christmas and Advent season. Five practical habits for keeping your devotional practice alive through December without adding to an already full schedule.",
+    body: post14Body,
   },
 ];
 

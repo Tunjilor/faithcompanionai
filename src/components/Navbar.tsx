@@ -1,6 +1,7 @@
 ﻿// v2
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@/context/UserContext";
@@ -182,7 +183,14 @@ export function Navbar() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-6">
         <Link href="/" className="flex items-center gap-3">
-          <img src="/brand/icon-192.png" alt="Faith Companion AI" className="h-9 w-9 rounded-lg object-contain" />
+          <Image
+              src="/icons/icon-192.png"
+              alt="Faith Companion AI"
+              width={36}
+              height={36}
+              className="rounded-xl ring-1 ring-white/25"
+              priority
+            />
           <div className="hidden leading-tight sm:block">
             <div className="font-extrabold text-white">Faith Companion</div>
             <div className="text-sm text-orange-400">AI</div>

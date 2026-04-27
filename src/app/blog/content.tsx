@@ -847,6 +847,99 @@ const post6Body: ReactNode = (
   </article>
 );
 
+// ── Post 7 ───────────────────────────────────────────────────────────────────
+const post7Body: ReactNode = (
+  <article>
+    <p className={p}>
+      Feeling lost is disorienting — but it is not a failure. Many of the most significant
+      moments in Scripture begin with someone who did not know where they were going. Abraham
+      left without knowing his destination. Moses spent forty years in the wilderness before his
+      calling became clear. The disciples were scattered and confused before they were sent.
+    </p>
+    <p className={p}>
+      Feeling directionless is often not the end of God&apos;s work in you. It is frequently
+      the beginning of the next part.
+    </p>
+
+    <h2 className={h2}>Scripture</h2>
+    <div className={blockquote}>
+      &ldquo;Your word is a lamp to my feet and a light to my path.&rdquo; — Psalm 119:105
+    </div>
+    <p className={p}>
+      Notice what the psalmist does not say. He does not say God is a floodlight illuminating
+      the entire road ahead. He says a lamp — enough light for the next step, and the one after
+      that. This is the normal experience of following God: not a clear view of the destination,
+      but sufficient light for the immediate step.
+    </p>
+    <p className={p}>
+      When you feel lost, the question is rarely &ldquo;What is my whole future?&rdquo;
+      It is: &ldquo;What is the next faithful step I can take today?&rdquo;
+    </p>
+
+    <h2 className={h2}>More Verses for Seasons of Uncertainty</h2>
+    <div className="mt-4 space-y-4">
+      {[
+        ["Proverbs 3:5–6", "Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight."],
+        ["Isaiah 30:21", "Whether you turn to the right or to the left, your ears will hear a voice behind you, saying, 'This is the way; walk in it.'"],
+        ["Jeremiah 29:11", "\"For I know the plans I have for you,\" declares the Lord, \"plans to prosper you and not to harm you, plans to give you hope and a future.\""],
+        ["James 1:5", "If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you."],
+        ["Psalm 37:23–24", "The Lord makes firm the steps of the one who delights in him; though he may stumble, he will not fall, for the Lord upholds him with his hand."],
+      ].map(([ref, text], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{ref}</div>
+          <div className={qaA}>&ldquo;{text}&rdquo;</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>Reflection</h2>
+    <p className={p}>
+      God does not always reveal the whole path — and this is not withholding. It is an
+      invitation to trust. A map with every detail given upfront requires no faith. A lamp that
+      lights the next step requires you to keep walking toward the One holding it.
+    </p>
+    <p className={p}>
+      What are you waiting to know before you take the next step? Is it possible that step is
+      already clearer than you are admitting — and that what you are really waiting for is
+      certainty about the one after that?
+    </p>
+
+    <h2 className={h2}>What To Do When You Feel Directionless</h2>
+    <ul className={ul}>
+      <li className={li}><strong>Pause</strong> — stop trying to force clarity through more thinking. Stillness often precedes direction (Psalm 46:10).</li>
+      <li className={li}><strong>Pray honestly</strong> — tell God exactly where you are. Not a polished version, but the real one: &ldquo;I don&apos;t know where I&apos;m going and I need help.&rdquo;</li>
+      <li className={li}><strong>Read slowly</strong> — sit with one passage rather than scanning many. Let it settle rather than searching for a quick answer.</li>
+      <li className={li}><strong>Take one step</strong> — pick the most faithful thing you can do today and do it. Direction often comes through movement, not waiting.</li>
+      <li className={li}><strong>Talk to someone</strong> — isolation amplifies confusion. A trusted friend, mentor, or pastor can offer perspective that feels impossible to find alone.</li>
+    </ul>
+
+    <div className={cta}>
+      <div className="text-lg font-bold text-white">Find a verse for where you are right now</div>
+      <p className="mt-2 text-sm text-white/65">
+        Describe your situation and receive a Scripture passage matched to it — with reflection
+        and context for your specific season. Free to try, no account required.
+      </p>
+      <Link
+        href="/tools/verse"
+        className="mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-95"
+      >
+        Find My Verse →
+      </Link>
+    </div>
+
+    <h2 className={h2}>Final Thought</h2>
+    <p className={p}>
+      Direction does not come all at once. It rarely arrives as a clear vision of the whole
+      journey — more often it comes as a quiet sense of the next right thing, confirmed as you
+      move toward it.
+    </p>
+    <p className={p}>
+      You are not lost in a way that is beyond God&apos;s ability to orient you. The lamp is
+      still on. Take the next step toward it.
+    </p>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -932,6 +1025,20 @@ export const POSTS: BlogPost[] = [
     description:
       "Learn how to build a daily prayer habit that actually sticks. Covers habit stacking, starting small, honesty over performance, handling missed days, and using structure when you need it.",
     body: post6Body,
+  },
+  {
+    slug: "verses-for-direction",
+    title: "Bible Verses for When You Feel Lost or Directionless",
+    excerpt:
+      "Feeling lost is often the beginning of guidance, not the end of it. Five Bible verses for uncertain seasons — with reflection and practical steps for finding your next direction.",
+    date: "June 1, 2026",
+    dateISO: "2026-06-01",
+    publishDate: "2026-06-01",
+    readTime: "6 min read",
+    keywords: ["bible verses feeling lost", "verses for direction", "bible verse when lost", "scripture for uncertainty", "feeling directionless christian"],
+    description:
+      "Bible verses for when you feel lost or directionless. Five passages for uncertain seasons — including Psalm 119:105, Proverbs 3:5–6, and Isaiah 30:21 — with reflection, practical steps, and a tool to find your verse.",
+    body: post7Body,
   },
 ];
 

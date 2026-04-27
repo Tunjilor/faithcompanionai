@@ -111,7 +111,7 @@ const CATEGORIES: Array<{
   },
   {
     id: "parables",
-    title: "Jesusâ€™ Parables",
+    title: "Jesus’ Parables",
     premium: false,
     description: "Teachings and meaning behind the parables.",
   },
@@ -208,7 +208,7 @@ export default function QuizPage() {
 
       const json = await res.json().catch(() => ({}));
       if (!res.ok || !json?.ok) {
-        setError("That name isnâ€™t allowed. Try letters and numbers only.");
+        setError("That name isn’t allowed. Try letters and numbers only.");
         return;
       }
 
@@ -248,12 +248,12 @@ export default function QuizPage() {
         if (data.error === "daily_limit_reached") {
           setError(
             data.message ||
-              "Youâ€™ve already used your 10 free questions today. Upgrade to Premium or come back tomorrow."
+              "You’ve already used your 10 free questions today. Upgrade to Premium or come back tomorrow."
           );
         } else if (data.error === "trial_limit_reached") {
           setError(
             data.message ||
-              "Youâ€™ve used all 30 free questions across 3 days. Upgrade to Premium to continue."
+              "You’ve used all 30 free questions across 3 days. Upgrade to Premium to continue."
           );
         } else if (data.error === "premium_required") {
           setError(data.message || "That category is available on Premium.");
@@ -318,10 +318,10 @@ export default function QuizPage() {
 
     try {
       await navigator.clipboard.writeText(share.challengeUrl);
-      setError("Challenge link copied âœ… Share it with friends!");
+      setError("Challenge link copied ✅ Share it with friends!");
       setTimeout(() => setError(null), 2500);
     } catch {
-      setError("Couldnâ€™t copy the challenge link.");
+      setError("Couldn’t copy the challenge link.");
     }
   }
 
@@ -332,7 +332,7 @@ export default function QuizPage() {
   const trialDaysSinceFirstSeen = getTrialDaysSinceFirstSeen(me);
   const trialNote =
     !me?.authed && !me?.signedIn && typeof trialDaysSinceFirstSeen === "number"
-      ? `Guest mode â€¢ Day ${Math.min(Math.floor(trialDaysSinceFirstSeen) + 1, 3)} of 3`
+      ? `Guest mode • Day ${Math.min(Math.floor(trialDaysSinceFirstSeen) + 1, 3)} of 3`
       : null;
 
   const scoreTone = useMemo(() => {
@@ -387,7 +387,7 @@ export default function QuizPage() {
 
           <div className="flex flex-wrap gap-2">
             <div className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-200">
-              {premiumActive ? "Premium active âœ…" : "Free plan"}
+              {premiumActive ? "Premium active ✅" : "Free plan"}
             </div>
 
             <button
@@ -502,7 +502,7 @@ export default function QuizPage() {
                 className="rounded-2xl border border-white/10 bg-white/5 p-4 md:p-5"
               >
                 <div className="mb-3 text-xs uppercase tracking-wide text-white/50">
-                  Question {idx + 1} â€¢ {q.category}
+                  Question {idx + 1} • {q.category}
                 </div>
 
                 <h3 className="text-base font-medium leading-7 text-white md:text-lg">
@@ -568,7 +568,7 @@ export default function QuizPage() {
             </div>
             <p className="mt-2 text-sm leading-6 text-white/80">
               {scoreTone === "great"
-                ? "Excellent work. Youâ€™re doing really well."
+                ? "Excellent work. You’re doing really well."
                 : scoreTone === "good"
                 ? "Nice job. Keep building your Bible knowledge."
                 : "Good effort. Review the answers below and try again."}

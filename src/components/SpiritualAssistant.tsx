@@ -32,6 +32,7 @@ export default function SpiritualAssistant() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
+  const [savedFlash, setSavedFlash] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -167,8 +168,8 @@ export default function SpiritualAssistant() {
                 type="button"
                 onClick={clearChat}
                 className="rounded-md bg-white/15 px-2 py-1 text-xs hover:bg-white/25"
-                aria-label="Reset conversation"
-                title="Reset"
+                aria-label="Clear conversation"
+                title="Clear chat (keeps widget open)"
               >
                 <RotateCcw size={14} />
               </button>
@@ -176,8 +177,8 @@ export default function SpiritualAssistant() {
                 type="button"
                 onClick={() => setOpen(false)}
                 className="rounded-md bg-white/15 px-2 py-1 text-xs hover:bg-white/25"
-                aria-label="Close"
-                title="Close"
+                aria-label="Close chat"
+                title="Close (conversation is saved)"
               >
                 <X size={14} />
               </button>
@@ -213,12 +214,13 @@ export default function SpiritualAssistant() {
               <button
                 type="button"
                 onClick={() => {
-                  // already saved in localStorage via effect; this is just user feedback behavior
-                  // could later show toast
+                  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs)); } catch { /* ignore */ }
+                  setSavedFlash(true);
+                  setTimeout(() => setSavedFlash(false), 1500);
                 }}
                 className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/80 hover:bg-white/10 hover:text-white"
               >
-                Save Conversation
+                {savedFlash ? "Saved!" : "Save Conversation"}
               </button>
               <button
                 type="button"
@@ -233,6 +235,13 @@ export default function SpiritualAssistant() {
                 className="rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-3 py-2 text-xs font-semibold text-white hover:opacity-95"
               >
                 Download (.txt)
+              </button>
+              <button
+                type="button"
+                onClick={clearChat}
+                className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/50 hover:bg-white/10 hover:text-white/80"
+              >
+                Clear chat
               </button>
             </div>
           </div>

@@ -128,7 +128,7 @@ export default function PrayerPage() {
           setQuota(data.quota ?? null);
           setError(
             data.error ||
-              "Youâ€™ve reached your free limit. Upgrade to Premium for unlimited prayers, verses, and devotionals."
+              "You’ve reached your free limit. Upgrade to Premium for unlimited prayers, verses, and devotionals."
           );
           return;
         }
@@ -393,7 +393,7 @@ export default function PrayerPage() {
           <div className="mt-5">
             <UpgradeCTA
               variant="soft"
-              title="Youâ€™re on your last few free prayer requests."
+              title="You’re on your last few free prayer requests."
               description="Upgrade now to keep going without interruptions and save your prayers to your faith journal."
               primaryHref="/pricing"
               primaryLabel="Upgrade to Premium"
@@ -409,7 +409,7 @@ export default function PrayerPage() {
               title="Your free prayer limit has been reached"
               description={
                 error ||
-                "Youâ€™ve reached your free limit. Upgrade now to continue instantly with unlimited prayers, verses, and devotionals."
+                "You’ve reached your free limit. Upgrade now to continue instantly with unlimited prayers, verses, and devotionals."
               }
               primaryHref="/pricing"
               primaryLabel="Upgrade Now"

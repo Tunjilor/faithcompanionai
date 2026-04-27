@@ -84,7 +84,7 @@ export default function SavedPage() {
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-white md:text-4xl">Saved</h1>
         <p className="mt-2 max-w-2xl text-sm leading-7 text-white/70 md:text-base">
-          Revisit the verses, prayers, and reflections youâ€™ve saved along your faith journey.
+          Revisit the verses, prayers, and reflections you’ve saved along your faith journey.
         </p>
       </header>
 

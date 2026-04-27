@@ -147,7 +147,7 @@ function PrayerCard({
           </span>
           {isAnswered && (
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 px-2 py-0.5 text-xs font-semibold text-emerald-300">
-              âœ… Answered
+              ✅ Answered
             </span>
           )}
         </div>
@@ -466,17 +466,17 @@ export default function DashboardPage() {
 
         <div className="rounded-[24px] border border-white/10 bg-white/5 p-5">
           <div className="text-sm text-white/60">Saved items</div>
-          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.total : "â€”"}</div>
+          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.total : "—"}</div>
         </div>
 
         <div className="rounded-[24px] border border-white/10 bg-white/5 p-5">
           <div className="text-sm text-white/60">Saved verses</div>
-          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.verses : "â€”"}</div>
+          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.verses : "—"}</div>
         </div>
 
         <div className="rounded-[24px] border border-white/10 bg-white/5 p-5">
           <div className="text-sm text-white/60">Prayers saved</div>
-          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.prayers : "â€”"}</div>
+          <div className="mt-2 text-2xl font-bold text-white">{signedIn ? counts.prayers : "—"}</div>
         </div>
       </section>
 
@@ -497,9 +497,9 @@ export default function DashboardPage() {
                       </div>
                       <div className="mt-0.5 text-sm text-white/65">
                         {streak.currentStreak === 1
-                          ? "Great start â€” come back tomorrow to build your streak!"
+                          ? "Great start — come back tomorrow to build your streak!"
                           : streak.currentStreak < 7
-                          ? "Keep it going â€” consistency is everything."
+                          ? "Keep it going — consistency is everything."
                           : streak.currentStreak < 30
                           ? "You're building a real habit. Don't break the chain!"
                           : "Incredible dedication. Your faith is consistent."}
@@ -522,7 +522,7 @@ export default function DashboardPage() {
               <div className="flex shrink-0 flex-col gap-2 text-center">
                 <div className="rounded-2xl border border-orange-500/20 bg-black/20 px-5 py-3">
                   <div className="text-3xl font-extrabold text-orange-300">
-                    {streak?.currentStreak ?? "â€”"}
+                    {streak?.currentStreak ?? "—"}
                   </div>
                   <div className="text-xs text-white/50">days in a row</div>
                 </div>
@@ -617,7 +617,7 @@ export default function DashboardPage() {
             <div>
               <h2 className="text-xl font-bold text-white">Share Faith Companion AI</h2>
               <p className="mt-1 text-sm text-white/60">
-                Share your unique link. Every friend who joins is tracked â€” rewards coming soon.
+                Share your unique link. Every friend who joins is tracked — rewards coming soon.
               </p>
               {typeof me.referralCount === "number" && (
                 <div className="mt-2 text-sm font-semibold text-orange-300">
@@ -735,7 +735,7 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold text-white">My Prayer Journal</h2>
             <p className="mt-1 text-sm text-white/60">
               {premiumActive && prayers.length > 0
-                ? `${prayers.length} prayer${prayers.length !== 1 ? "s" : ""} saved â€” ${answeredCount} answered`
+                ? `${prayers.length} prayer${prayers.length !== 1 ? "s" : ""} saved — ${answeredCount} answered`
                 : "Save prayers from the Prayer tool to build your journal."}
             </p>
           </div>
@@ -781,7 +781,7 @@ export default function DashboardPage() {
           <div className="rounded-[24px] border border-dashed border-white/10 bg-black/10 p-6 text-sm text-white/60">
             No prayers saved yet. Generate a prayer and save it to start your journal.{" "}
             <Link href="/tools/prayer" className="font-semibold text-orange-400 hover:text-orange-300">
-              Write a prayer â†’
+              Write a prayer →
             </Link>
           </div>
         ) : filteredPrayers.length === 0 ? (
@@ -836,7 +836,7 @@ export default function DashboardPage() {
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold uppercase tracking-wide text-white/50">{item.type}</span>
                     {item.type === "prayer" && item.answeredAt && (
-                      <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-300">âœ… Answered</span>
+                      <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-300">✅ Answered</span>
                     )}
                   </div>
                   <div className="text-xs text-white/50">{formatDate(item.createdAt)}</div>

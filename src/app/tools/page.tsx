@@ -202,7 +202,7 @@ export default function ToolsPage() {
   function saveLocally() {
     const q = prompt.trim();
     if (!q || !answer) {
-      setError("Ask a question first â€” then you can save the result.");
+      setError("Ask a question first — then you can save the result.");
       return;
     }
 
@@ -226,7 +226,7 @@ export default function ToolsPage() {
 
     const q = prompt.trim();
     if (!q || !answer) {
-      setError("Ask a question first â€” then you can save the result.");
+      setError("Ask a question first — then you can save the result.");
       return;
     }
 
@@ -316,7 +316,7 @@ export default function ToolsPage() {
         <section>
           <BrandHeader
             title="Tools"
-            subtitle="Ask for a verse, a prayer, or a devotional â€” grounded in Scripture references."
+            subtitle="Ask for a verse, a prayer, or a devotional — grounded in Scripture references."
           />
 
           <div className="brand-surface rounded-2xl p-6">
@@ -366,7 +366,7 @@ export default function ToolsPage() {
                   value={situation}
                   onChange={(e) => setSituation(e.target.value)}
                   className="w-full rounded-xl border border-black/10 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-black/10"
-                  placeholder="Anxiety at night, job stress, family concernsâ€¦"
+                  placeholder="Anxiety at night, job stress, family concerns…"
                 />
               </div>
             </div>
@@ -391,7 +391,7 @@ export default function ToolsPage() {
                   canSubmit ? "brand-gradient-bg hover:opacity-95" : "bg-black/20 cursor-not-allowed"
                 }`}
               >
-                {isLoading ? "Thinkingâ€¦" : "Ask"}
+                {isLoading ? "Thinking…" : "Ask"}
               </button>
 
               <button
@@ -444,7 +444,7 @@ export default function ToolsPage() {
               <div className="mt-6 rounded-xl border border-black/10 bg-white p-5">
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <div className="text-sm text-slate-600">
-                    {activeSaved ? "Saved Answer" : "Answer"} â€¢ <span className="uppercase">{mode}</span>
+                    {activeSaved ? "Saved Answer" : "Answer"} • <span className="uppercase">{mode}</span>
                   </div>
                   {activeSaved && <div className="text-xs text-slate-500">{formatDate(activeSaved.createdAt)}</div>}
                 </div>

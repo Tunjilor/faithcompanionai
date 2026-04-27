@@ -343,7 +343,7 @@ export default function VersePage() {
                 <ul className="mt-1 space-y-1 pl-1">
                   {result.verses.map((v) => (
                     <li key={v} className="flex gap-2">
-                      <span className="text-slate-400">â€”</span>
+                      <span className="text-slate-400">—</span>
                       <span>{v}</span>
                     </li>
                   ))}

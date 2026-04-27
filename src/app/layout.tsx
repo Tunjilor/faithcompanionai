@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   manifest: "/manifest.json",
   icons: {
-    icon: [{ url: "/brand/icon-32.png", sizes: "32x32", type: "image/png" },{ url: "/brand/icon-192.png", sizes: "192x192", type: "image/png" }],
-    apple: [{ url: "/brand/icon-180.png", sizes: "180x180", type: "image/png" }],
+    icon: [{ url: "/brand/icon-32.png", sizes: "32x32", type: "image/png" },{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     shortcut: ["/favicon.ico"],
   },
   openGraph: {
@@ -66,6 +66,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="ga-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];

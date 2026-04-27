@@ -21,14 +21,14 @@ import { join, extname } from 'path';
 // C2 B7 (·)     → Â (C2) + · (B7)  [but ·=U+00B7 is also valid directly]
 
 const FIXES = [
-  // — em dash  (E2 80 94)
+  // — em dash  (E2 80 94)  — Win-1252 0x94 → U+201D
   ['\u00E2\u20AC\u201D', '\u2014'],
-  // ' right single quote / apostrophe  (E2 80 99)
-  ['\u00E2\u20AC\u2019', '\u2019'],
-  // " left double quote  (E2 80 9C)
+  // ' right single quote / apostrophe  (E2 80 99)  — Win-1252 0x99 → U+2122 ™
+  ['\u00E2\u20AC\u2122', '\u2019'],
+  // – en dash  (E2 80 93)  — Win-1252 0x93 → U+201C "
+  ['\u00E2\u20AC\u201C', '\u2013'],
+  // " left double quote  (E2 80 9C)  — Win-1252 0x9C → U+0153 œ
   ['\u00E2\u20AC\u0153', '\u201C'],
-  // " right double quote  (E2 80 9D) — note: same U+201D marker as em-dash last byte
-  ['\u00E2\u20AC\u201D', '\u2014'], // already above; keep both orderings handled
   // • bullet  (E2 80 A2)
   ['\u00E2\u20AC\u00A2', '\u2022'],
   // … ellipsis  (E2 80 A6)

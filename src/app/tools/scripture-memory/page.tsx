@@ -146,7 +146,7 @@ export default function ScriptureMemoryPage() {
   const hintText = useMemo(() => {
     if (!activeVerse || hintsRevealed === 0) return null;
     const words = activeVerse.text.trim().split(/\s+/);
-    return words.slice(0, hintsRevealed).join(" ") + (hintsRevealed < words.length ? " â€¦" : "");
+    return words.slice(0, hintsRevealed).join(" ") + (hintsRevealed < words.length ? " …" : "");
   }, [activeVerse, hintsRevealed]);
 
   // â”€â”€ Practice screen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -161,7 +161,7 @@ export default function ScriptureMemoryPage() {
           onClick={() => setMode("list")}
           className="mb-6 text-sm text-white/50 hover:text-white"
         >
-          â† Back to verses
+          ← Back to verses
         </button>
 
         <div className="rounded-[24px] border border-white/10 bg-white/5 p-6 md:p-8">
@@ -185,7 +185,7 @@ export default function ScriptureMemoryPage() {
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               rows={5}
-              placeholder="Start typing the verseâ€¦"
+              placeholder="Start typing the verse…"
               className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-white/25"
             />
           </div>
@@ -224,7 +224,7 @@ export default function ScriptureMemoryPage() {
 
   // â”€â”€ Results screen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (mode === "results" && activeVerse) {
-    const emoji = score === 100 ? "ðŸŽ‰" : score >= 80 ? "âœ…" : score >= 50 ? "ðŸ“–" : "ðŸ“";
+    const emoji = score === 100 ? "ðŸŽ‰" : score >= 80 ? "✅" : score >= 50 ? "ðŸ“–" : "ðŸ“";
 
     return (
       <div className="mx-auto max-w-3xl px-4 py-6 md:px-6">
@@ -236,14 +236,14 @@ export default function ScriptureMemoryPage() {
               {score === 100
                 ? "Perfect! You nailed it."
                 : score >= 80
-                ? "Great work â€” almost perfect!"
+                ? "Great work — almost perfect!"
                 : score >= 50
                 ? "Good effort. Keep practicing!"
-                : "Keep going â€” repetition is the key!"}
+                : "Keep going — repetition is the key!"}
             </div>
             <div className="mt-1 text-xs text-white/40">
               {results.filter((w) => w.correct).length} of {results.length} words correct
-              {hintsRevealed > 0 && ` Â· ${hintsRevealed} hint${hintsRevealed !== 1 ? "s" : ""} used`}
+              {hintsRevealed > 0 && ` · ${hintsRevealed} hint${hintsRevealed !== 1 ? "s" : ""} used`}
             </div>
           </div>
 
@@ -309,7 +309,7 @@ export default function ScriptureMemoryPage() {
               {verses.length}/{FREE_LIMIT} verses saved
             </span>
             {verses.length >= FREE_LIMIT && (
-              <> â€” <Link href="/pricing" className="text-orange-300 underline">Upgrade for unlimited</Link></>
+              <> — <Link href="/pricing" className="text-orange-300 underline">Upgrade for unlimited</Link></>
             )}
           </div>
         )}
@@ -318,14 +318,14 @@ export default function ScriptureMemoryPage() {
           <input
             value={ref}
             onChange={(e) => setRef(e.target.value)}
-            placeholder="Reference (e.g. Philippians 4:6â€“7)"
+            placeholder="Reference (e.g. Philippians 4:6–7)"
             className="rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-white/25"
           />
           <div className="sm:col-start-1 sm:col-end-3">
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              placeholder="Paste the verse text hereâ€¦"
+              placeholder="Paste the verse text here…"
               rows={3}
               className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-white/25"
             />

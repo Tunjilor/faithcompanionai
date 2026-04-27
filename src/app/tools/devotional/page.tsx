@@ -35,7 +35,7 @@ function renderMarkdown(text: string): React.ReactNode[] {
     if (/^[-*]\s/.test(line)) {
       output.push(
         <div key={key++} className="flex gap-2 text-sm leading-6 text-slate-700">
-          <span className="mt-0.5 text-slate-400">â€¢</span>
+          <span className="mt-0.5 text-slate-400">•</span>
           <span>{inlineBold(line.replace(/^[-*]\s/, ""))}</span>
         </div>
       );
@@ -200,7 +200,7 @@ export default function DevotionalPage() {
           setQuota(data.quota ?? null);
           setError(
             data.error ||
-              "Youâ€™ve reached your free limit. Upgrade to Premium for unlimited devotionals, prayers, and verses."
+              "You’ve reached your free limit. Upgrade to Premium for unlimited devotionals, prayers, and verses."
           );
           return;
         }
@@ -468,7 +468,7 @@ export default function DevotionalPage() {
           <div className="mt-5">
             <UpgradeCTA
               variant="soft"
-              title="Youâ€™re on your last few free devotionals."
+              title="You’re on your last few free devotionals."
               description="Upgrade now to keep going without interruptions and save your devotionals to your faith journal."
               primaryHref="/pricing"
               primaryLabel="Upgrade to Premium"
@@ -484,7 +484,7 @@ export default function DevotionalPage() {
               title="Your free devotional limit has been reached"
               description={
                 error ||
-                "Youâ€™ve reached your free limit. Upgrade now to continue instantly with unlimited devotionals, prayers, and verses."
+                "You’ve reached your free limit. Upgrade now to continue instantly with unlimited devotionals, prayers, and verses."
               }
               primaryHref="/pricing"
               primaryLabel="Upgrade Now"

@@ -40,41 +40,41 @@ const featureCards = [
   {
     title: "Verse",
     description:
-      "Get a Scripture-focused verse thought with encouragement and a simple next step.",
+      "Personalized scripture delivered for exactly what you are going through — not a random verse, but the right one.",
     href: "/tools/verse",
-    tag: "Quick help",
+    tag: "Personalized scripture",
   },
   {
     title: "Prayer",
     description:
-      "Generate a personal prayer for what you are facing, with a calm and faith-filled tone.",
+      "AI prayers that speak to your situation. Type what is on your heart and receive a prayer that feels like it was written for you.",
     href: "/tools/prayer",
-    tag: "Daily support",
+    tag: "AI prayers",
   },
   {
     title: "Devotional",
     description:
-      "Receive a devotional with reflection, prayer, Scripture references, and action steps.",
+      "Deeper guidance, reflection, and faith insights tailored to your moment — not a generic daily reading.",
     href: "/tools/devotional",
-    tag: "Go deeper",
+    tag: "Guidance + insights",
   },
 ];
 
 const reasons = [
   {
-    title: "Scripture-grounded",
+    title: "Find peace in anxiety",
     description:
-      "Built to encourage daily faith through Bible-based reflection, not empty inspiration.",
+      "When worry feels overwhelming, receive the exact scripture and prayer that speaks directly to what you are carrying right now.",
   },
   {
-    title: "Fast and personal",
+    title: "Hear God's word for your situation",
     description:
-      "Start with what you need right now — peace, guidance, strength, hope, healing, or prayer.",
+      "Most apps give the same verses. This one learns your situation and delivers exactly what you need in that moment.",
   },
   {
-    title: "Designed for consistency",
+    title: "Stay consistent in faith",
     description:
-      "Move from one-time inspiration to a repeatable rhythm of prayer, reflection, and growth.",
+      "Move from one-time inspiration to a repeatable rhythm of prayer, reflection, and growth that fits your life.",
   },
 ];
 
@@ -163,12 +163,12 @@ export default function HomePage() {
           </div>
 
           <h1 className="mt-5 text-4xl font-bold tracking-tight text-white md:text-6xl">
-            Scripture-based support for your daily walk with God
+            Stop Searching for the Right Verse. Let It Find You.
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/70 md:text-lg">
-            Faith Companion AI helps you find a verse, write a prayer, go deeper with a devotional,
-            and build a more consistent spiritual rhythm — all in one calm, mobile-friendly experience.
+            Faith Companion uses AI to understand what you are going through — and delivers the exact
+            scripture, prayer, and guidance you need in that moment.
           </p>
 
           <div className="mt-8">
@@ -178,9 +178,9 @@ export default function HomePage() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-white/50 sm:text-sm">
             <span>Free to try</span>
             <span>•</span>
-            <span>Built for mobile and desktop</span>
+            <span>Personalized to your situation</span>
             <span>•</span>
-            <span>Designed for daily use</span>
+            <span>Scripture-grounded, not generic</span>
           </div>
         </div>
       </section>
@@ -214,12 +214,12 @@ export default function HomePage() {
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <h2 className="text-2xl font-bold text-white md:text-3xl">
-              Built for the moments when you need direction, peace, or a place to begin
+              Feeling overwhelmed, lost, or disconnected?
             </h2>
             <p className="mt-4 text-sm leading-7 text-white/70 md:text-base">
-              Some days you need a quick verse. Some days you need a prayer for what you are carrying.
-              Some days you want a fuller devotional to slow down and reflect. Faith Companion AI is designed
-              to meet you in all three.
+              Most apps give you the same verses everyone else gets. Faith Companion AI understands
+              your situation and gives you exactly what you need — the right scripture, a personal prayer,
+              and real guidance for where you are right now.
             </p>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -257,13 +257,13 @@ export default function HomePage() {
 
       <section className="mt-10 grid gap-6 lg:grid-cols-[1fr_1fr]">
         <div className="rounded-[28px] p-8" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <div className="text-sm font-semibold text-orange-300">Quiz + Growth Loop</div>
+          <div className="text-sm font-semibold text-orange-300">Discover Your Faith Journey</div>
           <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">
-            Test your Bible knowledge and challenge others
+            Discover What Your Faith Journey Needs Right Now
           </h2>
           <p className="mt-4 text-sm leading-7 text-white/70 md:text-base">
-            The Bible Quiz adds a fun layer to the experience. Take a quiz, review your answers,
-            and share your score so friends can try to beat it.
+            Take a quick quiz to uncover where you are spiritually and get a personalized starting point
+            for your faith journey. Takes less than 2 minutes.
           </p>
 
           <div className="mt-6">
@@ -271,7 +271,7 @@ export default function HomePage() {
               href="/biblequiz"
               className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95"
             >
-              Take the Quiz
+              Take the Quiz Now
             </Link>
           </div>
         </div>
@@ -300,11 +300,12 @@ export default function HomePage() {
       <section className="mt-10 rounded-[30px] p-8 md:p-10" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
         <div className="max-w-3xl">
           <h2 className="text-2xl font-bold text-white md:text-3xl">
-            A calmer, more consistent faith experience
+            An adaptive faith experience that learns what you need
           </h2>
           <p className="mt-4 text-sm leading-7 text-white/70 md:text-base">
-            Faith Companion AI is built to reduce friction. Instead of wondering where to begin,
-            you can open the app, choose the kind of support you need, and keep moving in the right direction.
+            Most devotional apps give the same content to everyone. Faith Companion AI is different —
+            it understands your situation and delivers a personalized scripture, prayer, and guidance
+            tailored to exactly where you are in your walk with God.
           </p>
         </div>
       </section>
@@ -339,7 +340,7 @@ export default function HomePage() {
             How it works
           </div>
           <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">
-            Three steps to daily spiritual support
+            Three steps to personalized spiritual support
           </h2>
         </div>
 
@@ -347,21 +348,21 @@ export default function HomePage() {
           {[
             {
               step: "1",
-              title: "Choose your tool",
+              title: "Tell us what you are going through",
               description:
-                "Select Verse for quick encouragement, Prayer for a personal need, or Devotional for deeper reflection. Bible Quiz for learning.",
+                "Share your situation — anxiety, grief, confusion, gratitude, a specific burden. No judgment, just honesty.",
             },
             {
               step: "2",
-              title: "Get Scripture-based content",
+              title: "AI understands your situation",
               description:
-                "AI generates a response grounded in the Bible — not empty inspiration, but real verses, prayers, and devotionals tied to your situation.",
+                "Faith Companion reads the context of what you share and finds the scripture, prayer, and guidance most relevant to you.",
             },
             {
               step: "3",
-              title: "Save and grow",
+              title: "Get personalized scripture and guidance",
               description:
-                "Premium members save meaningful content to their personal faith journal. Return anytime to revisit and build a consistent spiritual rhythm.",
+                "Receive a verse, prayer, or devotional that speaks directly to your moment — not a generic response, but one made for you.",
             },
           ].map((item) => (
             <div key={item.step} className="flex flex-col items-start gap-3">
@@ -436,30 +437,18 @@ export default function HomePage() {
 
       <section className="mt-10 text-center">
         <h2 className="text-2xl font-bold text-white md:text-3xl">
-          Start with the support you need today
+          Start Your Faith Journey Today
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-white/70 md:text-base">
-          Choose a verse for encouragement, a prayer for your current burden, or a devotional for deeper reflection.
+          Tell us what you are going through and receive the exact scripture, prayer, and guidance you need right now.
         </p>
 
         <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
-            href="/tools/verse"
-            className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:opacity-90"
+            href="/biblequiz"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-8 py-3 text-sm font-semibold text-white transition hover:opacity-95"
           >
-            Verse
-          </Link>
-          <Link
-            href="/tools/prayer"
-            className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-          >
-            Prayer
-          </Link>
-          <Link
-            href="/tools/devotional"
-            className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-          >
-            Devotional
+            Start Your Faith Journey
           </Link>
         </div>
       </section>

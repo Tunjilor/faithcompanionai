@@ -92,7 +92,7 @@ export default function VerseOfDay() {
     <section className="max-w-2xl">
       <h1 className="text-2xl font-semibold mb-3">Verse of the Day</h1>
 
-      {loadingVerse && <p>Loadingâ€¦</p>}
+      {loadingVerse && <p>Loading…</p>}
 
       {!loadingVerse && verse && (
         <div className="rounded-lg border p-4">
@@ -153,7 +153,7 @@ export default function VerseOfDay() {
             </div>
           </div>
 
-          {loadingAI && <p className="mt-4">Thinkingâ€¦</p>}
+          {loadingAI && <p className="mt-4">Thinking…</p>}
 
           {err && <p className="mt-4 text-sm text-red-600">{err}</p>}
 

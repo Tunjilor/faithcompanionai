@@ -21,7 +21,7 @@ export default function PremiumGate({
     return (
       <>
         {loadingFallback ?? (
-          <div style={{ padding: 12, opacity: 0.8 }}>Checking accessâ€¦</div>
+          <div style={{ padding: 12, opacity: 0.8 }}>Checking access…</div>
         )}
       </>
     );

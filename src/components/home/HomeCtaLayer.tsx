@@ -64,17 +64,10 @@ export default function HomeCtaLayer() {
     return (
       <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
         <Link
-          href="/tools/verse"
+          href="/biblequiz"
           className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:opacity-90"
         >
-          Start with Verse
-        </Link>
-
-        <Link
-          href="/pricing"
-          className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-        >
-          Explore Premium
+          Start Your Faith Journey
         </Link>
       </div>
     );
@@ -138,10 +131,10 @@ export default function HomeCtaLayer() {
 
       <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
         <Link
-          href="/tools/verse"
+          href="/biblequiz"
           className="inline-flex min-h-[48px] items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:opacity-90"
         >
-          Start with Verse
+          Start Your Faith Journey
         </Link>
 
         <Link
@@ -149,13 +142,6 @@ export default function HomeCtaLayer() {
           className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
         >
           Create Free Account
-        </Link>
-
-        <Link
-          href="/pricing"
-          className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-        >
-          Explore Premium
         </Link>
       </div>
     </div>

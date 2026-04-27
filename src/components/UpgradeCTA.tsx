@@ -91,13 +91,13 @@ export default function UpgradeCTA({
       {showFeatures && (
         <div className="mt-4 grid gap-2 text-sm">
           <div className={variant === "dashboard" ? "text-white/85" : "text-slate-800"}>
-            âœ” Unlimited verses, prayers, and devotionals
+            ✓ Unlimited verses, prayers, and devotionals
           </div>
           <div className={variant === "dashboard" ? "text-white/85" : "text-slate-800"}>
-            âœ” Save your spiritual journey to your account
+            ✓ Save your spiritual journey to your account
           </div>
           <div className={variant === "dashboard" ? "text-white/85" : "text-slate-800"}>
-            âœ” Build your personal faith journal over time
+            ✓ Build your personal faith journal over time
           </div>
         </div>
       )}

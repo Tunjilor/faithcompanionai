@@ -501,6 +501,122 @@ const post3Body: ReactNode = (
   </article>
 );
 
+// ── Post 4 ───────────────────────────────────────────────────────────────────
+const post4Body: ReactNode = (
+  <article>
+    <p className={p}>
+      Sometimes you don&apos;t need more information — you need the <em>right</em> word at the right
+      time. The Bible speaks to every season of life, but finding the verse that truly connects to
+      your situation can feel overwhelming. Here is a simple approach that works.
+    </p>
+
+    <h2 className={h2}>Start With Where You Are</h2>
+    <p className={p}>
+      Instead of searching randomly, begin with honesty. The most effective way to find a verse
+      that lands is to name exactly what you are feeling or facing before you search.
+    </p>
+    <ul className={ul}>
+      <li className={li}>Are you feeling anxious or overwhelmed?</li>
+      <li className={li}>Are you waiting for direction and feeling stuck?</li>
+      <li className={li}>Are you struggling with forgiveness — of someone else, or yourself?</li>
+      <li className={li}>Are you grieving, doubting, or quietly losing hope?</li>
+    </ul>
+    <p className={p}>
+      God meets you where you are — not where you think you should be. Naming it honestly is the
+      first step to finding a word that actually speaks to it.
+    </p>
+
+    <h2 className={h2}>Look for Themes, Not Just Keywords</h2>
+    <p className={p}>
+      A common mistake is searching for exact phrases — &ldquo;Bible verse about anxiety&rdquo; or
+      &ldquo;verse about waiting.&rdquo; These searches often return the same five popular verses
+      regardless of your specific situation. Instead, think in broader themes:
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>Peace</strong> — not just the absence of worry, but the presence of God in the storm</li>
+      <li className={li}><strong>Strength</strong> — particularly when you feel like you have none left</li>
+      <li className={li}><strong>Hope</strong> — for when the future feels closed off or uncertain</li>
+      <li className={li}><strong>Guidance</strong> — for decisions, crossroads, and moments of confusion</li>
+      <li className={li}><strong>Comfort</strong> — for grief, loss, and the kind of pain that is hard to name</li>
+    </ul>
+    <p className={p}>
+      Scripture often speaks in deeper ways than simple keyword matching. A passage about God leading
+      Israel through the wilderness may say more about your career uncertainty than a verse with
+      &ldquo;work&rdquo; in it.
+    </p>
+
+    <h2 className={h2}>Sit With the Verse</h2>
+    <p className={p}>
+      When you find a verse that resonates, resist the urge to immediately move on. The habit of
+      collecting verses without absorbing them is one of the main reasons Scripture feels distant
+      rather than alive.
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>Read it slowly</strong> — read it once for words, once for meaning, once for application</li>
+      <li className={li}><strong>Read the surrounding passage</strong> — context almost always deepens the meaning</li>
+      <li className={li}><strong>Reflect before responding</strong> — ask: <em>What is God showing me here?</em></li>
+      <li className={li}><strong>Write it down</strong> — copying a verse by hand significantly increases how deeply it sticks</li>
+    </ul>
+
+    <h2 className={h2}>Match the Verse to Your Specific Situation</h2>
+    <p className={p}>
+      There is a difference between a verse that is generally encouraging and a verse that speaks
+      directly to <em>your</em> situation. Here are some examples of how to match more precisely:
+    </p>
+    <div className="mt-4 space-y-4">
+      {[
+        ["Anxious about a decision", "Proverbs 3:5–6 — lean not on your own understanding"],
+        ["Feeling forgotten or unseen", "Isaiah 49:15–16 — God has engraved you on his hands"],
+        ["Exhausted and depleted", "Isaiah 40:31 — those who hope in the Lord renew their strength"],
+        ["Struggling to forgive", "Colossians 3:13 — forgive as the Lord forgave you"],
+        ["Grieving a loss", "Psalm 34:18 — the Lord is close to the brokenhearted"],
+        ["Afraid of what is coming", "2 Timothy 1:7 — God has not given us a spirit of fear"],
+      ].map(([situation, verse], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{situation}</div>
+          <div className={qaA}>{verse}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>A Simpler Way to Find the Right Verse</h2>
+    <p className={p}>
+      If you are not sure where to start, or you have tried searching and keep landing on the same
+      generic results, a guided tool can help bridge the gap between what you are experiencing and
+      the Scripture that speaks to it.
+    </p>
+    <p className={p}>
+      Faith Companion AI&apos;s verse tool asks you what you are going through — and then finds
+      Scripture matched to your specific situation, not a general topic. You describe your moment;
+      it finds the word for it.
+    </p>
+
+    <div className={cta}>
+      <div className="text-lg font-bold text-white">Find a verse for your situation</div>
+      <p className="mt-2 text-sm text-white/65">
+        Describe what you are going through and receive a Scripture passage that speaks directly
+        to it — with reflection and context. Free to try, no account required.
+      </p>
+      <Link
+        href="/tools/verse"
+        className="mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-95"
+      >
+        Find My Verse →
+      </Link>
+    </div>
+
+    <h2 className={h2}>Final Thought</h2>
+    <p className={p}>
+      You don&apos;t need to search endlessly. The Bible is not a catalogue to be exhausted — it
+      is a living word that meets you in specific moments. Start with where you are, look for the
+      theme beneath the feeling, and give the verse space to land.
+    </p>
+    <p className={p}>
+      Sometimes the right verse is not far away. It just needs to be revealed.
+    </p>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -544,6 +660,20 @@ export const POSTS: BlogPost[] = [
     description:
       "A complete daily devotional guide for beginners. Covers the 4-part devotional structure, a 7-day starter reading plan, the best time of day to do devotionals, and tips to make the habit stick.",
     body: post3Body,
+  },
+  {
+    slug: "find-right-bible-verse",
+    title: "How to Find the Right Bible Verse for Your Situation",
+    excerpt:
+      "You don't need to search endlessly. Learn how to match Scripture to exactly what you're going through — with a simple approach that goes beyond keyword searches.",
+    date: "May 1, 2026",
+    dateISO: "2026-05-01",
+    publishDate: "2026-05-01",
+    readTime: "6 min read",
+    keywords: ["find bible verse for situation", "right bible verse", "bible verse for my situation", "how to find scripture", "personalized bible verse"],
+    description:
+      "Learn how to find the right Bible verse for your situation. Move beyond generic keyword searches — use themes, honest reflection, and a step-by-step approach to find Scripture that speaks directly to where you are.",
+    body: post4Body,
   },
 ];
 

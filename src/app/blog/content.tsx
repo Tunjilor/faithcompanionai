@@ -716,6 +716,137 @@ const post5Body: ReactNode = (
   </article>
 );
 
+// ── Post 6 ───────────────────────────────────────────────────────────────────
+const post6Body: ReactNode = (
+  <article>
+    <p className={p}>
+      Many people want to pray more — but struggle to stay consistent. They start well, miss a
+      few days, feel guilty, and quietly give up. Then the cycle repeats. The problem is rarely
+      a lack of desire. It is a lack of a system simple enough to survive a hard week.
+    </p>
+    <p className={p}>
+      The key to a daily prayer habit is not more discipline. It is more simplicity.
+    </p>
+
+    <h2 className={h2}>Start Smaller Than You Think You Need To</h2>
+    <p className={p}>
+      The biggest mistake people make when building a prayer habit is starting too ambitiously.
+      They commit to thirty minutes every morning, miss two days in a row, and conclude that
+      they are not &ldquo;the kind of person&rdquo; who prays consistently. They were never going
+      to maintain thirty minutes — not at the start.
+    </p>
+    <p className={p}>
+      A sustainable prayer habit begins small enough to be almost embarrassing:
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>One minute</strong> — that is all. Set a timer if you need to.</li>
+      <li className={li}><strong>One honest sentence</strong> — &ldquo;God, I am tired and I need help today.&rdquo; That is a real prayer.</li>
+      <li className={li}><strong>One moment of connection</strong> — presence matters more than performance.</li>
+    </ul>
+    <p className={p}>
+      Once the habit exists — once you are showing up every day — you can expand it naturally.
+      You cannot expand a habit that has not yet formed. Build the streak first. Length comes later.
+    </p>
+
+    <h2 className={h2}>Attach Prayer to Something You Already Do</h2>
+    <p className={p}>
+      Habits form most reliably when they are &ldquo;stacked&rdquo; onto existing routines. If you
+      try to add prayer as a free-floating commitment with no anchor, it is easy to forget or
+      deprioritise. If you attach it to something you already do every day, it becomes automatic.
+    </p>
+    <div className="mt-4 space-y-3">
+      {[
+        ["Waking up", "Before you check your phone, say one sentence to God. It takes ten seconds and frames the entire morning."],
+        ["Before eating", "A brief prayer of gratitude before a meal is one of the oldest Christian traditions — and one of the most sustainable."],
+        ["Before sleeping", "A short prayer reviewing the day — what you are grateful for, what you struggled with, what you are releasing — takes two minutes and improves sleep quality."],
+        ["During a commute", "If you drive or walk anywhere regularly, that time can become consistent prayer time. No extra minutes required."],
+        ["With your coffee or tea", "Physical ritual plus spiritual ritual. The warm drink becomes the trigger."],
+      ].map(([anchor, note], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{anchor}</div>
+          <div className={qaA}>{note}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>Be Honest — Not Impressive</h2>
+    <p className={p}>
+      One of the most common reasons people feel disconnected in prayer is that they are
+      performing rather than conversing. They use language they would never use normally, try to
+      say the right things in the right order, and end up feeling like they are reading a script
+      rather than talking to someone who knows them.
+    </p>
+    <p className={p}>
+      Prayer is not about perfect words. The Psalms are full of anger, confusion, grief, and
+      doubt — all directed at God, all considered Scripture. Jesus described prayer as going to
+      your room, closing the door, and talking to your Father in private (Matthew 6:6). The image
+      is intimate and honest, not formal and polished.
+    </p>
+    <div className={blockquote}>
+      &ldquo;The Lord is near to all who call on him, to all who call on him in truth.&rdquo; — Psalm 145:18
+    </div>
+    <p className={p}>
+      &ldquo;In truth&rdquo; means honestly — as you actually are, not as you think you should
+      be. That is what God draws near to.
+    </p>
+
+    <h2 className={h2}>Handle the Gap When You Miss a Day</h2>
+    <p className={p}>
+      You will miss a day. That is not a failure — it is part of building any habit. What matters
+      is what you do next. The single most important rule for habit recovery:
+    </p>
+    <p className={p}>
+      <strong>Never miss twice in a row.</strong>
+    </p>
+    <p className={p}>
+      One missed day is a pause. Two missed days is the beginning of stopping. When you miss,
+      do not compound it with guilt — just show up the next day with something small. The habit
+      is not broken until you decide it is.
+    </p>
+
+    <h2 className={h2}>Use Structure When You Need It</h2>
+    <p className={p}>
+      Some days you know what to pray about. Other days you sit down and your mind goes blank,
+      or you feel so overwhelmed that you cannot find the words. For those days, structure helps.
+    </p>
+    <p className={p}>
+      A simple framework many people find useful is ACTS — Adoration, Confession, Thanksgiving,
+      Supplication. You don&apos;t need to cover all four every time. Even one section gives your
+      prayer shape when shapelessness is the problem.
+    </p>
+    <p className={p}>
+      You can also use a tool to help find the words — especially when you are praying about a
+      specific situation and are not sure how to express it.
+    </p>
+
+    <div className={cta}>
+      <div className="text-lg font-bold text-white">Generate a prayer for your situation</div>
+      <p className="mt-2 text-sm text-white/65">
+        Describe what you are going through and receive a personal, Scripture-grounded prayer in
+        seconds — honest in tone, specific to your situation. Free to try, no account required.
+      </p>
+      <Link
+        href="/tools/prayer"
+        className="mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-95"
+      >
+        Write a Prayer →
+      </Link>
+    </div>
+
+    <h2 className={h2}>Final Thought</h2>
+    <p className={p}>
+      Consistency grows from simplicity. The prayer habit that sustains you for years will
+      probably not look like the one you imagined when you started — grand and long and perfectly
+      structured. It will look like a small, honest, repeated practice that you kept showing up
+      to even when it felt like nothing.
+    </p>
+    <p className={p}>
+      Start small. Attach it to something real. Be honest. Miss a day and come back. Let it grow
+      at its own pace. That is how a habit becomes a foundation.
+    </p>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -787,6 +918,20 @@ export const POSTS: BlogPost[] = [
     description:
       "A daily devotional for anxiety and overthinking grounded in 1 Peter 5:7. Includes Scripture, personal reflection, a full prayer, and one practical action step for releasing what you were never meant to carry.",
     body: post5Body,
+  },
+  {
+    slug: "daily-prayer-habit",
+    title: "How to Build a Daily Prayer Habit That Actually Sticks",
+    excerpt:
+      "Many people want to pray more but struggle with consistency. The key isn't more discipline — it's more simplicity. Here's how to build a prayer habit that survives a hard week.",
+    date: "May 15, 2026",
+    dateISO: "2026-05-15",
+    publishDate: "2026-05-15",
+    readTime: "7 min read",
+    keywords: ["daily prayer habit", "how to pray consistently", "prayer habit tips", "build a prayer routine", "christian prayer habit"],
+    description:
+      "Learn how to build a daily prayer habit that actually sticks. Covers habit stacking, starting small, honesty over performance, handling missed days, and using structure when you need it.",
+    body: post6Body,
   },
 ];
 

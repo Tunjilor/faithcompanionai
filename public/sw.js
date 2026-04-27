@@ -4,7 +4,7 @@
 //   - HTML pages: network-first, fall back to cache, then /offline.html
 //   - /api/* routes: network-only (never cache)
 
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const STATIC_CACHE  = `faithai-static-${CACHE_VERSION}`;
 const PAGE_CACHE    = `faithai-pages-${CACHE_VERSION}`;
 
@@ -56,16 +56,20 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Only handle same-origin requests
+  // Only handle same-origin requests (Stripe and all external domains pass through)
   if (url.origin !== location.origin) return;
 
-  // Never cache API routes, Next.js internals, or auth paths
+  // Never cache API routes, Next.js internals, auth paths, or payment-related pages
   if (
     url.pathname.startsWith('/api/') ||
     url.pathname.startsWith('/_next/') ||
     url.pathname.startsWith('/login') ||
     url.pathname.startsWith('/sign-in') ||
-    url.pathname.startsWith('/dashboard')
+    url.pathname.startsWith('/dashboard') ||
+    url.pathname.startsWith('/saved') ||
+    url.pathname.startsWith('/checkout') ||
+    url.pathname.startsWith('/en/login') ||
+    url.pathname.startsWith('/es/login')
   ) {
     return; // let the browser handle it normally
   }

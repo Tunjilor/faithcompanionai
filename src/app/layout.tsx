@@ -47,11 +47,18 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
   verification: {},
-  other: { "theme-color": "#07070a", "color-scheme": "dark" },
+  other: {
+    "theme-color": "#6d28d9",
+    "color-scheme": "dark",
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-mobile-web-app-title": "Faith Companion",
+  },
 };
 
 export const viewport: Viewport = {
-  width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#07070a",
+  width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#6d28d9",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

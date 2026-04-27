@@ -19,37 +19,52 @@ export default function RefundPage() {
         <div className="mt-6 space-y-5 text-sm leading-7 text-white/75 md:text-base">
           <p>Last updated: April 2026</p>
 
-          <p>
-            We want Faith Companion AI to be straightforward and fair.
-          </p>
+          <p>We aim to keep Faith Companion AI simple, fair, and transparent.</p>
 
           <h2 className="text-xl font-bold text-white">Subscriptions</h2>
+          <p>Subscription purchases are generally non-refundable once billed. By purchasing a subscription:</p>
+          <ul className="space-y-1 pl-4">
+            {[
+              "You agree that billing may recur automatically unless canceled",
+              "You are responsible for canceling before the next billing cycle if you do not wish to be charged again",
+            ].map((item) => (
+              <li key={item} className="flex gap-2">
+                <span className="mt-1 shrink-0 text-white/30">&bull;</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
           <p>
-            Subscription purchases are generally non-refundable once billed, except where required by law
-            or where we decide otherwise in our discretion.
+            We do not provide partial refunds for unused time, except where required by law or at our sole discretion.
           </p>
 
-          <h2 className="text-xl font-bold text-white">One-time payments</h2>
+          <h2 className="text-xl font-bold text-white">One-Time Payments</h2>
           <p>
-            One-time purchases such as lifetime access are generally non-refundable once granted,
-            except where required by law or where we decide otherwise in our discretion.
+            One-time purchases, including lifetime access, are generally non-refundable once access has been granted.
+            Exceptions may be made where required by law or at our sole discretion.
           </p>
 
-          <h2 className="text-xl font-bold text-white">Billing issues</h2>
+          <h2 className="text-xl font-bold text-white">Billing Issues</h2>
           <p>
-            If you believe you were charged incorrectly, contact us and we will review the issue.
+            If you believe you were charged in error, please contact us as soon as possible. We will review
+            billing concerns on a case-by-case basis.
+          </p>
+
+          <h2 className="text-xl font-bold text-white">Cancellations</h2>
+          <p>
+            You may cancel your subscription at any time. Cancellation will take effect at the end of the
+            current billing period, and you will retain access until that time.
           </p>
 
           <h2 className="text-xl font-bold text-white">Contact</h2>
           <p>
-            Refund and billing questions can be sent to{" "}
+            For refund or billing questions, contact:{" "}
             <a
               href="mailto:support@faithcompanionai.com"
               className="underline underline-offset-4 hover:text-white"
             >
               support@faithcompanionai.com
             </a>
-            .
           </p>
         </div>
       </div>

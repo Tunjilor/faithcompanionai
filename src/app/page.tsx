@@ -106,6 +106,58 @@ const TESTIMONIALS = [
   },
 ];
 
+const DAILY_GUIDANCE = [
+  {
+    title: "Rest in His Presence",
+    reflection:
+      "In a world that never slows down, God calls you to something radical — stillness. Today, before the noise of the day takes over, pause and remember that your worth is not measured by your productivity.",
+    scripture: "\"Be still, and know that I am God.\" — Psalm 46:10",
+    action: "Take 5 minutes this morning in silence before checking your phone. Ask God what He wants to say to you today.",
+  },
+  {
+    title: "Strength for What Lies Ahead",
+    reflection:
+      "You do not need to carry the weight of tomorrow. God's strength is made perfect in your weakness — and today is a new opportunity to lean into that truth rather than rely on your own reserves.",
+    scripture: "\"I can do all this through him who gives me strength.\" — Philippians 4:13",
+    action: "Write down one thing you are anxious about and hand it to God in prayer before you face it today.",
+  },
+  {
+    title: "You Are Not Forgotten",
+    reflection:
+      "Seasons of silence can feel like absence. But God's quiet is not abandonment — it is often preparation. Whatever you are walking through right now, you are seen, known, and held.",
+    scripture: "\"For I know the plans I have for you, declares the Lord — plans to prosper you and not to harm you.\" — Jeremiah 29:11",
+    action: "Reflect on one moment in the past year where God came through unexpectedly. Let it build your faith for today.",
+  },
+  {
+    title: "Walk in Forgiveness",
+    reflection:
+      "Carrying unforgiveness is like holding a weight that only injures the one holding it. Today, choose the freedom that comes from releasing what you cannot change — not because it was right, but because you are free.",
+    scripture: "\"Bear with each other and forgive one another... Forgive as the Lord forgave you.\" — Colossians 3:13",
+    action: "Name one person you need to release today. Pray for them — not for their sake alone, but for yours.",
+  },
+  {
+    title: "Faith Over Fear",
+    reflection:
+      "Fear is loud. Faith is quiet but stronger. When uncertainty rises, you have a choice in the small moments — to trust what you cannot see, or to be undone by what you cannot control. Choose trust.",
+    scripture: "\"For God has not given us a spirit of fear, but of power, love, and a sound mind.\" — 2 Timothy 1:7",
+    action: "Identify the fear that feels loudest today. Read this verse aloud and pray specifically against it.",
+  },
+  {
+    title: "Gratitude as a Practice",
+    reflection:
+      "Gratitude is not a feeling that appears when life is easy — it is a discipline that transforms how we see everything. Even in hard seasons, there are anchors of goodness if we are willing to look for them.",
+    scripture: "\"Give thanks in all circumstances; for this is God's will for you in Christ Jesus.\" — 1 Thessalonians 5:18",
+    action: "Before going to sleep tonight, name three specific things — however small — that you are grateful for today.",
+  },
+  {
+    title: "Known and Loved",
+    reflection:
+      "You do not need to earn your place with God. You are not accepted because of your performance — you are beloved because of His grace. Let that truth reshape how you begin this day.",
+    scripture: "\"But God demonstrates his own love for us in this: While we were still sinners, Christ died for us.\" — Romans 5:8",
+    action: "Speak this out loud today: \"I am loved — not because of what I do, but because of who God is.\" Let it settle in.",
+  },
+];
+
 const faqItems = [
   {
     q: "What is Faith Companion AI?",
@@ -237,6 +289,46 @@ export default function HomePage() {
           </Link>
         ))}
       </section>
+
+      {/* Today's Guidance */}
+      {(() => {
+        const today = DAILY_GUIDANCE[new Date().getDay()];
+        return (
+          <section className="mt-10 rounded-[30px] p-8 md:p-10" style={{ background: 'linear-gradient(135deg, rgba(109,40,217,0.18) 0%, rgba(234,88,12,0.10) 100%)', border: '1px solid rgba(139,92,246,0.25)' }}>
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-10">
+              <div className="flex-1 min-w-0">
+                <div className="inline-flex items-center gap-2 rounded-full bg-purple-500/20 px-3 py-1 text-xs font-semibold text-purple-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-purple-400 animate-pulse inline-block" />
+                  Today&apos;s Guidance
+                </div>
+
+                <h2 className="mt-4 text-2xl font-bold text-white md:text-3xl">{today.title}</h2>
+
+                <p className="mt-3 text-sm leading-7 text-white/75 md:text-base">{today.reflection}</p>
+
+                <blockquote className="mt-5 border-l-2 border-purple-400 pl-4 text-sm italic text-white/70 leading-7">
+                  {today.scripture}
+                </blockquote>
+
+                <div className="mt-5 rounded-xl bg-white/5 px-4 py-3">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-orange-400">Today&apos;s Action Step</div>
+                  <p className="mt-1.5 text-sm leading-6 text-white/80">{today.action}</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col items-start gap-3 lg:w-56 lg:shrink-0 lg:pt-8">
+                <Link
+                  href="/tools/devotional"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-3 text-sm font-semibold text-white transition hover:opacity-95"
+                >
+                  Get today&apos;s personalized guidance
+                </Link>
+                <p className="text-xs text-white/40 text-center w-full">Come back daily for new guidance</p>
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       <section className="mt-10 rounded-[30px] p-8 md:p-10" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">

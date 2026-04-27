@@ -617,6 +617,105 @@ const post4Body: ReactNode = (
   </article>
 );
 
+// ── Post 5 ───────────────────────────────────────────────────────────────────
+const post5Body: ReactNode = (
+  <article>
+    <p className={p}>
+      Anxiety often comes from trying to control what we cannot. The mind races through every
+      possible outcome, rehearsing problems that haven&apos;t happened yet and replaying ones that
+      already have. Scripture gently, consistently reminds us that we were never meant to carry
+      everything on our own.
+    </p>
+
+    <h2 className={h2}>Scripture</h2>
+    <div className={blockquote}>
+      &ldquo;Cast all your anxiety on Him because He cares for you.&rdquo; — 1 Peter 5:7
+    </div>
+    <p className={p}>
+      The word &ldquo;cast&rdquo; is deliberate. It is not passive — it is an active transfer.
+      You pick it up, and you throw it toward God. Not because He is obligated to take it, but
+      because He <em>cares for you</em> — personally, specifically, right now.
+    </p>
+
+    <h2 className={h2}>Reflection</h2>
+    <p className={p}>
+      What are you holding onto today that you were never meant to carry?
+    </p>
+    <p className={p}>
+      Anxiety and overthinking are often symptoms of something deeper: the belief that if we
+      stop monitoring the situation, something will go wrong. That if we relax our grip, things
+      will fall apart. God&apos;s invitation in 1 Peter 5:7 is a direct challenge to that belief.
+      He says: you can let go, because I have it.
+    </p>
+    <p className={p}>
+      This doesn&apos;t mean the situation goes away. It means you are no longer carrying it
+      alone. God invites you to release it — not all at once, but step by step, moment by moment,
+      as often as it returns to your hands.
+    </p>
+
+    <h2 className={h2}>Prayer</h2>
+    <div className={card}>
+      <p className="text-sm italic leading-7 text-white/75">
+        Lord, I bring my anxious thoughts to You — the worries I&apos;ve been turning over in
+        my mind, the fears I&apos;ve been rehearsing, the outcomes I&apos;ve been trying to
+        control.
+        <br /><br />
+        I confess that I have been carrying what was meant for Your hands. Help me to release
+        it — not just once, but every time it comes back. Remind me that Your care for me is
+        not general or distant, but personal and present.
+        <br /><br />
+        Where my mind runs ahead into tomorrow&apos;s problems, bring me back to today. Where
+        I reach for control, help me choose trust instead. Give me the peace that comes not
+        from resolved circumstances, but from a settled heart.
+        <br /><br />
+        Amen.
+      </p>
+    </div>
+
+    <h2 className={h2}>Action Step</h2>
+    <p className={p}>
+      Take one specific thing that is weighing on you today — not a category of worry, but one
+      actual thing — and consciously release it in prayer. Name it out loud if you can. Hand it
+      to God specifically, and notice what shifts when you do.
+    </p>
+    <p className={p}>
+      If it comes back (and it likely will), repeat the transfer. The practice of repeatedly
+      releasing the same worry is not a sign of weak faith — it is faithfulness in action.
+    </p>
+
+    <h2 className={h2}>Going Deeper</h2>
+    <p className={p}>
+      Anxiety takes many forms. Some days it is a quiet undercurrent; other days it crowds out
+      everything else. A devotional built around your specific situation — not a general one, but
+      one that knows what you are carrying — can help you find the right Scripture, the right
+      prayer, and the right action step for today.
+    </p>
+
+    <div className={cta}>
+      <div className="text-lg font-bold text-white">Get a devotional for what you&apos;re carrying today</div>
+      <p className="mt-2 text-sm text-white/65">
+        Describe your situation and receive a personalized devotional with Scripture, reflection,
+        a prayer, and one action step. Free to try — no account required.
+      </p>
+      <Link
+        href="/tools/devotional"
+        className="mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-95"
+      >
+        Get My Devotional →
+      </Link>
+    </div>
+
+    <h2 className={h2}>Final Thought</h2>
+    <p className={p}>
+      Peace doesn&apos;t come from having all the answers. It doesn&apos;t come from the worry
+      resolving, the situation improving, or the uncertainty disappearing.
+    </p>
+    <p className={p}>
+      It comes from trusting the One who already holds what you cannot.
+    </p>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -674,6 +773,20 @@ export const POSTS: BlogPost[] = [
     description:
       "Learn how to find the right Bible verse for your situation. Move beyond generic keyword searches — use themes, honest reflection, and a step-by-step approach to find Scripture that speaks directly to where you are.",
     body: post4Body,
+  },
+  {
+    slug: "devotional-anxiety",
+    title: "A Daily Devotional for Anxiety and Overthinking",
+    excerpt:
+      "Anxiety often comes from trying to control what we cannot. This devotional — grounded in 1 Peter 5:7 — offers Scripture, reflection, prayer, and one action step for releasing what you were never meant to carry.",
+    date: "May 8, 2026",
+    dateISO: "2026-05-08",
+    publishDate: "2026-05-08",
+    readTime: "5 min read",
+    keywords: ["devotional for anxiety", "daily devotional anxiety", "overthinking devotional", "christian anxiety", "bible verses anxiety devotional"],
+    description:
+      "A daily devotional for anxiety and overthinking grounded in 1 Peter 5:7. Includes Scripture, personal reflection, a full prayer, and one practical action step for releasing what you were never meant to carry.",
+    body: post5Body,
   },
 ];
 

@@ -8,6 +8,7 @@ import ShareButtons from "./share-buttons";
 import LeaderboardBlock from "@/components/quiz/LeaderboardBlock";
 import EmailCaptureBanner from "@/components/EmailCaptureBanner";
 import QuizUpgradeNudge from "@/components/QuizUpgradeNudge";
+import MobileInstallBanner from "@/components/MobileInstallBanner";
 
 type AttemptWithQuestions = Prisma.QuizAttemptGetPayload<{
   include: {
@@ -226,6 +227,8 @@ export default async function Page({ params }: PageProps) {
                   </Link>
                 </p>
               </div>
+
+              <MobileInstallBanner />
             </section>
           </>
         );

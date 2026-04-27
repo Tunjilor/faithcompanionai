@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import UpgradeCTA from "@/components/UpgradeCTA";
 import DenominationSelect, { getDenominationNote, readDenomination } from "@/components/DenominationSelect";
+import MobileInstallBanner from "@/components/MobileInstallBanner";
 
 function inlineBold(text: string): React.ReactNode {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -526,6 +527,8 @@ export default function DevotionalPage() {
                 />
               </div>
             )}
+
+            <MobileInstallBanner />
           </div>
         ) : (
           <div className="mt-8 rounded-2xl bg-slate-50 p-5">

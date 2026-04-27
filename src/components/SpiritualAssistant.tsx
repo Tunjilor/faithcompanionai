@@ -216,11 +216,11 @@ export default function SpiritualAssistant() {
                 onClick={() => {
                   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs)); } catch { /* ignore */ }
                   setSavedFlash(true);
-                  setTimeout(() => setSavedFlash(false), 1500);
+                  setTimeout(() => setSavedFlash(false), 2000);
                 }}
                 className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/80 hover:bg-white/10 hover:text-white"
               >
-                {savedFlash ? "Saved!" : "Save Conversation"}
+                {savedFlash ? "Saved \u2014 you can access this later." : "Save Conversation"}
               </button>
               <button
                 type="button"
@@ -271,6 +271,17 @@ export default function SpiritualAssistant() {
             )}
           </div>
 
+          {/* Premium soft hint */}
+          <div className="mx-4 mb-1 mt-1 rounded-xl border border-purple-500/20 bg-purple-900/20 px-3 py-2 text-center">
+            <p className="text-xs text-white/50">
+              Want deeper, longer guidance?{" "}
+              <span className="text-white/60">Premium unlocks more room to reflect.</span>{" "}
+              <Link href="/pricing" className="font-semibold text-orange-400 hover:text-orange-300">
+                Explore Premium
+              </Link>
+            </p>
+          </div>
+
           {/* Input */}
           <form
             className="border-t border-white/10 bg-black/40 px-3 py-3"
@@ -295,6 +306,9 @@ export default function SpiritualAssistant() {
                 {thinking ? "..." : <Send size={16} />}
               </button>
             </div>
+            <p className="mt-1.5 text-center text-[10px] text-white/30">
+              Your conversation is not saved unless you click Save.
+            </p>
           </form>
         </div>
       )}

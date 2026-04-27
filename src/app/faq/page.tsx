@@ -14,27 +14,39 @@ export const metadata: Metadata = {
 const faqs = [
   {
     q: "What is Faith Companion AI?",
-    a: "Faith Companion AI is a Christian-focused app experience that helps you generate Scripture-based verses, prayers, devotionals, and Bible quiz results for daily encouragement and growth.",
+    a: "Faith Companion AI is an AI-powered platform that provides personalized Scripture, prayers, devotionals, and Bible quiz insights based on your current situation. It is designed to help you stay connected to your faith in a simple, accessible way.",
   },
   {
     q: "Can I use Faith Companion AI for free?",
-    a: "Yes. Free users can explore the app with limits. Premium unlocks unlimited usage and saved faith journal access.",
+    a: "Yes. Faith Companion AI offers free access with limited daily usage. Free users can explore features like Scripture generation, prayers, devotionals, and quiz results. Premium unlocks unlimited access and deeper guidance.",
   },
   {
     q: "What does Premium include?",
-    a: "Premium unlocks unlimited verses, prayers, and devotionals, along with the ability to save meaningful content to your account.",
+    a: "Premium gives you unlimited access to all tools, including personalized Scripture, AI-generated prayers, devotionals, and deeper insights based on your faith journey. It is designed for users who want a more consistent and in-depth experience.",
   },
   {
     q: "Is this a replacement for church or pastoral care?",
-    a: "No. Faith Companion AI is a personal support tool for reflection and encouragement. It is not a replacement for church, pastoral care, counseling, medical care, or professional advice.",
+    a: "No. Faith Companion AI is not a replacement for church, pastoral care, counseling, or personal Bible study. It is designed to support and encourage your faith, not replace real community or guidance.",
   },
   {
     q: "Is the content denominational?",
-    a: "The experience is designed to be broadly Christian, Scripture-grounded, and welcoming to a wide range of believers.",
+    a: "Faith Companion AI is broadly Christian and Scripture-based. It is designed to be useful across a wide range of believers rather than tied to a specific denomination.",
   },
   {
     q: "How do I sign in?",
-    a: "Faith Companion AI uses passwordless sign-in. Enter your email and you will receive a magic link to securely access your account.",
+    a: "You can sign in using a secure magic link sent to your email. Simply enter your email address, check your inbox, and click the link to access your account.",
+  },
+  {
+    q: "How does the Bible quiz work?",
+    a: "The Bible quiz is designed to give you insight into your current faith journey. You answer a series of questions, and based on your responses, Faith Companion AI provides a result that reflects your strengths, growth areas, and personalized guidance to help you move forward.",
+  },
+  {
+    q: "Is my data private and secure?",
+    a: "Yes. We take your privacy seriously. Your account information and activity are handled securely and used only to provide and improve the service. We do not sell your personal data, and payment information is processed securely through trusted third-party providers like Stripe.",
+  },
+  {
+    q: "Can I cancel Premium at any time?",
+    a: "Yes. You can cancel your subscription at any time. Your access will continue until the end of your current billing period, and you will not be charged again after cancellation.",
   },
 ];
 

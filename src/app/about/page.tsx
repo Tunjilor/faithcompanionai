@@ -18,23 +18,44 @@ export default function AboutPage() {
 
         <div className="mt-6 space-y-5 text-sm leading-7 text-white/75 md:text-base">
           <p>
-            Faith Companion AI is designed to make daily Christian encouragement more accessible,
-            more personal, and easier to return to.
+            Faith Companion AI exists to make daily Christian encouragement more accessible, more personal,
+            and easier to return to.
           </p>
 
           <p>
-            The platform helps users generate Scripture-based verses, prayers, devotionals, and Bible quiz results
-            in a calm, mobile-friendly experience built for real daily use.
+            We built this platform for people who want to stay connected to their faith &mdash; even in busy,
+            uncertain, or difficult moments.
           </p>
+
+          <h2 className="text-xl font-bold text-white">Faith Companion AI helps you:</h2>
+          <ul className="space-y-1 pl-4">
+            {[
+              "Discover Scripture that speaks to your situation",
+              "Generate meaningful prayers when words are hard to find",
+              "Reflect through devotionals tailored to your current season",
+              "Gain insight through Bible quiz results and guided reflection",
+            ].map((item) => (
+              <li key={item} className="flex gap-2">
+                <span className="mt-1 shrink-0 text-white/30">&bull;</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
 
           <p>
             Our goal is not to replace church, pastoral care, prayer, wise counsel, or personal Bible study.
-            Instead, Faith Companion AI is designed to reduce friction and help people begin where they are —
-            whether they need encouragement, reflection, guidance, or a place to start.
+            Instead, we aim to reduce friction and help you begin where you are &mdash; whether you need
+            encouragement, clarity, or a place to start.
           </p>
 
           <p>
-            We aim to keep the experience broadly Christian, Scripture-grounded, and useful across a wide range of believers.
+            We keep the experience grounded in Scripture, broadly Christian, and designed to support a wide
+            range of believers in their daily walk.
+          </p>
+
+          <p>
+            Faith Companion AI is not just a tool &mdash; it is meant to feel like a companion you can return
+            to, day after day.
           </p>
         </div>
       </div>

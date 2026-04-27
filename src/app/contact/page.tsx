@@ -13,19 +13,19 @@ export const metadata: Metadata = {
 
 const helpTopics = [
   {
-    title: "Account support",
+    title: "Account Support",
     description:
-      "Need help signing in, accessing your account, or understanding saved content?",
+      "Need help signing in, accessing your account, or managing your saved content?",
   },
   {
-    title: "Billing questions",
+    title: "Billing Questions",
     description:
-      "Need help with Premium, pricing, subscription issues, or payment questions?",
+      "Questions about Premium, subscriptions, pricing, or charges?",
   },
   {
-    title: "General feedback",
+    title: "General Feedback",
     description:
-      "Have a feature request, bug report, or suggestion to improve the experience?",
+      "Have a suggestion, found a bug, or want to share your experience?",
   },
 ];
 
@@ -38,11 +38,11 @@ export default function ContactPage() {
 
           <p className="mt-4 text-sm leading-7 text-white/75 md:text-base">
             Whether you need support, have a billing question, or want to share feedback,
-            we’d love to hear from you.
+            we&rsquo;d love to hear from you.
           </p>
 
           <div className="mt-6 rounded-[22px] border border-white/10 bg-black/15 p-5">
-            <div className="text-sm font-semibold text-white/70">Support email</div>
+            <div className="text-sm font-semibold text-white/70">Support Email</div>
             <a
               href="mailto:support@faithcompanionai.com?subject=Faith%20Companion%20AI%20Support"
               className="mt-2 inline-block text-base font-semibold text-white underline underline-offset-4 hover:text-orange-300"
@@ -50,8 +50,19 @@ export default function ContactPage() {
               support@faithcompanionai.com
             </a>
             <p className="mt-3 text-sm leading-7 text-white/65">
-              For the fastest help, include a short description of the issue and the email address tied to your account, if relevant.
+              For the fastest help, please include:
             </p>
+            <ul className="mt-2 space-y-1 text-sm text-white/65">
+              {[
+                "A short description of the issue",
+                "The email address tied to your account (if applicable)",
+              ].map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-1 shrink-0 text-white/30">&bull;</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -81,6 +92,7 @@ export default function ContactPage() {
             <p className="mt-2 text-sm leading-7 text-white/70">
               Many common questions about accounts, Premium, and free usage are already answered there.
             </p>
+            <p className="mt-1 text-xs text-white/40">Visit FAQ &rarr;</p>
             <Link
               href="/faq"
               className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:opacity-90"
@@ -90,10 +102,11 @@ export default function ContactPage() {
           </div>
 
           <div className="rounded-[22px] border border-white/10 bg-black/15 p-5">
-            <h3 className="text-base font-semibold text-white">Review pricing</h3>
+            <h3 className="text-base font-semibold text-white">Review Pricing</h3>
             <p className="mt-2 text-sm leading-7 text-white/70">
-              If your question is about Premium access, pricing, or what is included, start there.
+              If your question is about Premium access or what&rsquo;s included, you may find your answer here.
             </p>
+            <p className="mt-1 text-xs text-white/40">View Pricing &rarr;</p>
             <Link
               href="/pricing"
               className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
@@ -103,6 +116,10 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <p className="mt-8 text-center text-sm text-white/50">
+        We aim to respond as quickly as possible and appreciate your patience.
+      </p>
     </main>
   );
 }

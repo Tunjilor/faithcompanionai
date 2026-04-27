@@ -2,19 +2,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { POSTS, getPost } from "../content";
+import { getPost, getPublishedPosts, isPublished } from "../content";
 
-export const dynamic = "force-static";
+// Dynamic so the publishDate check runs at request time, not build time.
+export const dynamic = "force-dynamic";
 
 type Props = { params: { slug: string } };
 
 export function generateStaticParams() {
-  return POSTS.map((p) => ({ slug: p.slug }));
+  // Only pre-render posts that are already published.
+  return getPublishedPosts().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPost(params.slug);
-  if (!post) return { title: "Post not found" };
+  if (!post || !isPublished(post)) return { title: "Post not found" };
 
   return {
     title: `${post.title} | Faith Companion AI Blog`,
@@ -41,7 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function BlogPostPage({ params }: Props) {
   const post = getPost(params.slug);
-  if (!post) notFound();
+  // 404 if post doesn't exist or publishDate is in the future
+  if (!post || !isPublished(post)) notFound();
 
   const schema = {
     "@context": "https://schema.org",
@@ -102,7 +105,7 @@ export default function BlogPostPage({ params }: Props) {
         </Link>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {POSTS.filter((p) => p.slug !== post.slug).slice(0, 2).map((related) => (
+          {getPublishedPosts().filter((p) => p.slug !== post.slug).slice(0, 2).map((related) => (
             <Link
               key={related.slug}
               href={`/blog/${related.slug}`}

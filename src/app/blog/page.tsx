@@ -1,8 +1,11 @@
 // src/app/blog/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
-import { POSTS } from "./content";
+import { getPublishedPosts } from "./content";
 import AdSenseSlot from "@/components/AdSenseSlot";
+
+// Re-evaluate on every request so the publish-date filter uses the real current date.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Blog — Bible Study Tips, Prayer Guides & Faith Resources | Faith Companion AI",
@@ -19,6 +22,9 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
+  // Only posts with publishDate <= today, sorted newest first
+  const posts = getPublishedPosts();
+
   return (
     <>
       <header className="mb-8">
@@ -37,7 +43,7 @@ export default function BlogPage() {
       <AdSenseSlot className="mb-4" />
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {POSTS.map((post) => (
+        {posts.map((post) => (
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}

@@ -8,11 +8,28 @@ export type BlogPost = {
   excerpt: string;
   date: string;
   dateISO: string;
+  publishDate: string; // ISO date "YYYY-MM-DD" — post is hidden until this date
   readTime: string;
   keywords: string[];
   description: string;
   body: ReactNode;
 };
+
+/**
+ * Returns true when today's date (UTC) is on or after the post's publishDate.
+ * Compares ISO date strings directly — no timezone ambiguity for date-only scheduling.
+ */
+export function isPublished(post: BlogPost): boolean {
+  const today = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+  return post.publishDate <= today;
+}
+
+/** All posts that are published as of right now, sorted newest first. */
+export function getPublishedPosts(): BlogPost[] {
+  return POSTS.filter(isPublished).sort(
+    (a, b) => b.publishDate.localeCompare(a.publishDate)
+  );
+}
 
 // ── Shared prose classes ─────────────────────────────────────────────────────
 const h2 = "mt-8 text-2xl font-bold text-white md:text-3xl";
@@ -493,6 +510,7 @@ export const POSTS: BlogPost[] = [
       "From general Bible knowledge to women of the Bible, parables, and church history — 60 curated questions with answers for trivia nights, family devotionals, and personal study.",
     date: "April 18, 2026",
     dateISO: "2026-04-18",
+    publishDate: "2026-04-18",
     readTime: "12 min read",
     keywords: ["bible quiz questions and answers", "bible trivia", "bible knowledge test", "christian quiz"],
     description:
@@ -506,6 +524,7 @@ export const POSTS: BlogPost[] = [
       "No perfect formula required. Learn the ACTS method, see a complete example prayer for anxiety, and discover how to make your prayers more honest, specific, and Scripture-grounded.",
     date: "April 17, 2026",
     dateISO: "2026-04-17",
+    publishDate: "2026-04-17",
     readTime: "9 min read",
     keywords: ["how to write a personal prayer", "prayer guide", "personal prayer examples", "how to pray"],
     description:
@@ -519,6 +538,7 @@ export const POSTS: BlogPost[] = [
       "Everything you need to begin a consistent devotional habit — the four-part structure, a 7-day starter plan, tips for making it stick, and answers to common beginner questions.",
     date: "April 16, 2026",
     dateISO: "2026-04-16",
+    publishDate: "2026-04-16",
     readTime: "10 min read",
     keywords: ["daily devotional guide", "devotional for beginners", "how to start a devotional", "morning devotional"],
     description:

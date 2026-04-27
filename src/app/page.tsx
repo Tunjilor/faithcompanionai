@@ -78,6 +78,34 @@ const reasons = [
   },
 ];
 
+const TESTIMONIALS = [
+  {
+    quote: "This helped me stay consistent in my faith when I was struggling. I open it every morning before anything else.",
+    name: "Sarah M.",
+    detail: "Daily devotional user",
+  },
+  {
+    quote: "It feels like the verses speak directly to my situation. I typed what I was going through and it gave me exactly what I needed to hear.",
+    name: "Rachel L.",
+    detail: "Prayer tool user",
+  },
+  {
+    quote: "I have tried a lot of Bible apps. This is the first one that actually feels personal. The prayers do not sound templated -- they sound like they were written for me.",
+    name: "Marcus W.",
+    detail: "Verse and prayer user",
+  },
+  {
+    quote: "As a pastor I recommend this to my congregation for personal devotional time. Solid, Scripture-grounded, never shallow.",
+    name: "Pastor David K.",
+    detail: "Community pastor",
+  },
+  {
+    quote: "The Bible Quiz is addictive in the best way. I have learned more Scripture in six weeks than in years of occasional church attendance.",
+    name: "James T.",
+    detail: "Bible Quiz player",
+  },
+];
+
 const faqItems = [
   {
     q: "What is Faith Companion AI?",
@@ -376,6 +404,50 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Product preview */}
+      <section className="mt-10">
+        <div className="text-center mb-8">
+          <div className="text-xs font-semibold uppercase tracking-widest text-orange-400">See it in action</div>
+          <h2 className="mt-3 text-2xl font-bold text-white md:text-3xl">Scripture and guidance, personalized to you</h2>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          {/* AI Verse preview */}
+          <div className="rounded-[24px] p-5 flex flex-col gap-3" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/70">Verse</div>
+            <div className="text-xs text-white/50">Topic: Anxiety and peace</div>
+            <blockquote className="text-sm leading-7 text-white/85 italic border-l-2 border-purple-500 pl-3">
+              &ldquo;Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.&rdquo;
+            </blockquote>
+            <div className="text-xs text-orange-300 font-semibold">Philippians 4:6</div>
+            <p className="text-xs leading-6 text-white/60">
+              Whatever is weighing on you today, God invites you to bring it to Him -- not after you have it figured out, but right now, as you are.
+            </p>
+          </div>
+
+          {/* AI Prayer preview */}
+          <div className="rounded-[24px] p-5 flex flex-col gap-3" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/70">Prayer</div>
+            <div className="text-xs text-white/50">Situation: Feeling lost and unsure</div>
+            <p className="text-sm leading-7 text-white/85 italic">
+              &ldquo;Father, I come to You in a moment of uncertainty. I do not know which direction to take, but I trust that You do. Guide my steps, calm my mind, and remind me that I am not walking this road alone...&rdquo;
+            </p>
+            <div className="text-xs text-white/45 mt-auto">Generated for your situation</div>
+          </div>
+
+          {/* Devotional preview */}
+          <div className="rounded-[24px] p-5 flex flex-col gap-3" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/70">Devotional</div>
+            <div className="text-xs text-white/50">Topic: Trusting God in hard seasons</div>
+            <div className="text-sm font-bold text-white">When the Path Is Hidden</div>
+            <p className="text-xs leading-6 text-white/70">
+              Proverbs 3:5-6 calls us to trust in the Lord with all our heart and lean not on our own understanding. In the hardest seasons, this is less a comfort and more a choice -- a daily decision to release what we cannot control...
+            </p>
+            <div className="text-xs text-orange-300 font-semibold">+ Reflection &bull; Prayer &bull; Action steps</div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="mt-10">
         <div className="text-center">
@@ -388,44 +460,13 @@ export default function HomePage() {
         </div>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              quote:
-                "I've tried a dozen devotional apps and nothing stuck. Faith Companion AI is the first one I've used every single morning for more than a month. The prayers feel real, not templated.",
-              name: "Sarah M.",
-              detail: "Daily devotional user",
-            },
-            {
-              quote:
-                "The Bible Quiz is addictive in the best way. I've learned more Scripture in six weeks of playing than I did in years of occasional church attendance.",
-              name: "James T.",
-              detail: "Bible Quiz player",
-            },
-            {
-              quote:
-                "I was going through a really hard season and didn't know how to pray about it. I typed what I was feeling and got back a prayer that said exactly what was in my heart. I cried.",
-              name: "Rachel L.",
-              detail: "Prayer tool user",
-            },
-            {
-              quote:
-                "As a pastor I recommend this to my congregation for their personal devotional time. The devotionals are solid, Scripture-grounded, and never feel shallow.",
-              name: "Pastor David K.",
-              detail: "Community pastor",
-            },
-            {
-              quote:
-                "I'm not a strong reader but the verse thoughts are just the right length. I get a verse, an encouraging word, and one thing to do. Simple. Effective. Keeps me consistent.",
-              name: "Marcus W.",
-              detail: "Verse tool user",
-            },
-          ].map((t) => (
+          {TESTIMONIALS.map((t) => (
             <div
               key={t.name}
               className="flex flex-col justify-between rounded-[24px] p-6"
               style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}
             >
-              <p className="text-sm leading-7 text-white/75 italic">"{t.quote}"</p>
+              <p className="text-sm leading-7 text-white/75 italic">&ldquo;{t.quote}&rdquo;</p>
               <div className="mt-5 border-t border-white/10 pt-4">
                 <div className="text-sm font-semibold text-white">{t.name}</div>
                 <div className="text-xs text-white/45">{t.detail}</div>

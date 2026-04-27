@@ -36,6 +36,56 @@ function pct(score: number, total: number) {
   return Math.round((score / total) * 100);
 }
 
+type ResultTier = {
+  label: string;
+  meaning: string;
+  encouragement: string;
+  steps: string[];
+};
+
+function getResultTier(percent: number): ResultTier {
+  if (percent >= 90) return {
+    label: "Bible Scholar",
+    meaning: "You have a deep, well-rounded knowledge of Scripture. This score reflects someone who spends consistent time in God's Word and takes their faith seriously.",
+    encouragement: "That kind of depth doesn't happen by accident — it's the fruit of real commitment. You're an encouragement to those around you, whether you realise it or not. Keep going deeper.",
+    steps: [
+      "Explore a new book of the Bible you rarely visit",
+      "Use the Devotional tool to reflect on a passage you know well but want to understand more deeply",
+      "Share what you're learning — your insight could be exactly what someone else needs",
+    ],
+  };
+  if (percent >= 70) return {
+    label: "Growing Believer",
+    meaning: "You have a solid foundation in Scripture and a genuine desire to grow. This score shows real engagement with the Bible — you're building something meaningful.",
+    encouragement: "You're not just collecting knowledge — you're in motion. Faith is a journey, and you're clearly walking it with intention. Every question you got wrong is just the next thing to discover.",
+    steps: [
+      "Revisit the questions you missed and spend a few minutes reading the surrounding passage",
+      "Try the Verse tool daily for a week — let Scripture speak to where you are right now",
+      "Consider going premium to unlock deeper devotionals and save your journey",
+    ],
+  };
+  if (percent >= 50) return {
+    label: "Faithful Seeker",
+    meaning: "You're somewhere in the middle — and that's exactly where growth happens. This score reflects honest engagement with Scripture, even where there are gaps.",
+    encouragement: "Nobody starts as a scholar. The fact that you showed up, answered every question, and are reading this means something. Your curiosity about God's Word is the most important thing — that's what opens everything else.",
+    steps: [
+      "Pick one Bible topic that came up in the quiz and read about it this week",
+      "Use the Prayer tool to ask God to give you hunger for His Word",
+      "Take another quiz in a different category — each one builds your foundation",
+    ],
+  };
+  return {
+    label: "Earnest Beginner",
+    meaning: "You're at the start of something. This score reflects where you are right now — not where you're going. Every person who knows the Bible well once stood exactly here.",
+    encouragement: "Beginning is the hardest part, and you did it. God meets people at every level of knowledge — what matters is the open heart, not the score. You have everything you need to grow from here.",
+    steps: [
+      "Start with the Gospel of John — it's one of the most accessible books in the Bible",
+      "Use the Verse tool to receive daily Scripture matched to what you're going through",
+      "Come back and take this quiz again in two weeks — you'll be surprised how much changes",
+    ],
+  };
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const shareId = String(params.shareId || "").trim();
   const attempt = await db.quizAttempt.findFirst({
@@ -134,6 +184,52 @@ export default async function Page({ params }: PageProps) {
           </Link>
         </div>
       </div>
+
+      {/* Result meaning + emotional support + next steps + CTA */}
+      {(() => {
+        const tier = getResultTier(percent);
+        return (
+          <>
+            <section className="fc-surface rounded-2xl p-6 sm:p-8 space-y-4">
+              <div className="inline-flex rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-1 text-xs font-bold text-white">
+                {tier.label}
+              </div>
+              <h2 className="text-xl font-extrabold text-white">What this result means</h2>
+              <p className="text-sm leading-7 text-white/75">{tier.meaning}</p>
+              <p className="text-sm leading-7 text-white/75">{tier.encouragement}</p>
+            </section>
+
+            <section className="fc-surface rounded-2xl p-6 sm:p-8">
+              <h2 className="text-xl font-extrabold text-white mb-4">What to do next</h2>
+              <ol className="space-y-3">
+                {tier.steps.map((step, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-orange-500 text-xs font-extrabold text-white">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm leading-7 text-white/80">{step}</span>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-8 flex flex-col items-center gap-3">
+                <Link
+                  href="/tools/devotional"
+                  className="inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95 sm:max-w-sm"
+                >
+                  Get Personalized Guidance
+                </Link>
+                <p className="text-xs text-white/45">
+                  Want deeper insights?{" "}
+                  <Link href="/pricing" className="text-white/65 underline underline-offset-2 hover:text-white/90 transition">
+                    Unlock Premium
+                  </Link>
+                </p>
+              </div>
+            </section>
+          </>
+        );
+      })()}
 
       <QuizUpgradeNudge />
       {!attempt.userId && <EmailCaptureBanner />}

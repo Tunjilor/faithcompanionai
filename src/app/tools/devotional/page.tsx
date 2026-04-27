@@ -313,9 +313,12 @@ export default function DevotionalPage() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-12">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-white md:text-4xl">Devotional</h1>
+        <p className="text-xs font-semibold uppercase tracking-widest text-orange-400">
+          Based on your faith journey, here&apos;s guidance for you today
+        </p>
+        <h1 className="mt-2 text-3xl font-bold text-white md:text-4xl">Devotional</h1>
         <p className="mt-2 max-w-2xl text-sm leading-7 text-white/70 md:text-base">
-          Generate a devotional with Scripture references, reflection, prayer, and practical next steps.
+          This is tailored to where you are right now — enter a topic or generate one for your current season.
         </p>
       </header>
 

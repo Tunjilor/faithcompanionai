@@ -940,6 +940,121 @@ const post7Body: ReactNode = (
   </article>
 );
 
+// ── Post 8 ───────────────────────────────────────────────────────────────────
+const post8Body: ReactNode = (
+  <article>
+    <p className={p}>
+      Most people expect God&apos;s guidance to arrive dramatically — a burning bush, an audible
+      voice, an unmistakable sign. When it doesn&apos;t, they conclude either that God is not
+      speaking, or that they are somehow unable to hear Him. Neither is usually true.
+    </p>
+    <p className={p}>
+      God&apos;s guidance is often quiet. It arrives in small impressions, gentle convictions,
+      and the slow accumulation of clarity over time. Learning to recognise it is less about
+      developing a special spiritual gift and more about cultivating a particular kind of
+      attention.
+    </p>
+
+    <h2 className={h2}>The Four Primary Ways God Guides</h2>
+    <p className={p}>
+      While God can guide in any way He chooses, most believers across centuries of Christian
+      tradition have identified four consistent channels:
+    </p>
+
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Scripture",
+          "The most reliable source of guidance. Not just verses that confirm what you already want to do, but the sustained reading of Scripture that shapes how you think about everything. Hebrews 4:12 calls it living and active — it is not a static reference book but a living word that speaks into present situations.",
+        ],
+        [
+          "Inner peace (or the absence of it)",
+          "Colossians 3:15 says to let the peace of Christ act as an umpire in your heart. The presence of deep, persistent peace — even in a difficult or counterintuitive direction — is often a sign of alignment. The persistent absence of peace, especially about a decision you are trying to force, is worth paying attention to.",
+        ],
+        [
+          "Wise counsel",
+          "Proverbs 15:22 says plans fail for lack of counsel, but with many advisors they succeed. God regularly speaks through other people — particularly those who know you well, love you honestly, and have no stake in your decision. Be cautious of counsel that only ever confirms what you already want.",
+        ],
+        [
+          "Circumstances",
+          "Open and closed doors are not always guidance — sometimes a closed door is worth knocking on again. But the pattern of circumstances over time, read alongside Scripture and prayer, often points in a direction worth noticing.",
+        ],
+      ].map(([channel, explanation], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{channel}</div>
+          <div className={qaA}>{explanation}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>Why We Miss It</h2>
+    <p className={p}>
+      The most common reason people struggle to hear God&apos;s guidance is not spiritual
+      deficiency — it is noise and pace. Modern life runs fast and loud, and quiet impressions
+      are easily drowned out by the volume of everything else competing for attention.
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>We are moving too fast</strong> — guidance that arrives as a quiet impression requires enough stillness to notice it</li>
+      <li className={li}><strong>We are looking for the wrong thing</strong> — expecting a dramatic sign while missing the quiet, consistent nudge</li>
+      <li className={li}><strong>We are already decided</strong> — seeking guidance while hoping for confirmation of a decision already made is not listening; it is lobbying</li>
+      <li className={li}><strong>We are not in Scripture</strong> — God&apos;s voice is most consistently heard by people who are regularly in His Word</li>
+    </ul>
+
+    <h2 className={h2}>How to Practise Listening</h2>
+    <p className={p}>
+      Hearing God is less a one-time event than a cultivated practice. Here is what that
+      looks like practically:
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>Slow down deliberately</strong> — build even five minutes of silence into your day. Psalm 46:10: &ldquo;Be still, and know that I am God.&rdquo;</li>
+      <li className={li}><strong>Read Scripture expectantly</strong> — approach it asking &ldquo;What does God want to say to me today?&rdquo; rather than just completing a reading plan</li>
+      <li className={li}><strong>Pray with open hands</strong> — come to God without a pre-decided outcome, genuinely willing to hear something unexpected</li>
+      <li className={li}><strong>Write it down</strong> — impressions you journal have a way of becoming clearer over time; patterns emerge that single moments do not reveal</li>
+      <li className={li}><strong>Test what you hear</strong> — genuine guidance from God will not contradict Scripture, will not require you to harm others, and will often be confirmed through more than one channel</li>
+    </ul>
+
+    <h2 className={h2}>What Guidance Usually Feels Like</h2>
+    <p className={p}>
+      People often describe genuine divine guidance as arriving with:
+    </p>
+    <ul className={ul}>
+      <li className={li}>A persistent, quiet sense rather than a loud, urgent feeling</li>
+      <li className={li}>Peace that does not depend on the outcome being easy or comfortable</li>
+      <li className={li}>Consistency — it does not change dramatically day to day based on mood</li>
+      <li className={li}>Confirmation from more than one source over time</li>
+      <li className={li}>A direction that serves others, not just yourself</li>
+    </ul>
+    <p className={p}>
+      Urgency and pressure are more often signs of anxiety than guidance. God rarely rushes.
+    </p>
+
+    <div className={cta}>
+      <div className="text-lg font-bold text-white">Reflect with a personalized devotional</div>
+      <p className="mt-2 text-sm text-white/65">
+        If you are seeking guidance on something specific, a devotional tailored to your situation
+        can help you slow down, hear Scripture speak, and take a clear next step.
+      </p>
+      <Link
+        href="/tools/devotional"
+        className="mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-95"
+      >
+        Get a Devotional →
+      </Link>
+    </div>
+
+    <h2 className={h2}>Final Thought</h2>
+    <p className={p}>
+      God is speaking — through His Word, through the peace that settles or the restlessness
+      that signals, through the people around you, and through the pattern of your circumstances.
+      The question is rarely whether He is speaking. It is whether we are slow enough, and
+      still enough, to hear it.
+    </p>
+    <p className={p}>
+      Slow down. Create the space. The guidance is often closer than you think.
+    </p>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -1039,6 +1154,20 @@ export const POSTS: BlogPost[] = [
     description:
       "Bible verses for when you feel lost or directionless. Five passages for uncertain seasons — including Psalm 119:105, Proverbs 3:5–6, and Isaiah 30:21 — with reflection, practical steps, and a tool to find your verse.",
     body: post7Body,
+  },
+  {
+    slug: "hear-gods-guidance",
+    title: "How to Hear God's Guidance in Everyday Life",
+    excerpt:
+      "God's guidance is often quiet, not dramatic. Learn the four channels God uses, why we miss them, and how to practise the kind of attention that makes guidance recognisable.",
+    date: "July 1, 2026",
+    dateISO: "2026-07-01",
+    publishDate: "2026-07-01",
+    readTime: "7 min read",
+    keywords: ["how to hear god's guidance", "hearing god's voice", "how does god guide us", "discerning god's will", "recognizing god's guidance"],
+    description:
+      "Learn how to hear God's guidance in everyday life. Covers the four channels God uses — Scripture, inner peace, wise counsel, and circumstances — plus why we miss guidance and how to practise listening.",
+    body: post8Body,
   },
 ];
 

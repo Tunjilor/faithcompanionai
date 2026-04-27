@@ -77,6 +77,16 @@ export default function SpiritualAssistant() {
     el.scrollTop = el.scrollHeight;
   }, [open, msgs]);
 
+  // Index of the assistant reply that follows the 3rd user message — where we inject the nudge
+  const nudgeAfterIndex = useMemo(() => {
+    let userCount = 0;
+    for (let i = 0; i < msgs.length; i++) {
+      if (msgs[i].role === "user") userCount++;
+      if (userCount === 3 && msgs[i].role === "assistant") return i;
+    }
+    return -1;
+  }, [msgs]);
+
   const transcript = useMemo(() => {
     return msgs
       .map((m) => {
@@ -252,17 +262,26 @@ export default function SpiritualAssistant() {
             className="max-h-[48vh] space-y-3 overflow-y-auto px-4 pb-4"
           >
             {msgs.map((m, idx) => (
-              <div
-                key={idx}
-                className={cn(
-                  "max-w-[92%] rounded-2xl px-3 py-2 text-sm leading-relaxed",
-                  m.role === "user"
-                    ? "ml-auto bg-white/10 text-white"
-                    : "bg-white/5 text-white/80"
+              <React.Fragment key={idx}>
+                <div
+                  className={cn(
+                    "max-w-[92%] rounded-2xl px-3 py-2 text-sm leading-relaxed",
+                    m.role === "user"
+                      ? "ml-auto bg-white/10 text-white"
+                      : "bg-white/5 text-white/80"
+                  )}
+                >
+                  {m.content}
+                </div>
+                {idx === nudgeAfterIndex && (
+                  <div className="rounded-xl border border-orange-500/20 bg-orange-900/10 px-3 py-2.5 text-xs text-white/65 leading-relaxed">
+                    Want deeper, longer conversations?{" "}
+                    <Link href="/pricing" className="font-semibold text-orange-400 hover:text-orange-300">
+                      Premium unlocks extended guidance.
+                    </Link>
+                  </div>
                 )}
-              >
-                {m.content}
-              </div>
+              </React.Fragment>
             ))}
             {thinking && (
               <div className="max-w-[92%] rounded-2xl bg-white/5 px-3 py-2 text-sm text-white/50">

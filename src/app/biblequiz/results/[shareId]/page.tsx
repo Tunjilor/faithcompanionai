@@ -234,6 +234,19 @@ export default async function Page({ params }: PageProps) {
         );
       })()}
 
+      <section className="fc-surface rounded-2xl p-6 sm:p-8 text-center space-y-3">
+        <h2 className="text-xl font-extrabold text-white">Go deeper in your faith journey</h2>
+        <p className="text-sm text-white/70 max-w-md mx-auto">
+          Unlock personalized devotionals, unlimited guidance, and saved progress.
+        </p>
+        <Link
+          href="/pricing"
+          className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
+        >
+          Unlock Premium
+        </Link>
+      </section>
+
       <QuizUpgradeNudge />
       {!attempt.userId && <EmailCaptureBanner />}
 

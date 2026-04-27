@@ -516,6 +516,20 @@ export default function DevotionalPage() {
             </div>
 
             {!premiumActive && (
+              <div className="mt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-amber-300/30 bg-amber-50 px-4 py-3">
+                <p className="text-sm text-amber-900 leading-snug">
+                  Want more like this every day? Premium gives you unlimited personalized devotionals.
+                </p>
+                <Link
+                  href="/pricing"
+                  className="shrink-0 rounded-full bg-amber-500 px-4 py-2 text-xs font-semibold text-white hover:bg-amber-600 transition"
+                >
+                  Explore Premium
+                </Link>
+              </div>
+            )}
+
+            {!premiumActive && (
               <div className="mt-5">
                 <UpgradeCTA
                   variant="inline"

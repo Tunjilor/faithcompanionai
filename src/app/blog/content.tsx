@@ -1187,119 +1187,116 @@ const post9Body: ReactNode = (
 const post10Body: ReactNode = (
   <article>
     <p className={p}>
-      A personal devotional practice is one of the most quietly powerful things a person can
-      build. It doesn&apos;t require special equipment, a perfect schedule, or years of theological
-      training. It requires a few minutes, a willing heart, and the decision to show up
-      consistently — even imperfectly.
+      January carries a particular quality of light. Something about the turn of a year —
+      even when life does not change overnight — creates a genuine opening. A moment where
+      reflection feels natural, where questions about direction and meaning rise to the surface,
+      and where the desire to begin again does not feel naive.
     </p>
     <p className={p}>
-      If you&apos;ve tried before and stopped, that&apos;s normal. Most people start too big, miss a day,
-      and conclude they&apos;re not disciplined enough. The problem is almost never discipline. It&apos;s
-      almost always the size of the commitment they made.
+      A faith reset is not about self-improvement or productivity goals with a spiritual veneer.
+      It is about returning — honestly and intentionally — to the relationship at the centre of
+      your life, clearing the weight of the past year, and making room for what God wants to
+      build in the one ahead.
     </p>
 
-    <h2 className={h2}>What Is a Personal Devotional?</h2>
+    <h2 className={h2}>Start With an Honest Review</h2>
     <p className={p}>
-      A devotional is a brief, intentional time set aside to connect with God through Scripture,
-      reflection, and prayer. It&apos;s different from a church service, a Bible study group, or
-      reading theology. It&apos;s private. It&apos;s personal. And it&apos;s yours.
-    </p>
-    <p className={p}>
-      The word &ldquo;devotional&rdquo; comes from &ldquo;devotion&rdquo; — a word that implies loyalty and
-      attention. That&apos;s the heart of it. Not a performance or a checklist, but a daily
-      turning of your attention toward God.
-    </p>
-    <div className={blockquote}>
-      &ldquo;But when you pray, go into your room, close the door and pray to your Father, who is
-      unseen. Then your Father, who sees what is done in secret, will reward you.&rdquo; — Matthew 6:6
-    </div>
-
-    <h2 className={h2}>Choose a Format That Fits Your Life</h2>
-    <p className={p}>
-      There is no single correct format. The best devotional is the one you will actually do.
-      Here are four simple approaches — start with whichever feels most natural.
+      Before setting intentions for the year ahead, sit with the year behind. Not to relive
+      it, but to release it properly. Three questions worth asking slowly:
     </p>
     <div className="mt-4 space-y-4">
       {[
-        [
-          "Read + Reflect",
-          "Read one passage or verse slowly. Ask: What is God saying here? What does this tell me about my day? Write a sentence if you want, or just sit with the thought. Five minutes is enough.",
-        ],
-        [
-          "Guided Devotional",
-          "Use a daily devotional resource — a written one, an app, or an AI-generated devotional tailored to your situation. Good for people who find a blank page intimidating. The structure does the heavy lifting.",
-        ],
-        [
-          "Prayer Journal",
-          "Write your prayers rather than speaking them. Many people find this deepens honesty. Start with gratitude, move to requests, end with listening — a minute of silence for whatever comes to mind.",
-        ],
-        [
-          "Scripture Memory",
-          "Choose one verse per week to memorise. Read it each morning, write it by hand, recite it before sleep. Over a year, 52 verses become a reservoir you carry with you everywhere.",
-        ],
-      ].map(([format, desc], i) => (
+        ["Where did I experience God this year?", "Think beyond the obvious moments. Sometimes God was present in something quiet — an unexpected peace, a provision you almost missed, a conversation that turned out to matter. Name it. Let it become gratitude."],
+        ["What am I carrying that I was never meant to keep?", "Regret, bitterness, shame, grief left unprocessed — these are weights that accumulate across a year. The new year is not a magic eraser, but it is a real invitation to lay things down deliberately."],
+        ["Where did I drift from God — and why?", "Not to condemn yourself, but to understand. Drift usually has a cause: busyness, disappointment, distraction. Naming the cause helps you build against it in the year ahead."],
+      ].map(([q, a], i) => (
         <div key={i} className={card}>
-          <div className={qaQ}>{format}</div>
+          <div className={qaQ}>{q}</div>
+          <div className={qaA}>{a}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>Letting Go — Not Just Moving On</h2>
+    <p className={p}>
+      &ldquo;Moving on&rdquo; is a psychological concept. Letting go is a spiritual one. The difference
+      is that moving on tries to leave something behind by going faster. Letting go releases
+      it deliberately — naming it, giving it to God, and choosing not to carry it into the
+      next season.
+    </p>
+    <div className={blockquote}>
+      &ldquo;Forget the former things; do not dwell on the past. See, I am doing a new thing! Now it
+      springs up; do you not perceive it? I am making a way in the wilderness and streams in the
+      wasteland.&rdquo; — Isaiah 43:18–19
+    </div>
+    <p className={p}>
+      This is not denial. Isaiah was speaking to people in genuine exile — their pain was real.
+      The call to &ldquo;forget the former things&rdquo; is not a call to pretend they did not happen but
+      to stop letting them define what is possible ahead. God is doing something new. The
+      question is whether you are watching for it.
+    </p>
+
+    <h2 className={h2}>Setting Faith-Centred Goals</h2>
+    <p className={p}>
+      New Year goals often focus on what we want to do or become. Faith-centred goals ask a
+      different question: who does God want me to be, and what does He want me to do, this year?
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>One character goal.</strong> Something internal — patience, generosity, honesty, trust. Not a behaviour to perform but a quality to cultivate. Pray about it. Name it. Return to it monthly.</li>
+      <li className={li}><strong>One relationship goal.</strong> Is there a relationship that needs repair, investment, or honest conversation? The new year is a natural time to take a step you have been deferring.</li>
+      <li className={li}><strong>One devotional goal.</strong> Not a challenge or a streak — a simple, sustainable practice. One verse a day. Five minutes of prayer in the morning. Consistency over ambition.</li>
+      <li className={li}><strong>One giving goal.</strong> Time, money, or attention directed outward. Faith that does not become generosity tends to turn inward.</li>
+    </ul>
+    <p className={p}>
+      Write these down. Review them quarterly. Not as a performance review — but as a
+      conversation with God about whether you are still moving in the direction you chose together.
+    </p>
+
+    <h2 className={h2}>Simple Daily Habits for the Year Ahead</h2>
+    <p className={p}>
+      Goals without habits are wishes. The faith-centred goals above need daily anchors — small
+      practices that make them real rather than aspirational.
+    </p>
+    <div className="mt-4 space-y-4">
+      {[
+        ["Morning: one verse, one intention", "Before the day has its way with you — read one verse. Then set one intention for the day: how do you want to show up? What do you want to be attentive to? Thirty seconds is enough."],
+        ["Midday: one honest check-in", "A brief pause at midday to ask: Am I living the intention I set this morning? What do I need to release or adjust for the afternoon? This is prayer as awareness, not performance."],
+        ["Evening: one thing of gratitude", "End each day by naming one specific thing — not a generic list, but something that happened today. Gratitude that is specific becomes a practice of noticing God in the ordinary."],
+      ].map(([habit, desc], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{habit}</div>
           <div className={qaA}>{desc}</div>
         </div>
       ))}
     </div>
 
-    <h2 className={h2}>How to Start — Practically</h2>
+    <h2 className={h2}>A Prayer for the New Year</h2>
     <p className={p}>
-      Don&apos;t begin by finding the perfect time or buying the perfect journal. Begin today with
-      what you have. Here is the simplest possible starting point:
+      You do not need to arrive at January with everything figured out. You need only to arrive
+      honestly. Here is a simple prayer for the threshold of a new year:
     </p>
-    <ol className={ol}>
-      <li className={li}>Pick a time slot — morning works best for most people, but any consistent time is fine.</li>
-      <li className={li}>Read one verse. Psalm 23, John 3:16, or whatever comes to mind. Volume doesn&apos;t matter yet.</li>
-      <li className={li}>Pray one honest sentence. It can be as simple as &ldquo;God, I&apos;m here. Help me today.&rdquo;</li>
-      <li className={li}>Do it again tomorrow. That&apos;s the whole practice in its first week.</li>
-    </ol>
-    <p className={p}>
-      After two weeks of consistency, you can add: a second verse, a brief journal entry, or
-      a specific prayer topic. But not before. Build the habit first, then build on the habit.
-    </p>
-
-    <h2 className={h2}>What to Do When It&apos;s Hard to Start</h2>
-    <p className={p}>
-      Every devotional practice hits dry stretches. There will be mornings when you sit down
-      and feel nothing — no inspiration, no connection, no particular sense that anything is
-      happening. This is not failure. It is the ordinary texture of a long-term spiritual practice.
-    </p>
-    <ul className={ul}>
-      <li className={li}><strong>Lower the bar temporarily.</strong> If five minutes feels impossible, do one minute. Read a single verse and say amen. Done is better than perfect.</li>
-      <li className={li}><strong>Change the format.</strong> If reading feels stale, try praying out loud. If silence feels empty, try writing. Variety within structure is healthy.</li>
-      <li className={li}><strong>Return without guilt.</strong> If you miss a day — or a week — come back without ceremony. God doesn&apos;t require an explanation. Just begin again.</li>
-      <li className={li}><strong>Tell God how you feel.</strong> &ldquo;I don&apos;t feel like doing this&rdquo; is a perfectly honest prayer. Honesty is always better than performance.</li>
-    </ul>
     <div className={blockquote}>
-      &ldquo;The Lord is near to all who call on him, to all who call on him in truth.&rdquo; — Psalm 145:18
+      God, I bring this new year to you — the hope I have for it and the uncertainty I carry
+      into it. I release what I was never meant to carry from last year. I ask for clarity
+      about what matters, courage for what is hard, and presence enough to notice where you
+      are at work. Be my guide. Be my peace. Let this year be shaped by you more than by my
+      own plans.
+    </div>
+    <div className={blockquote}>
+      &ldquo;For I know the plans I have for you, declares the Lord, plans to prosper you and not
+      to harm you, plans to give you hope and a future.&rdquo; — Jeremiah 29:11
     </div>
 
-    <h2 className={h2}>Making It Last</h2>
-    <p className={p}>
-      The devotional practices that last are the ones attached to existing habits. Pair your
-      devotional with something you already do every day — morning coffee, breakfast, your
-      commute, or the first ten minutes at your desk. The existing habit becomes a trigger that
-      carries the new one.
-    </p>
-    <p className={p}>
-      Over time, the practice becomes less about discipline and more about desire. You will
-      start to miss it on the days you skip. That shift — from obligation to longing — is one
-      of the quiet signs of genuine spiritual growth.
-    </p>
-
     <div className={cta}>
-      <p className="text-base font-bold text-white">Ready to begin your devotional practice?</p>
+      <p className="text-base font-bold text-white">Begin your new year with a personalised devotional</p>
       <p className="mt-2 text-sm text-white/65">
-        Generate a personalised devotional in seconds — tailored to your situation, grounded in Scripture.
+        Set the tone for the year with a Scripture-grounded reflection tailored to where you are right now.
       </p>
       <a
         href="/tools/devotional"
         className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
       >
-        Start My Devotional Today
+        Start My New Year Devotional
       </a>
     </div>
   </article>
@@ -1833,6 +1830,258 @@ const post14Body: ReactNode = (
   </article>
 );
 
+// ── Post 15 ──────────────────────────────────────────────────────────────────
+const post15Body: ReactNode = (
+  <article>
+    <p className={p}>
+      Every significant relationship in your life — marriage, friendship, family, community —
+      is shaped by the same forces: communication, forgiveness, patience, and love. Prayer
+      does not replace any of these. But it changes the person doing them. And a changed
+      person changes their relationships.
+    </p>
+    <p className={p}>
+      This is the quiet power of praying for the people in your life. Not as a strategy for
+      getting them to be different, but as a practice that softens your own heart toward them,
+      expands your capacity for grace, and invites God into the space between you.
+    </p>
+
+    <h2 className={h2}>What Happens When You Pray for Someone</h2>
+    <p className={p}>
+      Research on forgiveness and relational wellbeing consistently shows that prayer for
+      another person — even someone who has hurt you — reduces hostility and increases
+      empathy. Scripture anticipated this by thousands of years.
+    </p>
+    <div className={blockquote}>
+      &ldquo;But I tell you, love your enemies and pray for those who persecute you.&rdquo; — Matthew 5:44
+    </div>
+    <p className={p}>
+      The instruction to pray for enemies is not primarily about changing the enemy. It is
+      about what happens to the one who prays. You cannot sustain deep hostility toward
+      someone you are genuinely bringing before God. Prayer reorients you — from grievance
+      to grace, from judgement to intercession.
+    </p>
+
+    <h2 className={h2}>Praying Together — The Intimacy of Shared Prayer</h2>
+    <p className={p}>
+      Praying with someone is one of the most vulnerable things two people can do together.
+      To hear another person speak honestly to God about their fears, their gratitude, their
+      hopes — and to be included in that — creates a kind of intimacy that conversation alone
+      rarely reaches.
+    </p>
+    <p className={p}>
+      This is true in marriage, in close friendship, and in any relationship where trust is
+      being built. Couples who pray together regularly report higher satisfaction, deeper
+      communication, and greater resilience through conflict. The mechanism is simple: shared
+      prayer creates shared orientation — both people are facing the same direction.
+    </p>
+    <div className={blockquote}>
+      &ldquo;Again, truly I tell you that if two of you on earth agree about anything they ask for,
+      it will be done for them by my Father in heaven. For where two or three gather in my
+      name, there am I with them.&rdquo; — Matthew 18:19–20
+    </div>
+
+    <h2 className={h2}>Forgiveness — The Hardest Prayer</h2>
+    <p className={p}>
+      No discussion of prayer and relationships is complete without forgiveness. Forgiveness
+      is the most demanding spiritual practice in a relationship — and also the most
+      transformative.
+    </p>
+    <p className={p}>
+      The New Testament word for forgiveness (&ldquo;aphiemi&rdquo;) means to release, to let go, to
+      send away. It is not the same as trust, reconciliation, or pretending something did
+      not happen. It is the deliberate act of releasing the debt — choosing not to carry
+      the wound as a defining grievance.
+    </p>
+    <div className={blockquote}>
+      &ldquo;Bear with each other and forgive one another if any of you has a grievance against
+      someone. Forgive as the Lord forgave you.&rdquo; — Colossians 3:13
+    </div>
+    <p className={p}>
+      Praying for the person who hurt you is often the path to forgiveness, not the reward
+      for achieving it. Start by simply saying: &ldquo;God, I cannot forgive this on my own. Help
+      me want to.&rdquo; That is an honest beginning, and God works with honest beginnings.
+    </p>
+
+    <h2 className={h2}>Practical Ways to Pray for Your Relationships</h2>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Pray by name, daily",
+          "Name the people you love in your prayers — specifically. Not just \"bless my family\" but \"God, be with Sarah today. She's carrying a lot right now.\" Specific prayer produces specific attention.",
+        ],
+        [
+          "Pray for what they need, not what you want from them",
+          "It is easy to pray for someone to change in ways that benefit you. The discipline is to pray for what they genuinely need: health, clarity, peace, growth. This shifts prayer from petition to intercession.",
+        ],
+        [
+          "Pray before hard conversations",
+          "Before a difficult conversation — a conflict to address, a hard truth to share — spend five minutes in prayer. Ask for the right words, the right tone, and an open heart to hear what comes back.",
+        ],
+        [
+          "Pray together, even briefly",
+          "If you share your life with someone — spouse, housemate, close friend — find one moment to pray together. Even thirty seconds. \"God, thank you for this day. Help us be good to each other.\" It changes the texture of the relationship.",
+        ],
+        [
+          "Pray for your enemies and your difficult people",
+          "Choose the person in your life who is hardest to love right now. Pray for them for thirty days. Not for them to change — but for their genuine wellbeing. Notice what happens to your own heart.",
+        ],
+      ].map(([practice, desc], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{practice}</div>
+          <div className={qaA}>{desc}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>Love as a Spiritual Practice</h2>
+    <p className={p}>
+      The greatest commandment — to love God and love your neighbour — is not an emotional
+      instruction. It is a practice. Love, in the biblical sense, is a sustained orientation
+      of will and action toward the good of another. Prayer is one of the primary ways that
+      orientation is maintained, deepened, and renewed when it falters.
+    </p>
+    <div className={blockquote}>
+      &ldquo;Above all, love each other deeply, because love covers over a multitude of sins.&rdquo;
+      — 1 Peter 4:8
+    </div>
+    <p className={p}>
+      The word &ldquo;deeply&rdquo; here suggests something strained, effortful — a love that is
+      stretched. This is not the easy affection of people who have never been hurt or
+      disappointed by each other. It is the practiced, chosen, prayer-sustained love of
+      people who keep showing up.
+    </p>
+
+    <div className={cta}>
+      <p className="text-base font-bold text-white">Pray for someone you love today</p>
+      <p className="mt-2 text-sm text-white/65">
+        Generate a personalised prayer for a relationship — grounded in Scripture and tailored to the situation.
+      </p>
+      <a
+        href="/tools/prayer"
+        className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
+      >
+        Generate a Prayer for My Relationship
+      </a>
+    </div>
+  </article>
+);
+
+// ── Post 16 ──────────────────────────────────────────────────────────────────
+const post16Body: ReactNode = (
+  <article>
+    <p className={p}>
+      Life moves in seasons. Some arrive gently — a graduation, a new role, a relationship
+      beginning. Others arrive without warning — a diagnosis, a loss, an ending you did not
+      choose. Both kinds of transition ask the same question of your faith: does it hold?
+    </p>
+    <p className={p}>
+      Spiritual growth in a new season is not about having the right answers before the season
+      begins. It is about developing the kind of rootedness that bends without breaking —
+      trusting a God who is present in the change, not just in the stable ground before it.
+    </p>
+
+    <h2 className={h2}>Why Transitions Are Spiritually Significant</h2>
+    <p className={p}>
+      Transitions expose what you are actually standing on. When the familiar routines,
+      relationships, and structures that have supported your faith are disrupted — when your
+      church community changes, your schedule shifts, your role in the world is redefined —
+      you find out quickly which parts of your faith were attached to those structures and
+      which were attached to God.
+    </p>
+    <p className={p}>
+      This is not comfortable. But it is one of the most important forms of spiritual
+      education available. The disciples&apos; faith was not tested in the upper room — it was
+      tested in the storm, in the garden, in the moment when everything familiar collapsed.
+      What survived that was real.
+    </p>
+    <div className={blockquote}>
+      &ldquo;He is like a tree planted by streams of water, which yields its fruit in season and
+      whose leaf does not wither — whatever they do prospers.&rdquo; — Psalm 1:3
+    </div>
+
+    <h2 className={h2}>Trusting God in Transitions You Did Not Choose</h2>
+    <p className={p}>
+      Chosen transitions — a new job, a move, a fresh start — are hard enough. Unchosen
+      transitions are harder. Grief, illness, job loss, a relationship ending: these arrive
+      as disruptions, not opportunities. And yet Scripture is clear that God is not absent
+      from unchosen seasons. He is, in fact, especially present in them.
+    </p>
+    <div className={blockquote}>
+      &ldquo;The Lord is my shepherd; I lack nothing. He makes me lie down in green pastures, he
+      leads me beside quiet waters, he refreshes my soul. He guides me along the right paths
+      for his name&apos;s sake. Even though I walk through the darkest valley, I will fear no evil,
+      for you are with me.&rdquo; — Psalm 23:1–4
+    </div>
+    <p className={p}>
+      The &ldquo;darkest valley&rdquo; in Psalm 23 is not a detour from the shepherd&apos;s path. It is part
+      of it. The promise is not that you will be spared the valley — it is that you will not
+      walk it alone.
+    </p>
+
+    <h2 className={h2}>Practices for Growing Through Change</h2>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Name what is ending",
+          "Before rushing toward what is new, acknowledge what is being left behind. Grief over an ending — even a good transition — is healthy and appropriate. Give it space. Bring it to God honestly rather than bypassing it with spiritual language.",
+        ],
+        [
+          "Carry one anchor practice",
+          "When external routines change, one stable spiritual practice becomes an anchor. It does not have to be elaborate — one verse a day, one prayer each morning, one weekly point of connection with a trusted community. One anchor holds more than none.",
+        ],
+        [
+          "Ask what God might be forming",
+          "Not as a way of explaining away pain, but as a genuine question for reflection: What might God be building in me through this season? What is being stripped away that was not as necessary as I thought? What might be growing?",
+        ],
+        [
+          "Receive help without guilt",
+          "Transitions often require more support than usual. Receiving help — from community, from trusted friends, from a counsellor — is not weakness. It is wisdom. The New Testament image of the body of Christ assumes interdependence, not self-sufficiency.",
+        ],
+        [
+          "Look for continuity with God, not just with circumstances",
+          "What has remained true across every season of your life? Not your routines or your roles — but what you know of God. Returning to those anchors — Scripture passages, experiences of grace, prayers that were answered — builds a narrative of faithfulness that sustains you through the unfamiliar.",
+        ],
+      ].map(([practice, desc], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{practice}</div>
+          <div className={qaA}>{desc}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>New Beginnings Are Biblical</h2>
+    <p className={p}>
+      Scripture is full of new beginnings that came through, not around, hard seasons. Joseph
+      through the pit and prison. Ruth through grief and displacement. The disciples through
+      the cross. Every new beginning in the biblical narrative is preceded by something that
+      had to end.
+    </p>
+    <p className={p}>
+      The invitation of a new season is not to pretend the old one did not matter, or to
+      rush through the difficulty to reach the good part. It is to stay present — rooted in
+      God — through the whole arc. The growth that happens in transitions is not despite
+      the change. It is because of it.
+    </p>
+    <div className={blockquote}>
+      &ldquo;See, I am doing a new thing! Now it springs up; do you not perceive it? I am making
+      a way in the wilderness and streams in the wasteland.&rdquo; — Isaiah 43:19
+    </div>
+
+    <div className={cta}>
+      <p className="text-base font-bold text-white">Find grounding for your new season</p>
+      <p className="mt-2 text-sm text-white/65">
+        A personalised devotional for wherever you are in the transition — Scripture, reflection, and prayer for today.
+      </p>
+      <a
+        href="/tools/devotional"
+        className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
+      >
+        Get My Devotional for This Season
+      </a>
+    </div>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -1962,17 +2211,17 @@ export const POSTS: BlogPost[] = [
     body: post9Body,
   },
   {
-    slug: "start-devotional-practice",
-    title: "How to Start a Personal Devotional Practice",
+    slug: "faith-reset-new-year",
+    title: "How to Reset Your Faith for the New Year",
     excerpt:
-      "A personal devotional practice doesn't require special equipment, a perfect schedule, or years of Bible knowledge. It requires a few minutes, a willing heart, and one honest prayer.",
+      "Start the new year with clarity, purpose, and a renewed connection with God through simple daily steps.",
     date: "January 1, 2027",
     dateISO: "2027-01-01",
     publishDate: "2027-01-01",
-    readTime: "6 min read",
-    keywords: ["how to start a devotional", "personal devotional practice", "daily devotional for beginners", "how to do a devotional", "devotional routine"],
+    readTime: "7 min read",
+    keywords: ["faith reset new year", "new year faith goals", "christian new year", "spiritual new year reflection", "faith goals"],
     description:
-      "Learn how to start a personal devotional practice that fits your life. Covers what a devotional is, how to choose a format, what to do when it feels hard, and how to make it a lasting habit.",
+      "How to reset your faith for the new year. Covers honest year-end review, letting go of the past, setting faith-centred goals, and three simple daily habits for the year ahead. Includes a prayer for the new year.",
     body: post10Body,
   },
   {
@@ -2030,6 +2279,34 @@ export const POSTS: BlogPost[] = [
     description:
       "How to stay consistent in your faith during the busy Christmas and Advent season. Five practical habits for keeping your devotional practice alive through December without adding to an already full schedule.",
     body: post14Body,
+  },
+  {
+    slug: "strengthen-relationships-through-prayer",
+    title: "How to Strengthen Your Relationships Through Prayer",
+    excerpt:
+      "Discover how prayer can transform your relationships and deepen your connection with others.",
+    date: "February 1, 2027",
+    dateISO: "2027-02-01",
+    publishDate: "2027-02-01",
+    readTime: "7 min read",
+    keywords: ["prayer for relationships", "praying together", "forgiveness and prayer", "christian relationships", "love and prayer"],
+    description:
+      "How prayer strengthens relationships — covering praying for others by name, praying together as a couple or family, forgiveness as a spiritual practice, and five practical ways to bring prayer into your closest relationships.",
+    body: post15Body,
+  },
+  {
+    slug: "grow-spiritually-new-season",
+    title: "How to Grow Spiritually in a New Season of Life",
+    excerpt:
+      "Learn how to stay grounded in your faith as life changes and new seasons begin.",
+    date: "March 1, 2027",
+    dateISO: "2027-03-01",
+    publishDate: "2027-03-01",
+    readTime: "7 min read",
+    keywords: ["spiritual growth new season", "faith through change", "trusting god in transitions", "new beginnings faith", "growing spiritually"],
+    description:
+      "How to grow spiritually in a new season of life. Covers why transitions are spiritually significant, trusting God through unchosen change, five practices for growing through transitions, and the biblical pattern of new beginnings.",
+    body: post16Body,
   },
 ];
 

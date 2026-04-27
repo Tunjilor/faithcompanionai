@@ -1183,6 +1183,128 @@ const post9Body: ReactNode = (
   </article>
 );
 
+// ── Post 10 ──────────────────────────────────────────────────────────────────
+const post10Body: ReactNode = (
+  <article>
+    <p className={p}>
+      A personal devotional practice is one of the most quietly powerful things a person can
+      build. It doesn&apos;t require special equipment, a perfect schedule, or years of theological
+      training. It requires a few minutes, a willing heart, and the decision to show up
+      consistently — even imperfectly.
+    </p>
+    <p className={p}>
+      If you&apos;ve tried before and stopped, that&apos;s normal. Most people start too big, miss a day,
+      and conclude they&apos;re not disciplined enough. The problem is almost never discipline. It&apos;s
+      almost always the size of the commitment they made.
+    </p>
+
+    <h2 className={h2}>What Is a Personal Devotional?</h2>
+    <p className={p}>
+      A devotional is a brief, intentional time set aside to connect with God through Scripture,
+      reflection, and prayer. It&apos;s different from a church service, a Bible study group, or
+      reading theology. It&apos;s private. It&apos;s personal. And it&apos;s yours.
+    </p>
+    <p className={p}>
+      The word &ldquo;devotional&rdquo; comes from &ldquo;devotion&rdquo; — a word that implies loyalty and
+      attention. That&apos;s the heart of it. Not a performance or a checklist, but a daily
+      turning of your attention toward God.
+    </p>
+    <div className={blockquote}>
+      &ldquo;But when you pray, go into your room, close the door and pray to your Father, who is
+      unseen. Then your Father, who sees what is done in secret, will reward you.&rdquo; — Matthew 6:6
+    </div>
+
+    <h2 className={h2}>Choose a Format That Fits Your Life</h2>
+    <p className={p}>
+      There is no single correct format. The best devotional is the one you will actually do.
+      Here are four simple approaches — start with whichever feels most natural.
+    </p>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Read + Reflect",
+          "Read one passage or verse slowly. Ask: What is God saying here? What does this tell me about my day? Write a sentence if you want, or just sit with the thought. Five minutes is enough.",
+        ],
+        [
+          "Guided Devotional",
+          "Use a daily devotional resource — a written one, an app, or an AI-generated devotional tailored to your situation. Good for people who find a blank page intimidating. The structure does the heavy lifting.",
+        ],
+        [
+          "Prayer Journal",
+          "Write your prayers rather than speaking them. Many people find this deepens honesty. Start with gratitude, move to requests, end with listening — a minute of silence for whatever comes to mind.",
+        ],
+        [
+          "Scripture Memory",
+          "Choose one verse per week to memorise. Read it each morning, write it by hand, recite it before sleep. Over a year, 52 verses become a reservoir you carry with you everywhere.",
+        ],
+      ].map(([format, desc], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{format}</div>
+          <div className={qaA}>{desc}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>How to Start — Practically</h2>
+    <p className={p}>
+      Don&apos;t begin by finding the perfect time or buying the perfect journal. Begin today with
+      what you have. Here is the simplest possible starting point:
+    </p>
+    <ol className={ol}>
+      <li className={li}>Pick a time slot — morning works best for most people, but any consistent time is fine.</li>
+      <li className={li}>Read one verse. Psalm 23, John 3:16, or whatever comes to mind. Volume doesn&apos;t matter yet.</li>
+      <li className={li}>Pray one honest sentence. It can be as simple as &ldquo;God, I&apos;m here. Help me today.&rdquo;</li>
+      <li className={li}>Do it again tomorrow. That&apos;s the whole practice in its first week.</li>
+    </ol>
+    <p className={p}>
+      After two weeks of consistency, you can add: a second verse, a brief journal entry, or
+      a specific prayer topic. But not before. Build the habit first, then build on the habit.
+    </p>
+
+    <h2 className={h2}>What to Do When It&apos;s Hard to Start</h2>
+    <p className={p}>
+      Every devotional practice hits dry stretches. There will be mornings when you sit down
+      and feel nothing — no inspiration, no connection, no particular sense that anything is
+      happening. This is not failure. It is the ordinary texture of a long-term spiritual practice.
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>Lower the bar temporarily.</strong> If five minutes feels impossible, do one minute. Read a single verse and say amen. Done is better than perfect.</li>
+      <li className={li}><strong>Change the format.</strong> If reading feels stale, try praying out loud. If silence feels empty, try writing. Variety within structure is healthy.</li>
+      <li className={li}><strong>Return without guilt.</strong> If you miss a day — or a week — come back without ceremony. God doesn&apos;t require an explanation. Just begin again.</li>
+      <li className={li}><strong>Tell God how you feel.</strong> &ldquo;I don&apos;t feel like doing this&rdquo; is a perfectly honest prayer. Honesty is always better than performance.</li>
+    </ul>
+    <div className={blockquote}>
+      &ldquo;The Lord is near to all who call on him, to all who call on him in truth.&rdquo; — Psalm 145:18
+    </div>
+
+    <h2 className={h2}>Making It Last</h2>
+    <p className={p}>
+      The devotional practices that last are the ones attached to existing habits. Pair your
+      devotional with something you already do every day — morning coffee, breakfast, your
+      commute, or the first ten minutes at your desk. The existing habit becomes a trigger that
+      carries the new one.
+    </p>
+    <p className={p}>
+      Over time, the practice becomes less about discipline and more about desire. You will
+      start to miss it on the days you skip. That shift — from obligation to longing — is one
+      of the quiet signs of genuine spiritual growth.
+    </p>
+
+    <div className={cta}>
+      <p className="text-base font-bold text-white">Ready to begin your devotional practice?</p>
+      <p className="mt-2 text-sm text-white/65">
+        Generate a personalised devotional in seconds — tailored to your situation, grounded in Scripture.
+      </p>
+      <a
+        href="/tools/devotional"
+        className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
+      >
+        Start My Devotional Today
+      </a>
+    </div>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -1310,6 +1432,20 @@ export const POSTS: BlogPost[] = [
     description:
       "Build a simple daily routine for spiritual growth. Three-part approach: read one verse, reflect for one minute, pray briefly. Covers why simplicity sustains consistency, habit anchoring, and what to do when it feels empty.",
     body: post9Body,
+  },
+  {
+    slug: "start-devotional-practice",
+    title: "How to Start a Personal Devotional Practice",
+    excerpt:
+      "A personal devotional practice doesn't require special equipment, a perfect schedule, or years of Bible knowledge. It requires a few minutes, a willing heart, and one honest prayer.",
+    date: "November 1, 2027",
+    dateISO: "2027-11-01",
+    publishDate: "2027-11-01",
+    readTime: "6 min read",
+    keywords: ["how to start a devotional", "personal devotional practice", "daily devotional for beginners", "how to do a devotional", "devotional routine"],
+    description:
+      "Learn how to start a personal devotional practice that fits your life. Covers what a devotional is, how to choose a format, what to do when it feels hard, and how to make it a lasting habit.",
+    body: post10Body,
   },
 ];
 

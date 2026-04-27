@@ -158,7 +158,67 @@ export default function PricingPage() {
         </p>
       </section>
 
-      <section className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
+      {/* Free vs Premium comparison */}
+      <section className="mt-6 rounded-[28px] overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="grid grid-cols-3 text-xs font-semibold uppercase tracking-widest">
+          <div className="col-span-1 px-5 py-3 text-white/50" style={{ background: 'rgba(255,255,255,0.05)' }}>Feature</div>
+          <div className="px-5 py-3 text-center text-white/60" style={{ background: 'rgba(255,255,255,0.05)' }}>Free</div>
+          <div className="px-5 py-3 text-center text-orange-300" style={{ background: 'rgba(139,92,246,0.15)' }}>Premium</div>
+        </div>
+
+        {[
+          { label: "Personalized scripture", free: "Limited daily", premium: "Unlimited" },
+          { label: "AI-generated prayers", free: "Limited daily", premium: "Unlimited" },
+          { label: "Devotionals", free: "Limited daily", premium: "Unlimited" },
+          { label: "Bible Quiz", free: true, premium: true },
+          { label: "Deeper faith guidance", free: false, premium: true },
+          { label: "Save to faith journal", free: false, premium: true },
+          { label: "All quiz categories", free: false, premium: true },
+          { label: "Ongoing spiritual support", free: false, premium: true },
+        ].map((row, i) => (
+          <div
+            key={row.label}
+            className="grid grid-cols-3 text-sm border-t border-white/8"
+            style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent' }}
+          >
+            <div className="px-5 py-3 text-white/80">{row.label}</div>
+            <div className="px-5 py-3 text-center text-white/55">
+              {row.free === true ? <span className="text-green-400">&#10003;</span>
+                : row.free === false ? <span className="text-white/25">&#8212;</span>
+                : <span className="text-white/55">{row.free}</span>}
+            </div>
+            <div className="px-5 py-3 text-center font-medium" style={{ background: 'rgba(139,92,246,0.08)' }}>
+              {row.premium === true ? <span className="text-green-400">&#10003;</span>
+                : <span className="text-white/90">{row.premium}</span>}
+            </div>
+          </div>
+        ))}
+
+        <div className="grid grid-cols-3 border-t border-white/10 py-4" style={{ background: 'rgba(139,92,246,0.1)' }}>
+          <div className="px-5 text-xs text-white/40 self-center">Start whenever you are ready</div>
+          <div className="px-5 text-center">
+            <Link href="/biblequiz" className="text-xs text-white/55 hover:text-white/80 transition underline underline-offset-2">
+              Start Your Free Journey
+            </Link>
+          </div>
+          <div className="px-5 text-center">
+            <a
+              href="https://buy.stripe.com/aFaeVf0KS0lZ3DCajZ8Vi06"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-violet-600 to-orange-500 px-4 py-1.5 text-xs font-semibold text-white hover:opacity-95 transition"
+            >
+              Unlock Your Full Faith Journey
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <p className="mt-6 text-center text-sm text-white/60">
+        Choose how deeply you want to grow in your faith.
+      </p>
+
+      <section className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-3">
         {/* Monthly — most popular */}
         <div className="rounded-[28px] p-6 shadow-2xl" style={{ background: 'rgba(139, 92, 246, 0.25)', border: '1px solid rgba(139, 92, 246, 0.5)' }}>
           <div className="flex items-center justify-between gap-3">

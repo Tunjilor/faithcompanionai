@@ -29,11 +29,14 @@ function buildWhatsAppShare(text: string, url: string) {
 export default function ShareButtons({
   shareUrl,
   shareText,
+  tierLabel,
 }: {
   shareUrl: string;
   shareText: string;
+  tierLabel?: string;
 }) {
   const [copied, setCopied] = useState(false);
+  const [shared, setShared] = useState(false);
 
   const links = useMemo(() => {
     return {
@@ -44,7 +47,6 @@ export default function ShareButtons({
   }, [shareText, shareUrl]);
 
   async function copyLink() {
-    // Best experience on HTTPS: clipboard API
     if (typeof window !== "undefined" && window.isSecureContext && navigator.clipboard?.writeText) {
       try {
         await navigator.clipboard.writeText(shareUrl);
@@ -52,72 +54,99 @@ export default function ShareButtons({
         window.setTimeout(() => setCopied(false), 1600);
         return;
       } catch {
-        // fall through to prompt
+        // fall through
       }
     }
-
-    // No deprecated execCommand: use prompt fallback
     window.prompt("Copy this link:", shareUrl);
   }
 
+  async function nativeShare() {
+    try {
+      await navigator.share({ title: "My Bible Quiz Result", text: shareText, url: shareUrl });
+      setShared(true);
+      window.setTimeout(() => setShared(false), 2000);
+    } catch {
+      // user cancelled or not supported — fall through silently
+    }
+  }
+
+  const canNativeShare = typeof navigator !== "undefined" && typeof navigator.share === "function";
+
   return (
-    <div className="rounded-2xl border border-white/10 bg-black/30 p-4 sm:p-5">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <div className="text-white font-bold">Share</div>
-          <div className="text-xs text-white/60">Copy link or share to your favorite platform.</div>
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={copyLink}
-            className={classNames(
-              "rounded-md px-4 py-2 text-sm font-semibold transition",
-              copied ? "bg-green-600 text-white" : "bg-white/10 text-white hover:bg-white/15"
-            )}
-            title="Copy link"
-          >
-            {copied ? "Copied ✅" : "Copy link"}
-          </button>
-
-          <a
-            href={links.x}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15 transition"
-            title="Share to X"
-          >
-            Share to X
-          </a>
-
-          <a
-            href={links.fb}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15 transition"
-            title="Share to Facebook"
-          >
-            Facebook
-          </a>
-
-          <a
-            href={links.wa}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15 transition"
-            title="Share to WhatsApp"
-          >
-            WhatsApp
-          </a>
+    <div className="rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-900/40 to-black/40 p-5 sm:p-6">
+      {/* Header */}
+      <div className="mb-4">
+        <div className="text-base font-bold text-white">Challenge a friend to discover their faith journey</div>
+        <div className="mt-1 text-xs text-white/60">
+          {tierLabel
+            ? `You scored as a "${tierLabel}" — see if they can match it.`
+            : "Share your result and see how your friends compare."}
         </div>
       </div>
 
+      {/* Mobile-first: native share as primary */}
+      {canNativeShare && (
+        <button
+          type="button"
+          onClick={nativeShare}
+          className={classNames(
+            "mb-3 w-full rounded-full py-3 text-sm font-semibold transition",
+            shared
+              ? "bg-green-600 text-white"
+              : "bg-gradient-to-r from-purple-600 to-orange-500 text-white hover:opacity-95"
+          )}
+        >
+          {shared ? "Shared!" : "Share Your Result"}
+        </button>
+      )}
+
+      {/* Platform buttons */}
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={copyLink}
+          className={classNames(
+            "rounded-full px-4 py-2 text-xs font-semibold transition",
+            copied ? "bg-green-600 text-white" : "bg-white/10 text-white hover:bg-white/15"
+          )}
+        >
+          {copied ? "Copied!" : "Copy link"}
+        </button>
+
+        <a
+          href={links.x}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-white hover:bg-white/15 transition"
+        >
+          Share on X
+        </a>
+
+        <a
+          href={links.fb}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-white hover:bg-white/15 transition"
+        >
+          Facebook
+        </a>
+
+        <a
+          href={links.wa}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full bg-white/10 px-4 py-2 text-xs font-semibold text-white hover:bg-white/15 transition"
+        >
+          WhatsApp
+        </a>
+      </div>
+
+      {/* Share link preview */}
       <a
         href={shareUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-3 block rounded-xl bg-black/40 p-3 text-xs text-white/70 break-all hover:text-white"
+        className="mt-4 block truncate rounded-xl bg-black/30 px-3 py-2 text-xs text-white/50 hover:text-white/80 transition"
         title="Open share link"
       >
         {shareUrl}

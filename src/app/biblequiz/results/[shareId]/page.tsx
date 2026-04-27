@@ -147,8 +147,9 @@ export default async function Page({ params }: PageProps) {
   const total = attempt.questions.length || attempt.total || 0;
   const percent = total ? Math.round((correctCount / total) * 100) : 0;
   const scoreText = `${correctCount}/${total}`;
+  const tier = getResultTier(percent);
   const shareUrl = `https://faithcompanionai.com/biblequiz/results/${shareId}`;
-  const shareText = `I scored ${scoreText} (${percent}%) on Faith Companion AI - Bible Quiz (${categoryName}). Can you beat me?`;
+  const shareText = `I just took a Bible quiz and got "${tier.label}" (${percent}%).\nIt revealed something about my faith journey I didn't expect.\n\nCan you beat my score? Take the quiz:`;
 
   return (
     <main className="mx-auto w-full max-w-5xl space-y-6 px-4 pb-16 pt-8 md:px-6">
@@ -173,7 +174,7 @@ export default async function Page({ params }: PageProps) {
           </div>
         </div>
         <div className="mt-6">
-          <ShareButtons shareUrl={shareUrl} shareText={shareText} />
+          <ShareButtons shareUrl={shareUrl} shareText={shareText} tierLabel={tier.label} />
         </div>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link href="/biblequiz" className="rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-3 text-center text-sm font-semibold text-white hover:opacity-95">

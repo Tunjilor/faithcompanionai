@@ -188,7 +188,6 @@ export default async function Page({ params }: PageProps) {
 
       {/* Result meaning + emotional support + next steps + CTA */}
       {(() => {
-        const tier = getResultTier(percent);
         return (
           <>
             <section className="fc-surface rounded-2xl p-6 sm:p-8 space-y-4">

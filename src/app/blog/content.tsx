@@ -1055,6 +1055,134 @@ const post8Body: ReactNode = (
   </article>
 );
 
+// ── Post 9 ───────────────────────────────────────────────────────────────────
+const post9Body: ReactNode = (
+  <article>
+    <p className={p}>
+      Spiritual growth does not require complexity. It does not require an hour a day, a
+      structured reading plan, a prayer journal with colour-coded tabs, or any particular level
+      of biblical knowledge. What it requires is consistency — small, repeated contact with God
+      over time, compounding quietly in the background of your life.
+    </p>
+    <p className={p}>
+      The people who grow most in faith over the long run are rarely those who had the most
+      intense seasons. They are those who showed up in the ordinary ones.
+    </p>
+
+    <h2 className={h2}>The Core of a Daily Spiritual Routine</h2>
+    <p className={p}>
+      Strip it down to three elements. These can be done in five minutes or extended to thirty.
+      The length matters less than the practice.
+    </p>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Read one verse",
+          "Not a chapter, not a passage — one verse. Read it slowly. Read it again. Let a single thought from Scripture be the anchor for your day. This is not about volume. It is about contact.",
+        ],
+        [
+          "Reflect for one minute",
+          "Ask one question about what you just read: What does this tell me about God, about myself, or about today? You do not need a profound answer. You need the habit of asking.",
+        ],
+        [
+          "Pray briefly",
+          "One honest sentence is enough. \"God, I need help today.\" \"Thank you for this morning.\" \"I don't know what I'm doing — please guide me.\" Prayer is a relationship, not a performance. It does not need length to be real.",
+        ],
+      ].map(([step, explanation], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{i + 1}. {step}</div>
+          <div className={qaA}>{explanation}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>Why Simplicity Works</h2>
+    <p className={p}>
+      Complex routines fail because they are hard to maintain when life gets hard — and life
+      always gets hard. A routine that requires thirty minutes of undisturbed silence collapses
+      the moment you have a difficult week, a sick child, a stressful season at work, or travel.
+    </p>
+    <p className={p}>
+      A routine that requires five minutes does not. It survives bad mornings. It survives
+      travel. It survives the seasons where nothing feels spiritual. And because it survives,
+      it compounds.
+    </p>
+    <div className={blockquote}>
+      &ldquo;Let us not become weary in doing good, for at the proper time we will reap a harvest
+      if we do not give up.&rdquo; — Galatians 6:9
+    </div>
+
+    <h2 className={h2}>Build the Routine Around Your Life</h2>
+    <p className={p}>
+      The best spiritual routine is the one you will actually do. A few practical anchors that
+      work for most people:
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>Morning</strong> — before the noise of the day begins. Even before coffee if possible. Sets the tone for everything that follows.</li>
+      <li className={li}><strong>Midday pause</strong> — a brief reset between the morning and afternoon. Good for a single verse and a one-line prayer.</li>
+      <li className={li}><strong>Before sleep</strong> — a review of the day: one thing you are grateful for, one thing you are releasing, a short prayer. Ends the day with God rather than a phone.</li>
+    </ul>
+    <p className={p}>
+      You do not need all three. Pick the one that fits your natural rhythm and do it every day
+      before adding others.
+    </p>
+
+    <h2 className={h2}>What to Do When It Feels Empty</h2>
+    <p className={p}>
+      Some days your routine will feel alive. Most days it will feel ordinary. Some days it will
+      feel like nothing at all. This is normal — and it is not a sign that the practice is not
+      working.
+    </p>
+    <p className={p}>
+      Spiritual growth is not primarily felt in the moment of the devotional. It is felt weeks
+      and months later, when you respond to something differently, handle pressure with more
+      steadiness, or find that your instinct is now more patient than it used to be. The
+      fruit comes slowly. The practice comes daily.
+    </p>
+    <ul className={ul}>
+      <li className={li}>On dry days, shorten the routine rather than skip it — maintain the contact, even if it is minimal</li>
+      <li className={li}>Do not evaluate the quality of your quiet time by how you felt during it</li>
+      <li className={li}>Return the next day regardless of how the last one felt</li>
+    </ul>
+
+    <h2 className={h2}>Expanding the Routine Over Time</h2>
+    <p className={p}>
+      Once the basic habit is stable — once it has survived a few hard weeks and you are still
+      showing up — you can expand it naturally. Add a second verse. Extend the prayer. Start
+      a brief journal. Read a chapter instead of a single verse. The expansion should feel like
+      a natural overflow, not a new obligation.
+    </p>
+    <p className={p}>
+      The goal is not to build an impressive spiritual practice. It is to build an honest,
+      consistent one. Those are not the same thing.
+    </p>
+
+    <div className={cta}>
+      <div className="text-lg font-bold text-white">Start your routine today</div>
+      <p className="mt-2 text-sm text-white/65">
+        A personalized devotional is a simple way to begin — Scripture, reflection, a short
+        prayer, and one action step, tailored to your situation. Takes five minutes. Free to try.
+      </p>
+      <Link
+        href="/tools/devotional"
+        className="mt-4 inline-flex min-h-[48px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-3 text-sm font-semibold text-white hover:opacity-95"
+      >
+        Get a Devotional →
+      </Link>
+    </div>
+
+    <h2 className={h2}>Final Thought</h2>
+    <p className={p}>
+      Consistency matters more than intensity. One verse, one minute of reflection, one honest
+      prayer — every day — will do more for your spiritual life than an occasional hour-long
+      session followed by weeks of nothing.
+    </p>
+    <p className={p}>
+      Start small. Start today. Keep showing up.
+    </p>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -1168,6 +1296,20 @@ export const POSTS: BlogPost[] = [
     description:
       "Learn how to hear God's guidance in everyday life. Covers the four channels God uses — Scripture, inner peace, wise counsel, and circumstances — plus why we miss guidance and how to practise listening.",
     body: post8Body,
+  },
+  {
+    slug: "spiritual-growth-routine",
+    title: "A Simple Daily Routine for Spiritual Growth",
+    excerpt:
+      "Spiritual growth doesn't require complexity. A simple three-part daily routine — one verse, one minute of reflection, one honest prayer — practised consistently will do more than occasional intensity.",
+    date: "September 1, 2026",
+    dateISO: "2026-09-01",
+    publishDate: "2026-09-01",
+    readTime: "6 min read",
+    keywords: ["daily spiritual routine", "spiritual growth routine", "simple devotional routine", "christian daily habit", "spiritual growth tips"],
+    description:
+      "Build a simple daily routine for spiritual growth. Three-part approach: read one verse, reflect for one minute, pray briefly. Covers why simplicity sustains consistency, habit anchoring, and what to do when it feels empty.",
+    body: post9Body,
   },
 ];
 

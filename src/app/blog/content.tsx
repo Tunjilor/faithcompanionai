@@ -1562,6 +1562,161 @@ const post12Body: ReactNode = (
   </article>
 );
 
+// ── Post 13 ──────────────────────────────────────────────────────────────────
+const post13Body: ReactNode = (
+  <article>
+    <p className={p}>
+      Difficult times are not the exception to life — they are part of it. Illness, loss,
+      financial pressure, broken relationships, grief, uncertainty about the future: at some
+      point, everyone faces seasons that require more strength than they feel they have.
+    </p>
+    <p className={p}>
+      Scripture is not silent on this. The Bible was written by people who faced real hardship —
+      exile, persecution, poverty, grief, war — and who found, in the midst of it, that God
+      was not absent. The verses below are not platitudes. They are tested words from people
+      who needed exactly what you need right now.
+    </p>
+
+    <h2 className={h2}>When You Feel You Cannot Keep Going</h2>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Joshua 1:9",
+          "\"Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.\"",
+          "This was spoken to Joshua before the most daunting task of his life. The command to be strong is grounded in a fact: God is present. Courage is not the absence of fear — it is movement in the presence of it, anchored in who goes with you.",
+        ],
+        [
+          "Isaiah 40:31",
+          "\"But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.\"",
+          "Notice that the promise begins with walking, not soaring. Strength is renewed incrementally. Some days it feels like flight; most days it simply feels like continuing to walk without collapsing. Both are included.",
+        ],
+        [
+          "Psalm 46:1",
+          "\"God is our refuge and strength, an ever-present help in trouble.\"",
+          "\"Ever-present\" — not occasional, not conditional, not distant. Trouble does not drive God away. It is precisely where this verse says He shows up.",
+        ],
+      ].map(([ref, verse, reflection], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{ref}</div>
+          <div className="mt-1 italic text-sm text-white/60 leading-6">{verse}</div>
+          <div className={qaA + " mt-2"}>{reflection}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>When You Are Exhausted</h2>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Matthew 11:28–29",
+          "\"Come to me, all you who are weary and burdened, and I will give you rest. Take my yoke upon you and learn from me, for I am gentle and humble in heart, and you will find rest for your souls.\"",
+          "Jesus does not say \"push through\" or \"try harder.\" He says come. Weariness is a valid reason to approach God, not something to overcome before you are allowed to. The invitation is specifically for the exhausted.",
+        ],
+        [
+          "Psalm 23:4",
+          "\"Even though I walk through the darkest valley, I will fear no evil, for you are with me; your rod and your staff, they comfort me.\"",
+          "The valley is real — it is not bypassed or denied. What changes is not the difficulty of the path but the presence of a companion on it. That presence is what makes fear manageable.",
+        ],
+        [
+          "2 Corinthians 12:9",
+          "\"My grace is sufficient for you, for my power is made perfect in weakness.\"",
+          "This is one of the most counterintuitive promises in Scripture. The place where you feel most depleted is not where God is least present — it is where His strength is most clearly at work, because it cannot be mistaken for your own.",
+        ],
+      ].map(([ref, verse, reflection], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{ref}</div>
+          <div className="mt-1 italic text-sm text-white/60 leading-6">{verse}</div>
+          <div className={qaA + " mt-2"}>{reflection}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>When You Are Afraid</h2>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Isaiah 41:10",
+          "\"So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you; I will uphold you with my righteous right hand.\"",
+          "Four promises in two verses: presence, identity (\"I am your God\"), active help, and upholding. The verb \"uphold\" implies something that would otherwise fall being held up from beneath. God's strength under yours.",
+        ],
+        [
+          "Philippians 4:6–7",
+          "\"Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.\"",
+          "The peace promised here is not the peace of a resolved situation — it is peace that \"transcends understanding,\" which means it can exist before circumstances change. It comes through prayer, not through outcomes.",
+        ],
+        [
+          "Psalm 34:18",
+          "\"The Lord is close to the brokenhearted and saves those who are crushed in spirit.\"",
+          "Not the confident. Not the composed. The brokenhearted, the crushed. If that is where you are, this verse is addressed to you specifically.",
+        ],
+      ].map(([ref, verse, reflection], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{ref}</div>
+          <div className="mt-1 italic text-sm text-white/60 leading-6">{verse}</div>
+          <div className={qaA + " mt-2"}>{reflection}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>When You Need to Keep Going</h2>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Romans 8:38–39",
+          "\"For I am convinced that neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord.\"",
+          "Paul wrote this from prison. The list is deliberately exhaustive — every category of threat, every dimension of existence. Nothing qualifies as an exception. Whatever you are facing is included in \"nor anything else in all creation.\"",
+        ],
+        [
+          "Jeremiah 29:11",
+          "\"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.\"",
+          "This was written to exiles — people in the worst season of Israel's national life, displaced and uncertain. The promise of a future was spoken into that, not after it.",
+        ],
+        [
+          "James 1:2–4",
+          "\"Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance. Let perseverance finish its work so that you may be mature and complete, not lacking anything.\"",
+          "This is not a call to pretend difficulty is fine. It is a call to see difficulty as raw material. What feels like it is breaking you may also be building something in you that cannot be built any other way.",
+        ],
+      ].map(([ref, verse, reflection], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{ref}</div>
+          <div className="mt-1 italic text-sm text-white/60 leading-6">{verse}</div>
+          <div className={qaA + " mt-2"}>{reflection}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>How to Pray With These Verses</h2>
+    <p className={p}>
+      Reading a verse is one thing. Praying it back to God is another — and often more
+      powerful. Take any verse above and speak it as a prayer:
+    </p>
+    <ul className={ul}>
+      <li className={li}>Read it aloud slowly.</li>
+      <li className={li}>Replace the pronouns: &ldquo;You are my refuge and strength. You are an ever-present help in my trouble.&rdquo;</li>
+      <li className={li}>Sit with it for thirty seconds.</li>
+      <li className={li}>Tell God honestly where you are: &ldquo;I need this to be true right now.&rdquo;</li>
+    </ul>
+    <p className={p}>
+      You are not alone in what you are facing. That is not a greeting-card sentiment — it
+      is the consistent, tested claim of Scripture across thousands of years. You are not
+      the first to need strength you did not have, and the God who gave it then is unchanged.
+    </p>
+
+    <div className={cta}>
+      <p className="text-base font-bold text-white">Find the right verse for your situation</p>
+      <p className="mt-2 text-sm text-white/65">
+        Tell us what you&apos;re facing and get a personalised Scripture with reflection — in seconds.
+      </p>
+      <a
+        href="/tools/verse"
+        className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
+      >
+        Find a Verse for My Situation
+      </a>
+    </div>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -1731,6 +1886,20 @@ export const POSTS: BlogPost[] = [
     description:
       "Learn how to stay spiritually grounded in a busy, distracted world. Six small daily practices — morning prayer, commute resets, midday pauses, and evening reviews — that build an interior anchor without requiring more time.",
     body: post12Body,
+  },
+  {
+    slug: "verses-for-strength",
+    title: "Bible Verses for Strength During Difficult Times",
+    excerpt:
+      "Nine tested verses for when life requires more strength than you feel you have — with honest reflections on what each one actually means, and how to pray them.",
+    date: "August 1, 2026",
+    dateISO: "2026-08-01",
+    publishDate: "2026-08-01",
+    readTime: "7 min read",
+    keywords: ["bible verses for strength", "scripture for difficult times", "bible verses for hard times", "strength bible verse", "verses for encouragement"],
+    description:
+      "Nine Bible verses for strength during difficult times — covering exhaustion, fear, grief, and perseverance. Each verse includes an honest reflection and a simple way to pray it.",
+    body: post13Body,
   },
 ];
 

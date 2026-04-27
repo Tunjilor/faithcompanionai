@@ -1305,6 +1305,133 @@ const post10Body: ReactNode = (
   </article>
 );
 
+// ── Post 11 ──────────────────────────────────────────────────────────────────
+const post11Body: ReactNode = (
+  <article>
+    <p className={p}>
+      There are seasons when faith feels solid — when prayer comes easily, Scripture speaks
+      clearly, and God feels close. And there are seasons when it does not. When prayer feels
+      like talking to a wall, the Bible feels flat, and the certainty you once had seems to
+      have quietly slipped away.
+    </p>
+    <p className={p}>
+      If you are in that second kind of season, this is for you. And the first thing to say
+      is this: weak faith is still faith. A flickering candle is still light. Bringing a
+      struggling, honest, half-believing prayer to God is not a failure — it is exactly what
+      faith looks like in hard seasons.
+    </p>
+
+    <h2 className={h2}>You Are Not the First</h2>
+    <p className={p}>
+      The people in Scripture whose faith we most admire were not strangers to doubt, distance,
+      and weariness. Their honesty is part of what makes their stories worth reading.
+    </p>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "David — Psalm 22:1",
+          "\"My God, my God, why have you forsaken me?\" David felt abandoned. He said so directly to God. He did not perform confidence he did not have. And he kept praying.",
+        ],
+        [
+          "Elijah — 1 Kings 19:4",
+          "After his greatest victory, Elijah collapsed under a tree and asked God to let him die. God's response was not rebuke — it was food, rest, and a gentle voice.",
+        ],
+        [
+          "Thomas — John 20:25",
+          "\"Unless I see... I will not believe.\" Jesus did not exclude Thomas for his doubt. He showed up for him specifically. Doubt did not disqualify him from the story.",
+        ],
+        [
+          "The father in Mark 9:24",
+          "\"I do believe; help me overcome my unbelief.\" This is one of the most honest prayers in the Bible. Jesus did not ask for more faith first. He answered as-is.",
+        ],
+      ].map(([person, desc], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{person}</div>
+          <div className={qaA}>{desc}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>Why Faith Weakens — Common Causes</h2>
+    <p className={p}>
+      Understanding why faith weakens can take some of the shame out of it. It is rarely a
+      character flaw. It is usually one of these:
+    </p>
+    <ul className={ul}>
+      <li className={li}><strong>Exhaustion.</strong> Spiritual dryness often tracks physical and emotional depletion. The soul gets tired. Rest is not unspiritual — it is sometimes the most faithful thing you can do.</li>
+      <li className={li}><strong>Unanswered prayer.</strong> When you asked and nothing came, or something came that you did not ask for, trust erodes. This is honest. It deserves honest engagement, not cheerful deflection.</li>
+      <li className={li}><strong>Grief or loss.</strong> Loss reorders everything, including how God feels. The silence after loss is one of the most disorienting spiritual experiences there is.</li>
+      <li className={li}><strong>Disconnection from practice.</strong> Faith is not purely intellectual. When the habits that feed it — prayer, Scripture, community — fade, the sense of God's presence often fades with them. Not because God has moved, but because the channels of connection have narrowed.</li>
+      <li className={li}><strong>Intellectual questions.</strong> Sometimes doubts about what you believe arise. This is normal adult faith development. Doubt that is brought honestly into conversation with God is different from doubt that is suppressed or avoided.</li>
+    </ul>
+
+    <h2 className={h2}>What to Do When Faith Feels Distant</h2>
+    <p className={p}>
+      There is no formula that makes weak faith instantly strong. But there are practices that
+      create the conditions for faith to recover — slowly, quietly, and more solidly than before.
+    </p>
+    <div className="mt-4 space-y-4">
+      {[
+        [
+          "Bring it to God as it is",
+          "Don't wait until you feel more faith to pray. Bring the weakness itself. \"God, I don't feel close to you right now, and I don't know why. I'm here anyway.\" That prayer is already an act of faith.",
+        ],
+        [
+          "Return to small practices",
+          "Don't try to recover your faith all at once. Read one Psalm. Pray one sentence. Light one candle if that helps. The goal is not spiritual intensity — it's reestablishing contact.",
+        ],
+        [
+          "Read the Psalms of lament",
+          "Psalms 22, 42, 43, 88, and 139 were written for seasons like this. They are the language of faith under pressure. Read them slowly and let someone else's honest words become yours for now.",
+        ],
+        [
+          "Tell someone",
+          "Isolation amplifies spiritual dryness. You don't have to announce a crisis — just say to one person you trust: \"I'm in a hard season with my faith.\" Being known is part of how faith recovers.",
+        ],
+        [
+          "Rest without guilt",
+          "Sometimes the most faithful act is to stop pushing and simply rest. God met Elijah with food and sleep before He gave him a word. Rest is not giving up. It is receiving.",
+        ],
+      ].map(([step, desc], i) => (
+        <div key={i} className={card}>
+          <div className={qaQ}>{step}</div>
+          <div className={qaA}>{desc}</div>
+        </div>
+      ))}
+    </div>
+
+    <h2 className={h2}>A Word About Waiting</h2>
+    <p className={p}>
+      Recovery from spiritual dryness rarely happens in a single moment. It usually happens
+      the way spring comes — incrementally, almost imperceptibly, until one day you notice
+      that something has shifted. The practice during the dry season is simply to remain —
+      to keep showing up, however quietly, until the season turns.
+    </p>
+    <div className={blockquote}>
+      &ldquo;He gives strength to the weary and increases the power of the weak. Even youths grow tired
+      and weary, and young men stumble and fall; but those who hope in the Lord will renew their
+      strength.&rdquo; — Isaiah 40:29–31
+    </div>
+    <p className={p}>
+      Weak faith that keeps showing up is exactly what that verse is for. The promise is not
+      for those who already feel strong. It is for those who are weary and keep hoping anyway.
+    </p>
+
+    <div className={cta}>
+      <p className="text-base font-bold text-white">Start where you are</p>
+      <p className="mt-2 text-sm text-white/65">
+        A short, honest prayer — even one sentence — is enough. Let us help you find the words for right now.
+      </p>
+      <a
+        href="/tools/prayer"
+        className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
+      >
+        Generate a Prayer for Today
+      </a>
+    </div>
+  </article>
+);
+
 // ── Posts registry ────────────────────────────────────────────────────────────
 export const POSTS: BlogPost[] = [
   {
@@ -1446,6 +1573,20 @@ export const POSTS: BlogPost[] = [
     description:
       "Learn how to start a personal devotional practice that fits your life. Covers what a devotional is, how to choose a format, what to do when it feels hard, and how to make it a lasting habit.",
     body: post10Body,
+  },
+  {
+    slug: "faith-feels-weak",
+    title: "What to Do When Your Faith Feels Weak",
+    excerpt:
+      "Weak faith is still faith. When God feels distant and prayer feels hollow, there are honest, practical things you can do — and Scripture is full of people who felt exactly as you do.",
+    date: "October 1, 2027",
+    dateISO: "2027-10-01",
+    publishDate: "2027-10-01",
+    readTime: "6 min read",
+    keywords: ["faith feels weak", "struggling with faith", "spiritual dryness", "doubt and faith", "when god feels distant"],
+    description:
+      "Encouragement and practical steps for when your faith feels weak or distant. Covers why faith weakens, biblical examples of doubt and dryness, and what to do when prayer feels hollow.",
+    body: post11Body,
   },
 ];
 

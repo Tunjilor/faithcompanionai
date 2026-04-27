@@ -1,4 +1,5 @@
 ﻿import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -9,6 +10,7 @@ import { UserProvider } from "@/context/UserContext";
 import Script from "next/script";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import AddToHomeScreen from "@/components/AddToHomeScreen";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const GA_ID = "G-5WYYE098DH";
 
@@ -52,9 +54,10 @@ export const viewport: Viewport = {
   width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#07070a",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = (await headers()).get("x-locale") ?? "en";
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
         <Script id="ga-init" strategy="afterInteractive">{`
@@ -67,6 +70,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen bg-fc text-fc">
         <div className="fc-bg" />
         <UserProvider>
+          <div className="fixed right-4 top-3 z-50">
+            <LanguageSwitcher />
+          </div>
           <Navbar />
           <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:px-6">
             {children}

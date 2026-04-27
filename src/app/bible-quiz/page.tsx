@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Bible Quiz – Discover Your Faith Strength | Faith Companion AI",
+  title: "Bible Quiz – Discover Your Faith Strength",
   description:
     "Take a free Bible quiz and discover where you stand in your faith journey. Test your Scripture knowledge, get a personalized result, and find out what to do next.",
   alternates: { canonical: "/bible-quiz" },
   openGraph: {
-    title: "Bible Quiz – Discover Your Faith Strength",
+    title: "Bible Quiz – Discover Your Faith Strength | Faith Companion AI",
     description:
       "Take a free Bible quiz and discover where you stand in your faith journey. Personalized results included.",
     url: "https://faithcompanionai.com/bible-quiz",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bible Quiz – Discover Your Faith Strength",
+    title: "Bible Quiz – Discover Your Faith Strength | Faith Companion AI",
     description: "Take a free Bible quiz and discover where you stand in your faith journey.",
     images: ["/brand/og-quiz.png"],
   },

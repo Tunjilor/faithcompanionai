@@ -5,16 +5,16 @@ import HomeCtaLayer from "@/components/home/HomeCtaLayer";
 import JsonLd from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Faith Companion AI",
+  title: { absolute: "Faith Companion AI – Scripture, Prayer & Daily Devotionals" },
   description:
-    "Get Scripture-based verses, prayers, devotionals, and Bible quizzes designed to support your daily walk with God.",
+    "Faith Companion AI delivers personalized scripture, prayers, and devotionals based on what you are going through. Free to try. No account required.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Faith Companion AI",
+    title: "Faith Companion AI – Scripture, Prayer & Daily Devotionals",
     description:
-      "Scripture-based verses, prayers, devotionals, and Bible quizzes for daily encouragement and growth.",
+      "Personalized scripture, prayers, and devotionals based on what you are going through. Free to try.",
     url: "https://faithcompanionai.com",
     siteName: "Faith Companion AI",
     type: "website",
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Faith Companion AI",
+    title: "Faith Companion AI – Scripture, Prayer & Daily Devotionals",
     description:
-      "Scripture-based verses, prayers, devotionals, and Bible quizzes for daily encouragement and growth.",
+      "Personalized scripture, prayers, and devotionals based on what you are going through. Free to try.",
     images: ["/brand/og-quiz.png"],
   },
 };

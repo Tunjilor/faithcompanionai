@@ -4,14 +4,14 @@ import Link from "next/link";
 import JsonLd from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Pricing — Faith Companion AI Premium | Unlimited Bible Study from $4.99/month",
+  title: { absolute: "Faith Companion AI Premium – Plans from $4.99/month" },
   description:
     "Upgrade to Faith Companion AI Premium for unlimited Bible verses, prayers, and devotionals. Save your faith journey, unlock all quiz categories. Monthly from $4.99, lifetime available.",
   alternates: {
     canonical: "/pricing",
   },
   openGraph: {
-    title: "Faith Companion AI Pricing",
+    title: "Faith Companion AI Premium – Plans from $4.99/month",
     description:
       "Unlimited verses, prayers, devotionals, and saved faith journal access.",
     url: "https://faithcompanionai.com/pricing",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Faith Companion AI Pricing",
+    title: "Faith Companion AI Premium – Plans from $4.99/month",
     description:
       "Unlimited verses, prayers, devotionals, and saved faith journal access.",
     images: ["/brand/og-quiz.png"],

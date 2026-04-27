@@ -331,13 +331,15 @@ export default function PrayerPage() {
               {isSaving ? "Saving..." : "Save"}
             </button>
           ) : (
-            <Link
-              href="/pricing"
-              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-500 transition hover:bg-slate-50"
-              title="Upgrade to Premium to save prayers"
-            >
-              ðŸ”’ Save
-            </Link>
+            <div className="flex flex-col gap-1">
+              <Link
+                href="/pricing"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+              >
+                Unlock Your Faith Journey
+              </Link>
+              <p className="text-center text-xs text-slate-400">Save prayers with Premium</p>
+            </div>
           )}
 
           <button
@@ -440,15 +442,17 @@ export default function PrayerPage() {
             </p>
 
             {!premiumActive && (
-              <div className="mt-5">
-                <UpgradeCTA
-                  variant="inline"
-                  title="Save this prayer and build your personal faith journal"
-                  description="Premium members can save meaningful prayers, revisit them later, and keep their spiritual journey organized in one place."
-                  primaryHref="/pricing"
-                  primaryLabel="See Premium"
-                  showFeatures={false}
-                />
+              <div className="mt-6 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-900/30 to-orange-900/10 p-5">
+                <h3 className="font-extrabold text-white">Go deeper in your faith journey</h3>
+                <p className="mt-2 text-sm leading-6 text-white/65">
+                  Unlock personalized devotionals, saved progress, and more room to reflect.
+                </p>
+                <Link
+                  href="/pricing"
+                  className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
+                >
+                  Unlock Your Faith Journey
+                </Link>
               </div>
             )}
           </div>

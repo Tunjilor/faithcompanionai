@@ -277,8 +277,8 @@ export default function SpiritualAssistant() {
                   <div className="rounded-xl border border-orange-500/20 bg-orange-900/10 px-3 py-2.5 text-xs text-white/65 leading-relaxed">
                     Want deeper, longer conversations?{" "}
                     <Link href="/pricing" className="font-semibold text-orange-400 hover:text-orange-300">
-                      Premium unlocks extended guidance.
-                    </Link>
+                      Unlock Your Faith Journey
+                    </Link>{" "}for extended guidance.
                   </div>
                 )}
               </React.Fragment>
@@ -296,7 +296,7 @@ export default function SpiritualAssistant() {
               Want deeper, longer guidance?{" "}
               <span className="text-white/60">Premium unlocks more room to reflect.</span>{" "}
               <Link href="/pricing" className="font-semibold text-orange-400 hover:text-orange-300">
-                Explore Premium
+                Unlock Your Faith Journey
               </Link>
             </p>
           </div>

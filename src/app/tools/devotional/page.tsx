@@ -407,13 +407,15 @@ export default function DevotionalPage() {
               {isSaving ? "Saving..." : "Save"}
             </button>
           ) : (
-            <Link
-              href="/pricing"
-              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-500 transition hover:bg-slate-50"
-              title="Upgrade to Premium to save devotionals"
-            >
-              ðŸ”’ Save
-            </Link>
+            <div className="flex flex-col gap-1">
+              <Link
+                href="/pricing"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+              >
+                Unlock Your Faith Journey
+              </Link>
+              <p className="text-center text-xs text-slate-400">Save devotionals with Premium</p>
+            </div>
           )}
 
           <button
@@ -516,29 +518,17 @@ export default function DevotionalPage() {
             </div>
 
             {!premiumActive && (
-              <div className="mt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-amber-300/30 bg-amber-50 px-4 py-3">
-                <p className="text-sm text-amber-900 leading-snug">
-                  Want more like this every day? Premium gives you unlimited personalized devotionals.
+              <div className="mt-6 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-900/30 to-orange-900/10 p-5">
+                <h3 className="font-extrabold text-white">Go deeper in your faith journey</h3>
+                <p className="mt-2 text-sm leading-6 text-white/65">
+                  Unlock personalized devotionals, saved progress, and more room to reflect.
                 </p>
                 <Link
                   href="/pricing"
-                  className="shrink-0 rounded-full bg-amber-500 px-4 py-2 text-xs font-semibold text-white hover:bg-amber-600 transition"
+                  className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
                 >
-                  Explore Premium
+                  Unlock Your Faith Journey
                 </Link>
-              </div>
-            )}
-
-            {!premiumActive && (
-              <div className="mt-5">
-                <UpgradeCTA
-                  variant="inline"
-                  title="Save this devotional and build your personal faith journal"
-                  description="Premium members can save meaningful devotionals, revisit them later, and keep their spiritual growth organized in one place."
-                  primaryHref="/pricing"
-                  primaryLabel="See Premium"
-                  showFeatures={false}
-                />
               </div>
             )}
 

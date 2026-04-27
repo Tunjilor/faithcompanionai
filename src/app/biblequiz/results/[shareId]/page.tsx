@@ -221,9 +221,9 @@ export default async function Page({ params }: PageProps) {
                   Get Personalized Guidance
                 </Link>
                 <p className="text-xs text-white/45">
-                  Want deeper insights?{" "}
+                  Want to go deeper?{" "}
                   <Link href="/pricing" className="text-white/65 underline underline-offset-2 hover:text-white/90 transition">
-                    Unlock Premium
+                    Unlock Your Faith Journey
                   </Link>
                 </p>
               </div>
@@ -243,7 +243,7 @@ export default async function Page({ params }: PageProps) {
           href="/pricing"
           className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-6 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
         >
-          Unlock Premium
+          Unlock Your Faith Journey
         </Link>
       </section>
 

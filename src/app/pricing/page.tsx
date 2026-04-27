@@ -158,8 +158,12 @@ export default function PricingPage() {
         </p>
       </section>
 
+      <p className="mt-6 text-center text-sm font-medium text-white/60">
+        Start free. Upgrade when you&apos;re ready to go deeper.
+      </p>
+
       {/* Free vs Premium comparison */}
-      <section className="mt-6 rounded-[28px] overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
+      <section className="mt-4 rounded-[28px] overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
         <div className="grid grid-cols-3 text-xs font-semibold uppercase tracking-widest">
           <div className="col-span-1 px-5 py-3 text-white/50" style={{ background: 'rgba(255,255,255,0.05)' }}>Feature</div>
           <div className="px-5 py-3 text-center text-white/60" style={{ background: 'rgba(255,255,255,0.05)' }}>Free</div>

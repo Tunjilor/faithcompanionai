@@ -1,7 +1,7 @@
 // src/app/api/auth/magic/verify/route.ts
 import crypto from "crypto";
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db, withDbRetry } from "@/lib/db";
 import {
   createSessionToken,
   makeSessionExpiry,
@@ -20,8 +20,9 @@ function normalizeEmail(email: string) {
 }
 
 export async function GET(req: Request) {
+  const url = new URL(req.url);
+
   try {
-    const url = new URL(req.url);
     const token = url.searchParams.get("token");
 
     if (!token) {
@@ -30,11 +31,21 @@ export async function GET(req: Request) {
       );
     }
 
+    const secret = process.env.SESSION_SECRET;
+    if (!secret) {
+      return NextResponse.redirect(
+        new URL("/login?error=missing_session_secret", url.origin)
+      );
+    }
+
     const tokenHash = hashToken(token);
 
-    const record = await db.magicLinkToken.findUnique({
-      where: { tokenHash },
-    });
+    // Wrap all DB operations in withDbRetry to survive Neon cold starts.
+    // Without retry, a connection failure on the first query throws, which
+    // the old catch block would silently swallow as verify_failed.
+    const record = await withDbRetry(() =>
+      db.magicLinkToken.findUnique({ where: { tokenHash } })
+    );
 
     if (!record) {
       return NextResponse.redirect(
@@ -56,38 +67,27 @@ export async function GET(req: Request) {
 
     const email = normalizeEmail(record.email);
 
-    let user = await db.user.findUnique({
-      where: { email },
-    });
+    let user = await withDbRetry(() =>
+      db.user.findUnique({ where: { email } })
+    );
 
     if (!user) {
-      user = await db.user.create({
-        data: {
-          email,
-          isPremium: false,
-        },
-      });
-    }
-
-    await db.magicLinkToken.update({
-      where: { tokenHash },
-      data: {
-        usedAt: new Date(),
-      },
-    });
-
-    const secret = process.env.SESSION_SECRET;
-    if (!secret) {
-      return NextResponse.redirect(
-        new URL("/login?error=missing_session_secret", url.origin)
+      user = await withDbRetry(() =>
+        db.user.create({ data: { email, isPremium: false } })
       );
     }
 
-    const exp = makeSessionExpiry(30);
-    const sessionToken = createSessionToken(
-      { uid: user.id, exp },
-      secret
+    // Mark token consumed after user is resolved so a DB failure during
+    // user lookup doesn't invalidate the token before a successful login.
+    await withDbRetry(() =>
+      db.magicLinkToken.update({
+        where: { tokenHash },
+        data: { usedAt: new Date() },
+      })
     );
+
+    const exp = makeSessionExpiry(30);
+    const sessionToken = createSessionToken({ uid: user.id, exp }, secret);
 
     const res = NextResponse.redirect(new URL("/dashboard", url.origin));
 
@@ -101,8 +101,7 @@ export async function GET(req: Request) {
 
     return res;
   } catch (err) {
-    console.error("GET /api/auth/magic/verify error:", err);
-    const url = new URL(req.url);
+    console.error("[magic/verify] unhandled error:", err);
     return NextResponse.redirect(
       new URL("/login?error=verify_failed", url.origin)
     );

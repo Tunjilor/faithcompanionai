@@ -40,12 +40,14 @@ export async function POST(req: Request) {
       },
     });
 
+    // Derive the base URL from the incoming request so the magic link is
+    // always valid for the environment that generated it (local, preview, prod).
+    // NEXT_PUBLIC_APP_URL can still override this for custom domain setups.
+    const reqOrigin = new URL(req.url).origin;
     const appUrl =
-      process.env.NEXT_PUBLIC_APP_URL || "https://faithcompanionai.com";
+      process.env.NEXT_PUBLIC_APP_URL?.trim() || reqOrigin;
 
-    const magicLink = `${appUrl}/api/auth/magic/verify?token=${encodeURIComponent(
-      token
-    )}`;
+    const magicLink = `${appUrl}/api/auth/magic/verify?token=${token}`;
 
     await sendMagicLinkEmail({ to: email, magicLink });
 

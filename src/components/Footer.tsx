@@ -137,19 +137,18 @@ export default function Footer() {
             <div>&copy; {new Date().getFullYear()} Faith Companion AI. All rights reserved.</div>
             <div className="flex flex-wrap items-center gap-4">
               <div>Scripture-based support for daily encouragement and growth.</div>
-              {/* Replace 000000 with your numeric PH post ID (find it in your PH dashboard → post → Embed) */}
               <a
-                href="https://www.producthunt.com/posts/faith-companion-ai"
+                href="https://www.producthunt.com/products/faith-companion-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-faith-companion-ai"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Featured on Product Hunt"
+                className="opacity-90 transition hover:opacity-100"
               >
                 <img
-                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=000000&theme=light"
-                  alt="Faith Companion AI - Featured on Product Hunt"
+                  alt="Faith Companion AI - Personalized Scripture, prayer &amp; devotionals — just for you | Product Hunt"
                   width="200"
                   height="43"
-                  className="opacity-90 transition hover:opacity-100"
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1135218&theme=dark&t=1777475820795"
+                  style={{ width: "200px", height: "43px" }}
                 />
               </a>
             </div>

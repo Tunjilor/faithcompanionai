@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 type Mode = "verse" | "prayer" | "devotional";
 type Tone = "gentle" | "firm" | "short" | "detailed";
 
-function systemForMode(mode: Mode, tone: Tone) {
+function systemForMode(mode: Mode, tone: Tone, isPremium: boolean) {
   const toneLine =
     tone === "gentle"
       ? "Tone: gentle, compassionate, reassuring."
@@ -21,15 +21,34 @@ function systemForMode(mode: Mode, tone: Tone) {
 
   switch (mode) {
     case "verse":
+      if (!isPremium) {
+        return `You are a helpful Christian faith assistant. ${toneLine}
+Return 1–2 Bible references relevant to the user's request (references only, no long quotes), a 1–2 sentence encouragement, and one brief closing thought.
+Be concise. Do not include long scripture quotations.`;
+      }
       return `You are a helpful Christian faith assistant. ${toneLine}
 Return 3–5 Bible references relevant to the user's request (references only, no long quotes), plus a 1–2 sentence encouragement and one simple next step.
 Do not include long scripture quotations.`;
 
     case "prayer":
+      if (!isPremium) {
+        return `You are a helpful Christian prayer assistant. ${toneLine}
+Write a brief sincere prayer (60–90 words). Include 1 Bible reference (reference only). Close with one warm sentence of encouragement.
+Avoid long scripture quotations.`;
+      }
       return `You are a helpful Christian prayer assistant. ${toneLine}
 Write a prayer. Include 1–3 Bible references (references only). Avoid long scripture quotations.`;
 
     case "devotional":
+      if (!isPremium) {
+        return `You are a helpful Christian devotional writer. ${toneLine}
+Write a short devotional (80–130 words) with:
+- 1 Bible reference (reference only)
+- 2–3 sentences of reflection
+- A brief closing thought or one-sentence prayer
+Do not include a title, action steps, or multiple sections. Keep it warm and simple.
+Avoid long scripture quotations.`;
+      }
       return `You are a helpful Christian devotional writer. ${toneLine}
 Write a devotional (250–450 words) with:
 - Title
@@ -77,10 +96,12 @@ export async function POST(req: Request) {
       ? `${personalization}\n\nUser request: ${prompt}`
       : prompt;
 
+    const isPremium = quotaInfo.kind === "premium_user";
+
     const resp = await client.responses.create({
       model,
       input: [
-        { role: "system", content: systemForMode(mode, tone) },
+        { role: "system", content: systemForMode(mode, tone, isPremium) },
         { role: "user", content: userMessage },
       ],
       temperature: tone === "short" ? 0.4 : 0.7,

@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import UpgradeCTA from "@/components/UpgradeCTA";
 import DenominationSelect, { getDenominationNote, readDenomination } from "@/components/DenominationSelect";
 import MobileInstallBanner from "@/components/MobileInstallBanner";
+import { FreeUpsellNudge } from "@/components/FreeUpsellNudge";
 
 function inlineBold(text: string): React.ReactNode {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
@@ -126,6 +127,9 @@ export default function DevotionalPage() {
   const [hardStopped, setHardStopped] = useState(false);
   const [quota, setQuota] = useState<QuotaInfo | null>(null);
   const [me, setMe] = useState<MeResponse | null>(null);
+  const [responseCount, setResponseCount] = useState(0);
+  const [nudgeTrigger] = useState(() => Math.random() < 0.5 ? 3 : 4);
+  const [nudgeVisible, setNudgeVisible] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -215,6 +219,11 @@ export default function DevotionalPage() {
 
       setResult(data.answer);
       setQuota(data.quota ?? null);
+      const newCount = responseCount + 1;
+      setResponseCount(newCount);
+      if (!isPremiumActive(me) && newCount % nudgeTrigger === 0) {
+        setNudgeVisible(true);
+      }
     } catch (err: any) {
       setError(err?.message || "Something went wrong.");
     } finally {
@@ -517,19 +526,8 @@ export default function DevotionalPage() {
               {renderMarkdown(result)}
             </div>
 
-            {!premiumActive && (
-              <div className="mt-6 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-900/30 to-orange-900/10 p-5">
-                <h3 className="font-extrabold text-white">Go deeper in your faith journey</h3>
-                <p className="mt-2 text-sm leading-6 text-white/65">
-                  Unlock personalized devotionals, saved progress, and more room to reflect.
-                </p>
-                <Link
-                  href="/pricing"
-                  className="mt-4 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95 transition"
-                >
-                  Unlock Your Faith Journey
-                </Link>
-              </div>
+            {nudgeVisible && (
+              <FreeUpsellNudge onDismiss={() => setNudgeVisible(false)} />
             )}
 
             <MobileInstallBanner />

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import DenominationSelect, { getDenominationNote, readDenomination } from "@/components/DenominationSelect";
 import ShareCardModal from "@/components/ShareCardModal";
+import { FreeUpsellNudge } from "@/components/FreeUpsellNudge";
 import { ImageIcon } from "lucide-react";
 
 type Length = "short" | "medium" | "long";
@@ -58,6 +59,9 @@ export default function VersePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [showShareCard, setShowShareCard] = useState(false);
   const [me, setMe] = useState<MeResponse | null>(null);
+  const [responseCount, setResponseCount] = useState(0);
+  const [nudgeTrigger] = useState(() => Math.random() < 0.5 ? 3 : 4);
+  const [nudgeVisible, setNudgeVisible] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -121,11 +125,17 @@ export default function VersePage() {
         throw new Error("Incomplete verse response.");
       }
 
-      setResult({
+      const newResult = {
         verses: data.verses,
         encouragement: data.encouragement,
         nextStep: data.nextStep,
-      });
+      };
+      setResult(newResult);
+      const newCount = responseCount + 1;
+      setResponseCount(newCount);
+      if (!isPremiumActive(me) && newCount % nudgeTrigger === 0) {
+        setNudgeVisible(true);
+      }
     } catch (err: any) {
       setError(err?.message || "Something went wrong.");
       setResult(null);
@@ -361,23 +371,8 @@ export default function VersePage() {
               </div>
             </div>
 
-            {!premiumActive && (
-              <div className="mt-5 rounded-2xl border border-slate-200 bg-white p-4">
-                <div className="text-sm font-semibold text-slate-900">
-                  Upgrade to Premium to save your verses
-                </div>
-                <p className="mt-1 text-sm leading-6 text-slate-600">
-                  Premium members can save favorite verses, revisit meaningful moments, and keep their faith journey organized in one place.
-                </p>
-                <div className="mt-3">
-                  <Link
-                    href="/pricing"
-                    className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-black px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90"
-                  >
-                    See Premium
-                  </Link>
-                </div>
-              </div>
+            {nudgeVisible && (
+              <FreeUpsellNudge onDismiss={() => setNudgeVisible(false)} />
             )}
           </div>
         ) : (

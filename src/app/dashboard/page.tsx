@@ -487,7 +487,7 @@ export default function DashboardPage() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-orange-500/20 text-3xl">
-                  ðŸ”¥
+                  🔥
                 </div>
                 <div>
                   {streak ? (
@@ -532,7 +532,7 @@ export default function DashboardPage() {
         ) : (
           <div className="rounded-[24px] border border-white/10 bg-white/5 p-6">
             <div className="flex items-center gap-3">
-              <span className="text-2xl">ðŸ”¥</span>
+              <span className="text-2xl">🔥</span>
               <div>
                 <div className="font-semibold text-white">Daily streak tracker</div>
                 <div className="mt-0.5 text-sm text-white/60">

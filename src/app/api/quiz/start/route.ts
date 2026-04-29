@@ -272,20 +272,6 @@ export async function POST(req: Request) {
     let softLimit = false;
 
     if (!ident.isPremium) {
-      // Guests only: hard-stop if trial period is over
-      if (ident.isGuest && !ident.trial?.isWithinTrial) {
-        return NextResponse.json(
-          {
-            ok: false,
-            error: "signin_required",
-            message: "Your free trial has ended. Please sign in to continue.",
-            upgradePrompt: true,
-            usage,
-          },
-          { status: 403 }
-        );
-      }
-
       const todayAttempt = todayAttempts[0] ?? null;
 
       if (todayAttempt) {
@@ -329,26 +315,9 @@ export async function POST(req: Request) {
         );
       }
 
-      if (ident.isGuest) {
-        // Guests: hard-stop at total/days trial limits
-        if (totalQuestionsUsed >= FREE_TOTAL_QUESTIONS || distinctDaysUsed >= FREE_DAYS_TRIAL) {
-          return NextResponse.json(
-            {
-              ok: false,
-              error: "trial_limit_reached",
-              message:
-                "You’ve used all 30 free questions across 3 days. Upgrade to Premium to continue.",
-              upgradePrompt: true,
-              usage,
-            },
-            { status: 403 }
-          );
-        }
-      } else {
-        // Registered free users: soft limit after 30 total questions — allow but signal
-        if (totalQuestionsUsed >= FREE_TOTAL_QUESTIONS) {
-          softLimit = true;
-        }
+      // All free users (guests and registered): soft limit after trial threshold
+      if (totalQuestionsUsed >= FREE_TOTAL_QUESTIONS || (ident.isGuest && distinctDaysUsed >= FREE_DAYS_TRIAL)) {
+        softLimit = true;
       }
     }
 
@@ -380,28 +349,13 @@ export async function POST(req: Request) {
     );
 
     if (candidateRows.length < QUESTIONS_PER_QUIZ) {
-      if (ident.isPremium || !ident.isGuest) {
-        // Premium or registered free: allow repeats (reset exclusions)
-        if (!ident.isPremium) softLimit = true;
-        candidateRows = await withDbRetry(() =>
-          db.question.findMany({
-            where: { category },
-          })
-        );
-      } else {
-        // Guests: hard stop — no repeats allowed
-        return NextResponse.json(
-          {
-            ok: false,
-            error: "no_more_free_questions",
-            message:
-              "There are not enough new questions left in this category without repeats. Try another category or upgrade to Premium.",
-            upgradePrompt: true,
-            usage,
-          },
-          { status: 400 }
-        );
-      }
+      // All users: allow repeats when unseen pool is exhausted; signal with softLimit
+      if (!ident.isPremium) softLimit = true;
+      candidateRows = await withDbRetry(() =>
+        db.question.findMany({
+          where: { category },
+        })
+      );
     }
 
     const rows = shuffle(candidateRows).slice(0, QUESTIONS_PER_QUIZ);

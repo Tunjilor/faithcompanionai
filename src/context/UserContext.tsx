@@ -14,6 +14,7 @@ export interface UserData {
   actorKey: string | null;
   guestName: string | null;
   displayName: string | null;
+  hasPassword?: boolean;
   referralCount?: number;
   guest: { id: string; createdAt: string; trial: any } | null;
 }

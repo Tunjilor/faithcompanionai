@@ -92,7 +92,7 @@ export async function GET() {
       user.isPremium &&
       (!user.premiumUntil || user.premiumUntil.getTime() > now.getTime());
 
-    const displayName = makeUserDisplayName(user.email);
+    const displayName = user.displayName?.trim() || makeUserDisplayName(user.email);
     const referralCount = await db.user.count({ where: { referredBy: user.id } }).catch(() => 0);
 
     return NextResponse.json({
@@ -108,6 +108,7 @@ export async function GET() {
       actorKey: `user:${user.id}`,
       guestName: displayName,
       displayName,
+      hasPassword: !!user.passwordHash,
       referralCount,
       guest: null,
       debug: { step: "ok_authed" },

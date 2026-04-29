@@ -25,7 +25,16 @@ export default function LoginClient() {
   const [pwLoading, setPwLoading] = useState(false);
   const [pwError, setPwError] = useState<string | null>(null);
 
+  // Forgot password state
+  const [forgotMode, setForgotMode] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotMessage, setForgotMessage] = useState<string | null>(null);
+  const [forgotError, setForgotError] = useState<string | null>(null);
+  const [devResetLink, setDevResetLink] = useState<string | null>(null);
+
   const error = searchParams.get("error");
+  const resetSuccess = searchParams.get("reset") === "success";
 
   async function handleMagicLink(e: React.FormEvent) {
     e.preventDefault();
@@ -69,6 +78,32 @@ export default function LoginClient() {
       setPwError("Network error. Please try again.");
     } finally {
       setPwLoading(false);
+    }
+  }
+
+  async function handleForgotPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setForgotError(null);
+    setForgotMessage(null);
+    setDevResetLink(null);
+    setForgotLoading(true);
+    try {
+      const res = await fetch("/api/auth/password/reset/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setForgotError(data.error || "Something went wrong.");
+        return;
+      }
+      setForgotMessage("Check your email for a password reset link ✉️");
+      if (data?.devResetLink) setDevResetLink(data.devResetLink);
+    } catch {
+      setForgotError("Network error. Please try again.");
+    } finally {
+      setForgotLoading(false);
     }
   }
 
@@ -122,6 +157,12 @@ export default function LoginClient() {
             </div>
           )}
 
+          {resetSuccess && (
+            <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+              Your password has been updated. You can now sign in below.
+            </div>
+          )}
+
           {/* Magic link form */}
           {tab === "magic" && (
             <form onSubmit={handleMagicLink} className="mt-6 space-y-4">
@@ -167,7 +208,7 @@ export default function LoginClient() {
           )}
 
           {/* Password form */}
-          {tab === "password" && (
+          {tab === "password" && !forgotMode && (
             <form onSubmit={handlePasswordLogin} className="mt-6 space-y-4">
               <p className="text-sm leading-6 text-white/70">
                 Log in with your email and password. You can set a password in{" "}
@@ -192,9 +233,18 @@ export default function LoginClient() {
                 />
               </div>
               <div>
-                <label htmlFor="pw-password" className="block text-sm font-medium text-white/80">
-                  Password
-                </label>
+                <div className="flex items-center justify-between">
+                  <label htmlFor="pw-password" className="block text-sm font-medium text-white/80">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => { setForgotEmail(pwEmail); setForgotMode(true); setForgotMessage(null); setForgotError(null); setDevResetLink(null); }}
+                    className="text-xs text-orange-300 hover:text-orange-200 underline"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
                 <input
                   id="pw-password"
                   type="password"
@@ -223,6 +273,65 @@ export default function LoginClient() {
                   Use magic link instead
                 </button>
               </p>
+            </form>
+          )}
+
+          {/* Forgot password form */}
+          {tab === "password" && forgotMode && (
+            <form onSubmit={handleForgotPassword} className="mt-6 space-y-4">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setForgotMode(false)}
+                  className="text-sm text-white/50 hover:text-white/80"
+                >
+                  ← Back
+                </button>
+                <h2 className="text-sm font-semibold text-white">Reset your password</h2>
+              </div>
+              <p className="text-sm leading-6 text-white/70">
+                Enter your email and we&apos;ll send you a link to set a new password.
+              </p>
+              <div>
+                <label htmlFor="forgot-email" className="block text-sm font-medium text-white/80">
+                  Email address
+                </label>
+                <input
+                  id="forgot-email"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  className="mt-2 w-full rounded-2xl border border-white/20 bg-black/40 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={forgotLoading}
+                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-2xl bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-3 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
+              >
+                {forgotLoading ? "Sending…" : "Send reset link"}
+              </button>
+              {forgotMessage && (
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+                  {forgotMessage}
+                </div>
+              )}
+              {devResetLink && (
+                <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                  <div className="font-semibold">Development shortcut</div>
+                  <a href={devResetLink} className="mt-2 block break-all font-medium underline">
+                    {devResetLink}
+                  </a>
+                </div>
+              )}
+              {forgotError && (
+                <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                  {forgotError}
+                </div>
+              )}
             </form>
           )}
 

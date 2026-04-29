@@ -135,6 +135,56 @@ export async function sendDevotionalEmail(opts: DevotionalEmailPayload) {
   return { ok: true, provider: "resend" as const };
 }
 
+export async function sendPasswordResetEmail(opts: {
+  to: string;
+  resetLink: string;
+}) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const fromEmail =
+    process.env.EMAIL_FROM || "Faith Companion AI <noreply@faithcompanionai.com>";
+
+  if (!resendApiKey) {
+    console.log("\n[Password Reset Email - DEV FALLBACK]");
+    console.log(`To: ${opts.to}`);
+    console.log(`Link: ${opts.resetLink}\n`);
+    return { ok: true, provider: "dev-console" as const };
+  }
+
+  const resp = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${resendApiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: fromEmail,
+      to: [opts.to],
+      subject: "Reset your Faith Companion AI password",
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111;">
+          <h2>Reset your password</h2>
+          <p>Click the button below to set a new password for your Faith Companion AI account:</p>
+          <p>
+            <a href="${opts.resetLink}" style="display:inline-block;padding:12px 20px;background:linear-gradient(to right,#7c3aed,#f97316);color:#fff;text-decoration:none;border-radius:999px;font-weight:700;">
+              Set new password
+            </a>
+          </p>
+          <p>If the button does not work, copy and paste this link into your browser:</p>
+          <p style="word-break:break-all;">${opts.resetLink}</p>
+          <p>This link expires in 20 minutes. If you did not request a password reset, you can ignore this email.</p>
+        </div>
+      `,
+    }),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Failed to send password reset email: ${text}`);
+  }
+
+  return { ok: true, provider: "resend" as const };
+}
+
 export async function sendMagicLinkEmail(opts: {
   to: string;
   magicLink: string;

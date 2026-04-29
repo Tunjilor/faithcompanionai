@@ -233,6 +233,17 @@ model MagicLinkToken {
   @@index([email])
 }
 
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  email     String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([email])
+}
+
 model Lead {
   id        String   @id @default(cuid())
   email     String   @unique

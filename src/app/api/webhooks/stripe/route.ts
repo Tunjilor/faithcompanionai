@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { db } from "@/lib/db";
+import { sendPremiumDowngradeEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -259,6 +260,13 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
       cancelAtPeriodEnd: Boolean(subscription.cancel_at_period_end),
     },
   });
+
+  // Send kind offboarding email — non-fatal if it fails
+  try {
+    await sendPremiumDowngradeEmail({ to: email });
+  } catch (err) {
+    console.error("[handleSubscriptionDeleted] downgrade email failed", email, err);
+  }
 }
 
 async function handleInvoicePaid(invoice: Stripe.Invoice) {

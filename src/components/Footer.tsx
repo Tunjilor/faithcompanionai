@@ -147,7 +147,7 @@ export default function Footer() {
                   alt="Faith Companion AI - Personalized Scripture, prayer &amp; devotionals — just for you | Product Hunt"
                   width="200"
                   height="43"
-                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1135218&theme=dark&t=1777475820795"
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1135218&theme=light&t=1777475820795"
                   style={{ width: "200px", height: "43px" }}
                 />
               </a>

@@ -332,7 +332,7 @@ export default function DevotionalPage() {
         </p>
       </header>
 
-      <div className="rounded-[28px] border border-white/10 bg-white p-6 shadow-2xl md:p-8">
+      <div className="rounded-[28px] border border-white/10 bg-white p-6 shadow-2xl md:p-8 text-slate-900" style={{ colorScheme: "light" }}>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label htmlFor="topic" className="block text-sm font-medium text-slate-700">
@@ -519,7 +519,7 @@ export default function DevotionalPage() {
         )}
 
         {result ? (
-          <div className="mt-8 rounded-2xl bg-slate-50 p-5">
+          <div className="mt-8 rounded-2xl bg-slate-50 p-5 text-slate-900">
             <div className="text-sm font-semibold text-slate-800">Devotional</div>
 
             <div className="mt-3 space-y-1">

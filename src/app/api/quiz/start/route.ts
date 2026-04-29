@@ -183,7 +183,7 @@ function toClientQuestions(
 
 export async function POST(req: Request) {
   try {
-    let body: { category?: string; timed?: boolean } = {};
+    let body: { category?: string; timed?: boolean; clientSeenIds?: string[] } = {};
     try {
       const text = await req.text();
       if (text) body = JSON.parse(text);
@@ -269,7 +269,10 @@ export async function POST(req: Request) {
       daysLimit: FREE_DAYS_TRIAL,
     };
 
+    let softLimit = false;
+
     if (!ident.isPremium) {
+      // Guests only: hard-stop if trial period is over
       if (ident.isGuest && !ident.trial?.isWithinTrial) {
         return NextResponse.json(
           {
@@ -326,21 +329,26 @@ export async function POST(req: Request) {
         );
       }
 
-      if (
-        totalQuestionsUsed >= FREE_TOTAL_QUESTIONS ||
-        distinctDaysUsed >= FREE_DAYS_TRIAL
-      ) {
-        return NextResponse.json(
-          {
-            ok: false,
-            error: "trial_limit_reached",
-            message:
-              "You’ve used all 30 free questions across 3 days. Upgrade to Premium to continue.",
-            upgradePrompt: true,
-            usage,
-          },
-          { status: 403 }
-        );
+      if (ident.isGuest) {
+        // Guests: hard-stop at total/days trial limits
+        if (totalQuestionsUsed >= FREE_TOTAL_QUESTIONS || distinctDaysUsed >= FREE_DAYS_TRIAL) {
+          return NextResponse.json(
+            {
+              ok: false,
+              error: "trial_limit_reached",
+              message:
+                "You’ve used all 30 free questions across 3 days. Upgrade to Premium to continue.",
+              upgradePrompt: true,
+              usage,
+            },
+            { status: 403 }
+          );
+        }
+      } else {
+        // Registered free users: soft limit after 30 total questions — allow but signal
+        if (totalQuestionsUsed >= FREE_TOTAL_QUESTIONS) {
+          softLimit = true;
+        }
       }
     }
 
@@ -356,7 +364,11 @@ export async function POST(req: Request) {
       })
     );
 
-    const seenIds = seenRows.map((row) => row.questionId);
+    // Merge server-tracked seen IDs with any client-side localStorage IDs (guests)
+    const clientSeenIds = Array.isArray(body.clientSeenIds)
+      ? (body.clientSeenIds as unknown[]).filter((s): s is string => typeof s === "string").slice(0, 500)
+      : [];
+    const seenIds = [...new Set([...seenRows.map((row) => row.questionId), ...clientSeenIds])];
 
     let candidateRows = await withDbRetry(() =>
       db.question.findMany({
@@ -368,7 +380,16 @@ export async function POST(req: Request) {
     );
 
     if (candidateRows.length < QUESTIONS_PER_QUIZ) {
-      if (!ident.isPremium) {
+      if (ident.isPremium || !ident.isGuest) {
+        // Premium or registered free: allow repeats (reset exclusions)
+        if (!ident.isPremium) softLimit = true;
+        candidateRows = await withDbRetry(() =>
+          db.question.findMany({
+            where: { category },
+          })
+        );
+      } else {
+        // Guests: hard stop — no repeats allowed
         return NextResponse.json(
           {
             ok: false,
@@ -381,12 +402,6 @@ export async function POST(req: Request) {
           { status: 400 }
         );
       }
-
-      candidateRows = await withDbRetry(() =>
-        db.question.findMany({
-          where: { category },
-        })
-      );
     }
 
     const rows = shuffle(candidateRows).slice(0, QUESTIONS_PER_QUIZ);
@@ -468,6 +483,7 @@ export async function POST(req: Request) {
       questions,
       isPremium: ident.isPremium,
       usage: nextUsage,
+      ...(softLimit ? { softLimit: true } : {}),
     });
   } catch (err) {
     console.error("START QUIZ ERROR:", err);

@@ -43,7 +43,10 @@ type StartResponse = {
   message?: string;
   upgradePrompt?: boolean;
   existingCategory?: string;
+  softLimit?: boolean;
 };
+
+type CompletionScore = { score: number; total: number; shareId: string | null };
 
 type SubmitResponse = {
   ok?: boolean;
@@ -81,7 +84,27 @@ async function postJSON<T>(url: string, body?: unknown): Promise<{ ok: boolean; 
   return { ok: res.ok, data, status: res.status };
 }
 
-// â”€â”€ Hard stop modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// localStorage helpers for guest seen-question tracking
+const LS_PREFIX = "fca_quiz_seen_";
+
+function getLocalSeenIds(cat: string): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(LS_PREFIX + cat);
+    return raw ? (JSON.parse(raw) as string[]) : [];
+  } catch { return []; }
+}
+
+function addLocalSeenIds(cat: string, ids: string[]): void {
+  if (typeof window === "undefined") return;
+  try {
+    const existing = getLocalSeenIds(cat);
+    const merged = [...new Set([...existing, ...ids])].slice(-300);
+    localStorage.setItem(LS_PREFIX + cat, JSON.stringify(merged));
+  } catch {}
+}
+
+// â"€â"€ Hard stop modal â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function HardStopModal({
   title,
   message,
@@ -154,7 +177,7 @@ function HardStopModal({
   );
 }
 
-// â”€â”€ Main component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Main component â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 export default function QuizClient() {
   const [busy, setBusy] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -181,6 +204,11 @@ export default function QuizClient() {
 
   // Generic inline error (non-limit errors)
   const [inlineError, setInlineError] = useState<string | null>(null);
+
+  // Completion state (replaces immediate redirect after submit)
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [completionScore, setCompletionScore] = useState<CompletionScore | null>(null);
+  const [softLimitReached, setSoftLimitReached] = useState(false);
 
   const [displayName, setDisplayName] = useState("");
   const [savingName, setSavingName] = useState(false);
@@ -307,8 +335,16 @@ export default function QuizClient() {
     setAttemptId(null);
     setQuestions([]);
     setCurrentIndex(0);
+    setQuizCompleted(false);
+    setCompletionScore(null);
+    setSoftLimitReached(false);
 
-    const { ok, data } = await postJSON<StartResponse>("/api/quiz/start", { category: cat });
+    const clientSeenIds = !signedIn ? getLocalSeenIds(cat) : [];
+
+    const { ok, data } = await postJSON<StartResponse>("/api/quiz/start", {
+      category: cat,
+      ...(clientSeenIds.length > 0 ? { clientSeenIds } : {}),
+    });
 
     if (!ok) {
       handleApiError(data);
@@ -324,10 +360,15 @@ export default function QuizClient() {
       return;
     }
 
+    if (!signedIn && attempt.questions.length > 0) {
+      addLocalSeenIds(cat, attempt.questions.map((q) => q.id));
+    }
+
     setAttemptId(attempt.attemptId);
     setQuestions(attempt.questions);
     setCurrentIndex(0);
     if (attempt.usage) setUsage(attempt.usage);
+    if (attempt.softLimit) setSoftLimitReached(true);
     setBusy(false);
   }
 
@@ -335,6 +376,9 @@ export default function QuizClient() {
     setBusy(true);
     setInlineError(null);
     setCurrentIndex(0);
+    setQuizCompleted(false);
+    setCompletionScore(null);
+    setSoftLimitReached(false);
 
     const reset = await postJSON("/api/quiz/reset", {});
     if (!reset.ok) {
@@ -376,10 +420,12 @@ export default function QuizClient() {
 
     if (!ok) { handleApiError(data); return; }
 
-    const redirectTo = data?.redirectTo;
-    if (!redirectTo) { setToast("Quiz submitted, but no results link was returned."); return; }
+    const score = typeof data?.score === "number" ? data.score : 0;
+    const total = typeof data?.total === "number" ? data.total : QUESTIONS_PER_QUIZ;
+    const shareId = data?.shareId ?? null;
 
-    window.location.href = redirectTo;
+    setCompletionScore({ score, total, shareId });
+    setQuizCompleted(true);
   }
 
   return (
@@ -395,7 +441,7 @@ export default function QuizClient() {
       )}
 
       <div className="mx-auto w-full max-w-5xl px-4 py-10">
-        {/* â”€â”€ Header â”€â”€ */}
+        {/* â"€â"€ Header â"€â"€ */}
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-4xl font-extrabold text-white">Bible Quiz</h1>
@@ -429,14 +475,14 @@ export default function QuizClient() {
           </div>
         </div>
 
-        {/* â”€â”€ Toast â”€â”€ */}
+        {/* â"€â"€ Toast â"€â"€ */}
         {toast && (
           <div className="mb-4 rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-white">
             {toast}
           </div>
         )}
 
-        {/* â”€â”€ Inline error (non-limit errors) â”€â”€ */}
+        {/* â"€â"€ Inline error (non-limit errors) â"€â"€ */}
         {inlineError && (
           <div className="mb-6 rounded-2xl border border-yellow-500/20 bg-yellow-500/10 px-4 py-4 text-white">
             <div className="font-semibold">âš ï¸ {inlineError}</div>
@@ -451,7 +497,7 @@ export default function QuizClient() {
           </div>
         )}
 
-        {/* â”€â”€ Player info strip â”€â”€ */}
+        {/* â"€â"€ Player info strip â"€â"€ */}
         <div className="mb-4 rounded-2xl bg-white/5 p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             {signedIn ? (
@@ -519,7 +565,7 @@ export default function QuizClient() {
           )}
         </div>
 
-        {/* â”€â”€ Category grid â”€â”€ */}
+        {/* â"€â"€ Category grid â"€â"€ */}
         <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {categories.map((c) => {
             const isActive = c.id === category;
@@ -559,7 +605,7 @@ export default function QuizClient() {
           })}
         </div>
 
-        {/* â”€â”€ Quiz area â”€â”€ */}
+        {/* â"€â"€ Quiz area â"€â"€ */}
         <div className="rounded-2xl bg-white/5 p-5">
           <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-white/80">
@@ -573,6 +619,86 @@ export default function QuizClient() {
           {busy ? (
             <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-white/80">
               Loading quiz…
+            </div>
+          ) : quizCompleted && completionScore ? (
+            <div className="space-y-5">
+              {/* Score */}
+              <div className="rounded-2xl border border-white/10 bg-black/20 p-6 text-center">
+                <div className="text-5xl font-extrabold text-white">
+                  {completionScore.score}/{completionScore.total}
+                </div>
+                <div className="mt-2 text-lg font-semibold text-white/70">
+                  {completionScore.score === completionScore.total
+                    ? "Perfect score! 🎉"
+                    : completionScore.score >= completionScore.total * 0.8
+                    ? "Excellent work!"
+                    : completionScore.score >= completionScore.total * 0.6
+                    ? "Good effort!"
+                    : "Keep studying — you've got this!"}
+                </div>
+                <div className="mt-1 text-sm text-white/50">{activeCategoryName}</div>
+              </div>
+
+              {/* Guest warm CTA */}
+              {!signedIn && (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <div className="text-sm font-semibold text-white">Great job!</div>
+                  <p className="mt-2 text-sm text-white/70">
+                    Create a free account to track your progress and avoid repeat questions. It takes 30 seconds — just your email, no password required.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <Link
+                      href="/login?redirect=%2Fbiblequiz"
+                      className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black hover:opacity-90"
+                    >
+                      Create Free Account
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => { setQuizCompleted(false); setCompletionScore(null); }}
+                      className="rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+                    >
+                      Continue as Guest
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Soft limit message for registered free users */}
+              {signedIn && !premium && softLimitReached && (
+                <div className="rounded-2xl border border-orange-500/20 bg-orange-500/10 p-5">
+                  <div className="font-semibold text-orange-100">You&apos;ve completed your free questions!</div>
+                  <p className="mt-1 text-sm text-orange-200/80">
+                    Go Premium for unlimited questions, all categories, and your personal faith journal.
+                  </p>
+                  <Link
+                    href="/pricing"
+                    className="mt-3 inline-block rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95"
+                  >
+                    Upgrade to Premium
+                  </Link>
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex flex-wrap gap-3">
+                {completionScore.shareId && (
+                  <Link
+                    href={`/quiz/results/${completionScore.shareId}`}
+                    className="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black hover:opacity-90"
+                  >
+                    View Results
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  onClick={async () => { await startQuiz(category); }}
+                  disabled={busy}
+                  className="rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10 disabled:opacity-60"
+                >
+                  Play Again
+                </button>
+              </div>
             </div>
           ) : !attemptId || questions.length === 0 || !currentQuestion ? (
             <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-white/70">

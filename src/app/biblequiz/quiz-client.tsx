@@ -360,12 +360,21 @@ export default function QuizClient() {
       return;
     }
 
-    if (!signedIn && attempt.questions.length > 0) {
-      addLocalSeenIds(cat, attempt.questions.map((q) => q.id));
+    // Deduplicate by ID in-memory — guarantees zero repeats within this session
+    // regardless of what the server returned.
+    const seenInSession = new Set<string>();
+    const dedupedQuestions = attempt.questions.filter((q) => {
+      if (seenInSession.has(q.id)) return false;
+      seenInSession.add(q.id);
+      return true;
+    });
+
+    if (!signedIn && dedupedQuestions.length > 0) {
+      addLocalSeenIds(cat, dedupedQuestions.map((q) => q.id));
     }
 
     setAttemptId(attempt.attemptId);
-    setQuestions(attempt.questions);
+    setQuestions(dedupedQuestions);
     setCurrentIndex(0);
     if (attempt.usage) setUsage(attempt.usage);
     if (attempt.softLimit) setSoftLimitReached(true);

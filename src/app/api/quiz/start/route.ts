@@ -358,7 +358,14 @@ export async function POST(req: Request) {
       );
     }
 
-    const rows = shuffle(candidateRows).slice(0, QUESTIONS_PER_QUIZ);
+    // Deduplicate by ID before slicing — guards against any upstream duplicate
+    // (e.g. DB retry inserting createMany twice) reaching the client.
+    const seen = new Set<string>();
+    const rows = shuffle(candidateRows).filter((q) => {
+      if (seen.has(q.id)) return false;
+      seen.add(q.id);
+      return true;
+    }).slice(0, QUESTIONS_PER_QUIZ);
 
     if (!rows || rows.length < QUESTIONS_PER_QUIZ) {
       return NextResponse.json(
@@ -391,6 +398,7 @@ export async function POST(req: Request) {
           attemptId: attempt.id,
           questionId: q.id,
         })),
+        skipDuplicates: true,
       })
     );
 

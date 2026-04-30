@@ -34,50 +34,71 @@ const SPECS: BatchSpec[] = [
   {
     category: "general",
     label: "General Bible Knowledge",
-    total: 25,
-    difficulty: "easy to medium",
+    total: 45,
+    difficulty: "easy to medium, mixed across all difficulty levels",
     topic:
-      "broad Bible knowledge including key people, places, events, books, and verses from both Old and New Testaments",
+      "broad Bible knowledge spanning Old Testament (Genesis through Malachi), New Testament (Acts through Revelation), " +
+      "the Psalms (authors, famous psalms, themes), Proverbs (wisdom sayings, authorship), the life of Jesus, " +
+      "the Ten Commandments, major prophets and their messages, key miracles, famous verses, " +
+      "and foundational Bible facts every Christian should know",
   },
   {
     category: "women",
     label: "Women of the Bible",
-    total: 20,
+    total: 35,
     difficulty: "easy to medium",
     topic:
-      "women in the Bible — their stories, roles, relationships, and significance in Scripture",
+      "women in the Bible across both Testaments — Old Testament figures (Eve, Sarah, Rebekah, Rachel, Miriam, Deborah, Ruth, Naomi, " +
+      "Hannah, Esther, Rahab, Abigail), New Testament women (Mary the mother of Jesus, Mary Magdalene, Martha, Lydia, Priscilla, " +
+      "Dorcas, the Samaritan woman) — their stories, roles, relationships, faithfulness, and significance in God's plan",
   },
   {
     category: "parables",
     label: "Jesus' Parables",
-    total: 15,
-    difficulty: "medium",
+    total: 30,
+    difficulty: "easy to hard, mixed",
     topic:
-      "parables told by Jesus — their content, characters, meaning, and the passages they appear in",
+      "every parable told by Jesus across the four Gospels (Matthew, Mark, Luke, John) — including the Prodigal Son, Good Samaritan, " +
+      "Sower and the Seeds, Lost Sheep, Ten Virgins, Talents, Pearl of Great Price, Rich Man and Lazarus, Pharisee and Tax Collector, " +
+      "and others — covering characters, meanings, which Gospel they appear in, and the spiritual lessons they teach",
   },
   {
     category: "theology",
     label: "Christian Theology",
-    total: 15,
+    total: 40,
     difficulty: "medium to hard",
     topic:
-      "Christian doctrine including the Trinity, salvation, atonement, sanctification, ecclesiology, eschatology, and key theological terms",
+      "Christian doctrine and biblical theology: the Trinity, salvation (justification, sanctification, glorification), " +
+      "atonement, grace and faith, baptism and the Lord's Supper, the fruit of the Spirit, spiritual gifts, " +
+      "Paul's letters (Romans, 1–2 Corinthians, Galatians, Ephesians, Philippians, Colossians, 1–2 Thessalonians, the Pastorals) " +
+      "and their key themes, Christian living (prayer, fasting, forgiveness, love, service), eschatology, " +
+      "the Great Commission, and foundational Christian terms and creeds",
   },
   {
     category: "history",
     label: "Church History",
-    total: 15,
+    total: 35,
     difficulty: "medium to hard",
     topic:
-      "church history from the early church through the Reformation and modern era — key figures, councils, movements, and dates",
+      "church history from Pentecost through the present day: the early church fathers (Ignatius, Polycarp, Justin Martyr, Irenaeus, " +
+      "Augustine, Origen), the seven ecumenical councils, the Great Schism of 1054, the Crusades, monasticism, " +
+      "the Protestant Reformation (Luther, Calvin, Zwingli, Knox, Tyndale, the 95 Theses), " +
+      "the Council of Trent and Counter-Reformation, the Anabaptists, the Great Awakenings, " +
+      "key missionaries (William Carey, Hudson Taylor, Amy Carmichael), and pivotal moments in 20th-century Christianity",
   },
   {
     category: "ai",
     label: "AI Bible Questions",
-    total: 10,
-    difficulty: "medium",
+    total: 40,
+    difficulty: "medium to hard — deeper comprehension and cross-reference questions",
     topic:
-      "creative and thought-provoking Bible questions that test deeper comprehension — including connections between passages, symbolic meaning, and lesser-known biblical details",
+      "thought-provoking questions that test deeper Bible knowledge: connections between Old and New Testament passages, " +
+      "typology and foreshadowing (Adam as a type of Christ, the Passover lamb, the bronze serpent), " +
+      "Paul's letters in depth (specific verses, arguments, recipients, themes in Romans and Galatians), " +
+      "Gospel parallels and differences between Matthew/Mark/Luke/John, " +
+      "Hebrew and Greek word meanings behind key concepts, " +
+      "lesser-known Bible characters and stories, numbers and symbols in Revelation, " +
+      "and questions that require synthesising multiple passages to answer correctly",
   },
 ];
 
@@ -175,10 +196,12 @@ async function generateForSpec(spec: BatchSpec): Promise<RawQuestion[]> {
   const seenNormalized = new Set<string>();
 
   // Fetch prompts already in the DB for this category to avoid duplicates
-  const existing = await db.question.findMany({
-    where: { category: spec.category },
-    select: { prompt: true },
-  });
+  const existing = await withDbRetry(() =>
+    db.question.findMany({
+      where: { category: spec.category },
+      select: { prompt: true },
+    })
+  );
   for (const q of existing) seenNormalized.add(normalizePrompt(q.prompt));
 
   console.log(
@@ -244,6 +267,29 @@ function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
+// Retry wrapper for transient Neon cold-start / connection errors
+async function withDbRetry<T>(fn: () => Promise<T>, attempts = 4): Promise<T> {
+  let lastErr: unknown;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      await db.$queryRaw`SELECT 1`;
+      return await fn();
+    } catch (err: any) {
+      lastErr = err;
+      const msg = err?.message ?? "";
+      const retryable =
+        msg.includes("Can't reach database") ||
+        msg.includes("Connection refused") ||
+        msg.includes("P1001") ||
+        msg.includes("closed");
+      if (!retryable || i === attempts - 1) throw err;
+      console.log(`  ↻ DB connection lost — retrying in 3s (attempt ${i + 2}/${attempts})`);
+      await sleep(3000);
+    }
+  }
+  throw lastErr;
+}
+
 async function main() {
   if (!process.env.OPENAI_API_KEY) {
     console.error("❌ OPENAI_API_KEY is not set. Check your .env or .env.local file.");
@@ -252,42 +298,39 @@ async function main() {
 
   console.log(`\n🤖 Generating Bible quiz questions with ${MODEL}...\n`);
 
-  const allNew: Array<RawQuestion & { category: string }> = [];
+  let totalInserted = 0;
 
   for (const spec of SPECS) {
     const questions = await generateForSpec(spec);
-    for (const q of questions) {
-      allNew.push({ ...q, category: spec.category });
-    }
+
+    if (questions.length === 0) continue;
+
+    console.log(`\n  💾 Inserting ${questions.length} new ${spec.label} questions...`);
+
+    await withDbRetry(() =>
+      db.question.createMany({
+        data: questions.map((q) => ({
+          category: spec.category,
+          prompt: q.prompt.trim(),
+          optionA: q.optionA.trim(),
+          optionB: q.optionB.trim(),
+          optionC: q.optionC.trim(),
+          optionD: q.optionD.trim(),
+          answer: q.answer,
+          explanation: q.explanation?.trim() ?? null,
+        })),
+        skipDuplicates: true,
+      })
+    );
+
+    totalInserted += questions.length;
+    console.log(`  ✓ Inserted. Running total: ${totalInserted} new questions.`);
   }
 
-  if (allNew.length === 0) {
-    console.log("\nNo new questions to insert.");
-    return;
-  }
-
-  console.log(`\n💾 Inserting ${allNew.length} new questions into the database...`);
-
-  await db.question.createMany({
-    data: allNew.map((q) => ({
-      category: q.category,
-      prompt: q.prompt.trim(),
-      optionA: q.optionA.trim(),
-      optionB: q.optionB.trim(),
-      optionC: q.optionC.trim(),
-      optionD: q.optionD.trim(),
-      answer: q.answer,
-      explanation: q.explanation?.trim() ?? null,
-    })),
-    skipDuplicates: true,
-  });
-
-  const totals = await db.question.groupBy({
-    by: ["category"],
-    _count: { id: true },
-  });
-
-  const grandTotal = await db.question.count();
+  const totals = await withDbRetry(() =>
+    db.question.groupBy({ by: ["category"], _count: { id: true } })
+  );
+  const grandTotal = await withDbRetry(() => db.question.count());
 
   console.log("\n✅ Done! Questions now in database:\n");
   for (const row of totals.sort((a, b) => a.category.localeCompare(b.category))) {

@@ -389,7 +389,7 @@ export default function QuizClient() {
     setCompletionScore(null);
     setSoftLimitReached(false);
 
-    const reset = await postJSON("/api/quiz/reset", {});
+    const reset = await postJSON("/api/quiz/reset", { attemptId });
     if (!reset.ok) {
       handleApiError(reset.data);
       setBusy(false);

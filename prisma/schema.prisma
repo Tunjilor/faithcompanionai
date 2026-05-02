@@ -216,7 +216,7 @@ model QuizSeenQuestion {
   questionId String
   createdAt  DateTime @default(now())
 
-  @@unique([actorKey, questionId])
+  @@unique([actorKey, category, questionId])
   @@index([actorKey])
   @@index([category])
   @@index([actorKey, category, createdAt])

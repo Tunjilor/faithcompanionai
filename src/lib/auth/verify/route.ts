@@ -1,18 +1,14 @@
-// src/lib/auth/verify/route.ts
+// src/lib/auth/request-link/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { readMagicLinkToken } from "@/lib/magicLink";
-import {
-  createSessionToken,
-  defaultSessionCookieOptions,
-  sessionCookieName,
-} from "@/lib/session";
+import { makeMagicLinkToken } from "@/lib/magicLink";
+import { sendMagicLinkEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   const secret = process.env.SESSION_SECRET;
+
   if (!secret) {
     return NextResponse.json(
       { error: "Missing SESSION_SECRET" },
@@ -20,33 +16,33 @@ export async function GET(req: Request) {
     );
   }
 
-  const url = new URL(req.url);
-  const token = url.searchParams.get("token") || undefined;
-  const redirect = url.searchParams.get("redirect") || "/";
+  const body = (await req.json().catch(() => null)) as
+    | { email?: string; redirect?: string }
+    | null;
 
-  const payload = readMagicLinkToken(token, secret);
-  if (!payload) {
-    return NextResponse.redirect(
-      new URL("/login?error=invalid_link", url.origin)
+  const email = body?.email?.toLowerCase().trim();
+  const redirect = body?.redirect || "/";
+
+  if (!email || !email.includes("@")) {
+    return NextResponse.json(
+      { error: "Enter a valid email" },
+      { status: 400 }
     );
   }
 
-  const email = payload.email.toLowerCase().trim();
+  const url = new URL(req.url);
+  const origin = url.origin;
 
-  const user = await db.user.upsert({
-    where: { email },
-    update: {},
-    create: { email },
+  const token = makeMagicLinkToken(email, secret, 15);
+
+  const magicLink = `${origin}/api/auth/verify?token=${encodeURIComponent(
+    token
+  )}&redirect=${encodeURIComponent(redirect)}`;
+
+  await sendMagicLinkEmail({
+    to: email,
+    magicLink,
   });
 
-  const exp = Date.now() + 7 * 24 * 60 * 60 * 1000;
-  const sessionToken = createSessionToken({ uid: user.id, exp }, secret);
-
-  const res = NextResponse.redirect(new URL(redirect, url.origin));
-  res.cookies.set(sessionCookieName(), sessionToken, {
-    ...defaultSessionCookieOptions(),
-    maxAge: 7 * 24 * 60 * 60,
-  });
-
-  return res;
+  return NextResponse.json({ ok: true });
 }

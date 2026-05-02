@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 import { readSessionToken, sessionCookieName } from "@/lib/session";
 import { ensureGuestCookie, guestTrialStatus } from "@/lib/guest";
+import { generateQuizQuestions, supportsGeneration } from "@/lib/quiz-generate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -289,6 +290,21 @@ export async function POST(req: Request) {
           );
 
           if (existingAttempt) {
+            // Write seen records idempotently: guards against the case where the original
+            // quizSeenQuestion.createMany failed (Neon cold-start 503) and the user is
+            // returning to the same-day attempt. Without this, next-day sessions start
+            // with an empty seen set and repeat today's questions.
+            await withDbRetry(() =>
+              db.quizSeenQuestion.createMany({
+                data: existingAttempt.questions.map((row) => ({
+                  actorKey: ident.actorKey,
+                  category: existingAttempt.category,
+                  questionId: row.question.id,
+                })),
+                skipDuplicates: true,
+              })
+            );
+
             return NextResponse.json({
               ok: true,
               attemptId: existingAttempt.id,
@@ -349,13 +365,81 @@ export async function POST(req: Request) {
     );
 
     if (candidateRows.length < QUESTIONS_PER_QUIZ) {
-      // All users: allow repeats when unseen pool is exhausted; signal with softLimit
-      if (!ident.isPremium) softLimit = true;
-      candidateRows = await withDbRetry(() =>
-        db.question.findMany({
-          where: { category },
-        })
-      );
+      if (ident.isPremium && supportsGeneration(category)) {
+        // Premium: generate fresh questions to fill the gap and save them to the bank.
+        const deficit = QUESTIONS_PER_QUIZ - candidateRows.length;
+        try {
+          // Fetch recent prompts so OpenAI avoids near-duplicates.
+          const existingPrompts = await withDbRetry(() =>
+            db.question.findMany({
+              where: { category },
+              select: { prompt: true },
+              orderBy: { createdAt: "desc" },
+              take: 60,
+            })
+          );
+
+          // Ask for a couple of extras to absorb any validation failures.
+          const generated = await generateQuizQuestions(
+            category,
+            deficit + 2,
+            existingPrompts.map((q) => q.prompt)
+          );
+
+          if (generated.length > 0) {
+            await withDbRetry(() =>
+              db.question.createMany({
+                data: generated.map((q) => ({
+                  category,
+                  prompt: q.prompt.trim(),
+                  optionA: q.optionA.trim(),
+                  optionB: q.optionB.trim(),
+                  optionC: q.optionC.trim(),
+                  optionD: q.optionD.trim(),
+                  answer: q.answer,
+                  explanation: q.explanation?.trim() ?? null,
+                })),
+                skipDuplicates: true,
+              })
+            );
+
+            // Fetch back the newly inserted rows (by prompt) so we have their DB ids.
+            const newRows = await withDbRetry(() =>
+              db.question.findMany({
+                where: {
+                  category,
+                  prompt: { in: generated.map((q) => q.prompt.trim()) },
+                },
+              })
+            );
+
+            // Append only rows the user hasn't already seen.
+            const seenIdSet = new Set(seenIds);
+            for (const row of newRows) {
+              if (!seenIdSet.has(row.id)) {
+                candidateRows.push(row);
+                seenIdSet.add(row.id); // prevent double-adding if prompt matched multiple rows
+              }
+            }
+          }
+        } catch (err) {
+          console.error("[quiz/start] premium question generation failed:", err);
+        }
+
+        // If generation didn't fully cover the deficit (API failure, low yield, etc.),
+        // fall back to the full pool so the quiz always has enough questions.
+        if (candidateRows.length < QUESTIONS_PER_QUIZ) {
+          candidateRows = await withDbRetry(() =>
+            db.question.findMany({ where: { category } })
+          );
+        }
+      } else {
+        // Free / guest: allow repeats from the full pool and surface the soft limit.
+        softLimit = true;
+        candidateRows = await withDbRetry(() =>
+          db.question.findMany({ where: { category } })
+        );
+      }
     }
 
     // Deduplicate by ID before slicing — guards against any upstream duplicate

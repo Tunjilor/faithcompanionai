@@ -2,7 +2,7 @@
 "use client";
 import { useUser } from "@/context/UserContext";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import DenominationSelect, { readDenomination } from "@/components/DenominationSelect";
 
@@ -212,6 +212,9 @@ export default function QuizClient() {
 
   const [displayName, setDisplayName] = useState("");
   const [savingName, setSavingName] = useState(false);
+  const [showAnswerGate, setShowAnswerGate] = useState(false);
+
+  const quizAreaRef = useRef<HTMLDivElement>(null);
 
   const _me = useUser();
   useEffect(() => {
@@ -338,6 +341,7 @@ export default function QuizClient() {
     setQuizCompleted(false);
     setCompletionScore(null);
     setSoftLimitReached(false);
+    setShowAnswerGate(false);
 
     const clientSeenIds = !signedIn ? getLocalSeenIds(cat) : [];
 
@@ -379,17 +383,22 @@ export default function QuizClient() {
     if (attempt.usage) setUsage(attempt.usage);
     if (attempt.softLimit) setSoftLimitReached(true);
     setBusy(false);
+    setTimeout(() => quizAreaRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
   }
 
   async function restartQuiz() {
+    const prevAttemptId = attemptId;
     setBusy(true);
     setInlineError(null);
+    setAttemptId(null);
+    setQuestions([]);
     setCurrentIndex(0);
     setQuizCompleted(false);
     setCompletionScore(null);
     setSoftLimitReached(false);
+    setShowAnswerGate(false);
 
-    const reset = await postJSON("/api/quiz/reset", { attemptId });
+    const reset = await postJSON("/api/quiz/reset", { attemptId: prevAttemptId });
     if (!reset.ok) {
       handleApiError(reset.data);
       setBusy(false);
@@ -615,7 +624,7 @@ export default function QuizClient() {
         </div>
 
         {/* â"€â"€ Quiz area â"€â"€ */}
-        <div className="rounded-2xl bg-white/5 p-5">
+        <div ref={quizAreaRef} className="rounded-2xl bg-white/5 p-5">
           <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-white/80">
               Category: <span className="font-semibold text-white">{activeCategoryName}</span>
@@ -708,6 +717,49 @@ export default function QuizClient() {
                   Play Again
                 </button>
               </div>
+
+              {/* See Correct Answers — locked for free users */}
+              {completionScore.score < completionScore.total && (
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (premium && completionScore.shareId) {
+                        window.location.href = `/biblequiz/results/${completionScore.shareId}`;
+                      } else if (!premium) {
+                        setShowAnswerGate((v) => !v);
+                      }
+                    }}
+                    className="rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+                  >
+                    {premium ? "See Correct Answers" : "🔒 See Correct Answers"}
+                  </button>
+
+                  {showAnswerGate && !premium && (
+                    <div className="mt-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5">
+                      <div className="font-semibold text-amber-100">Unlock Correct Answers</div>
+                      <p className="mt-2 text-sm leading-6 text-amber-200/80">
+                        See which questions you missed and get detailed explanations for every answer. Available on Premium.
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-3">
+                        <Link
+                          href="/pricing"
+                          className="rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-95"
+                        >
+                          Upgrade to Premium
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setShowAnswerGate(false)}
+                          className="rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+                        >
+                          Dismiss
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ) : !attemptId || questions.length === 0 || !currentQuestion ? (
             <div className="rounded-xl border border-white/10 bg-black/20 p-4 text-white/70">

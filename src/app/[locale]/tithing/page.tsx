@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+
 export const metadata: Metadata = {
   title: "What Is Tithing? Bible Meaning, Verses, and How to Calculate It",
   description:

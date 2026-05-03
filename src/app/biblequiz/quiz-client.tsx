@@ -48,6 +48,17 @@ type StartResponse = {
 
 type CompletionScore = { score: number; total: number; shareId: string | null };
 
+type ReviewItem = {
+  questionId: string;
+  prompt: string;
+  category: string;
+  chosen: Choice | null;
+  correctAnswer: Choice;
+  isCorrect: boolean;
+  explanation: string | null;
+  choices: Record<Choice, string>;
+};
+
 type SubmitResponse = {
   ok?: boolean;
   attemptId?: string;
@@ -56,6 +67,8 @@ type SubmitResponse = {
   total?: number;
   redirectTo?: string;
   error?: string;
+  review?: ReviewItem[];
+  premiumExplanationsIncluded?: boolean;
 };
 
 function classNames(...xs: Array<string | false | null | undefined>) {
@@ -213,6 +226,8 @@ export default function QuizClient() {
   const [displayName, setDisplayName] = useState("");
   const [savingName, setSavingName] = useState(false);
   const [showAnswerGate, setShowAnswerGate] = useState(false);
+  const [reviewItems, setReviewItems] = useState<ReviewItem[]>([]);
+  const [showInlineReview, setShowInlineReview] = useState(false);
 
   const quizAreaRef = useRef<HTMLDivElement>(null);
 
@@ -342,6 +357,8 @@ export default function QuizClient() {
     setCompletionScore(null);
     setSoftLimitReached(false);
     setShowAnswerGate(false);
+    setReviewItems([]);
+    setShowInlineReview(false);
 
     const clientSeenIds = !signedIn ? getLocalSeenIds(cat) : [];
 
@@ -442,6 +459,7 @@ export default function QuizClient() {
     const total = typeof data?.total === "number" ? data.total : QUESTIONS_PER_QUIZ;
     const shareId = data?.shareId ?? null;
 
+    if (Array.isArray(data?.review)) setReviewItems(data.review);
     setCompletionScore({ score, total, shareId });
     setQuizCompleted(true);
   }
@@ -718,23 +736,77 @@ export default function QuizClient() {
                 </button>
               </div>
 
-              {/* See Correct Answers — locked for free users */}
+              {/* See Correct Answers — inline for premium, gated for free */}
               {completionScore.score < completionScore.total && (
                 <div>
                   <button
                     type="button"
                     onClick={() => {
-                      if (premium && completionScore.shareId) {
-                        window.location.href = `/biblequiz/results/${completionScore.shareId}`;
-                      } else if (!premium) {
+                      if (premium) {
+                        setShowInlineReview((v) => !v);
+                      } else {
                         setShowAnswerGate((v) => !v);
                       }
                     }}
                     className="rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
                   >
-                    {premium ? "See Correct Answers" : "🔒 See Correct Answers"}
+                    {premium
+                      ? showInlineReview ? "Hide Answers" : "See Correct Answers"
+                      : "🔒 See Correct Answers"}
                   </button>
 
+                  {/* Premium: inline per-question review */}
+                  {premium && showInlineReview && (
+                    <div className="mt-5 space-y-3">
+                      {reviewItems.length > 0 ? reviewItems.map((item, idx) => (
+                        <div
+                          key={item.questionId}
+                          className={`rounded-2xl border p-4 ${
+                            item.isCorrect
+                              ? "border-green-500/40 bg-green-900/10"
+                              : "border-red-500/40 bg-red-900/10"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="text-sm font-semibold text-white">
+                              {idx + 1}. {item.prompt}
+                            </div>
+                            <span className={`shrink-0 text-xs font-bold ${item.isCorrect ? "text-green-400" : "text-red-400"}`}>
+                              {item.isCorrect ? "Correct" : "Incorrect"}
+                            </span>
+                          </div>
+                          <div className="mt-3 space-y-1 text-sm">
+                            <div className="text-white/70">
+                              Your answer:{" "}
+                              <span className={item.isCorrect ? "text-green-300" : "text-red-300"}>
+                                {item.chosen ? `${item.chosen}. ${item.choices[item.chosen]}` : "—"}
+                              </span>
+                            </div>
+                            {!item.isCorrect && (
+                              <div className="text-white/70">
+                                Correct answer:{" "}
+                                <span className="text-green-300">
+                                  {item.correctAnswer}. {item.choices[item.correctAnswer]}
+                                </span>
+                              </div>
+                            )}
+                            {item.explanation && (
+                              <div className="mt-2 rounded-xl bg-white/5 px-3 py-2 text-xs leading-6 text-white/70">
+                                <span className="font-semibold text-white/85">Explanation: </span>
+                                {item.explanation}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )) : (
+                        <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white/60">
+                          Review data unavailable for this session.
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Free: upgrade gate */}
                   {showAnswerGate && !premium && (
                     <div className="mt-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5">
                       <div className="font-semibold text-amber-100">Unlock Correct Answers</div>

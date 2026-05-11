@@ -1,4 +1,3 @@
-// src/app/robots.ts
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
@@ -10,8 +9,17 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/api/",
           "/dashboard",
+          "/dashboard/",
           "/saved",
+          "/saved/",
           "/login",
+          "/sign-in",
+          "/profile",
+          "/profile/",
+          "/reset-password",
+          "/resources/favorites",
+          "/resources/wrapped",
+          "/premium",
         ],
       },
     ],

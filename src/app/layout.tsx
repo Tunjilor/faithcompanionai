@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SpiritualAssistant from "@/components/SpiritualAssistant";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://faithcompanionai.com"),
@@ -61,15 +62,56 @@ export const viewport: Viewport = {
   themeColor: "#07070a",
 };
 
+const siteJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://faithcompanionai.com/#organization",
+      name: "Faith Companion AI",
+      url: "https://faithcompanionai.com",
+      description:
+        "Personalized Bible verses, prayers, devotionals, and Bible quizzes grounded in Scripture.",
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://faithcompanionai.com/#website",
+      url: "https://faithcompanionai.com",
+      name: "Faith Companion AI",
+      publisher: { "@id": "https://faithcompanionai.com/#organization" },
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://faithcompanionai.com/#webapp",
+      name: "Faith Companion AI",
+      url: "https://faithcompanionai.com",
+      applicationCategory: "LifestyleApplication",
+      operatingSystem: "Web",
+      description:
+        "Daily Bible verses, personalized prayers, devotionals, and faith quizzes — grounded in Scripture.",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+    },
+  ],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-fc text-fc">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+        />
         <div className="fc-bg" />
         <Navbar />
         <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 md:px-6">{children}</main>
         <Footer />
         <SpiritualAssistant />
+        <Analytics />
       </body>
     </html>
   );

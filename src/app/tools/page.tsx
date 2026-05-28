@@ -1,4 +1,7 @@
+﻿// src/app/tools/page.tsx
+
 "use client";
+import { useUser } from "@/context/UserContext";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import BrandHeader from "@/components/BrandHeader";
@@ -6,7 +9,7 @@ import BrandHeader from "@/components/BrandHeader";
 type Mode = "verse" | "prayer" | "devotional";
 type Tone = "gentle" | "firm" | "short" | "detailed";
 
-type SavedItem = {
+type LocalSavedItem = {
   id: string;
   createdAt: number;
   mode: Mode;
@@ -14,10 +17,24 @@ type SavedItem = {
   answer: string;
 };
 
+type MeResponse = {
+  signedIn?: boolean;
+  email?: string | null;
+  isPremium?: boolean;
+  premiumUntil?: string | null;
+  userId?: string | null;
+};
+
 const STORAGE_KEY = "faithcompanion_favorites_v1";
 
 function formatDate(ts: number) {
   return new Date(ts).toLocaleString();
+}
+
+function isPremiumActive(me: MeResponse | null) {
+  if (!me?.isPremium) return false;
+  if (!me?.premiumUntil) return false;
+  return new Date(me.premiumUntil).getTime() > Date.now();
 }
 
 export default function ToolsPage() {
@@ -30,26 +47,31 @@ export default function ToolsPage() {
 
   const [answer, setAnswer] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const [saved, setSaved] = useState<SavedItem[]>([]);
+  const [saved, setSaved] = useState<LocalSavedItem[]>([]);
   const [activeSavedId, setActiveSavedId] = useState<string | null>(null);
+
+  const [me, setMe] = useState<MeResponse | null>(null);
+  const [meLoaded, setMeLoaded] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const canSubmit = useMemo(() => !isLoading && prompt.trim().length > 0, [isLoading, prompt]);
+  const canSave = useMemo(() => !isLoading && !isSaving && !!answer.trim(), [isLoading, isSaving, answer]);
 
   const activeSaved = useMemo(() => {
     if (!activeSavedId) return null;
     return saved.find((s) => s.id === activeSavedId) ?? null;
   }, [activeSavedId, saved]);
 
-  // Load favorites on mount
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        const parsed = JSON.parse(raw) as SavedItem[];
+        const parsed = JSON.parse(raw) as LocalSavedItem[];
         if (Array.isArray(parsed)) setSaved(parsed);
       }
     } catch {
@@ -58,7 +80,6 @@ export default function ToolsPage() {
     textareaRef.current?.focus();
   }, []);
 
-  // Persist favorites
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
@@ -67,8 +88,48 @@ export default function ToolsPage() {
     }
   }, [saved]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadMe() {
+      try {
+        const res = await fetch("/api/me", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        if (!res.ok) {
+          if (!cancelled) {
+            setMe(null);
+            setMeLoaded(true);
+          }
+          return;
+        }
+
+        const data = (await res.json()) as MeResponse;
+
+        if (!cancelled) {
+          setMe(data);
+          setMeLoaded(true);
+        }
+      } catch {
+        if (!cancelled) {
+          setMe(null);
+          setMeLoaded(true);
+        }
+      }
+    }
+
+    loadMe();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   async function handleAsk() {
     setError("");
+    setSuccess("");
     setAnswer("");
     setActiveSavedId(null);
 
@@ -104,7 +165,7 @@ export default function ToolsPage() {
         }
       }
 
-      let data: any;
+      let data: { answer?: string };
       try {
         data = JSON.parse(text);
       } catch {
@@ -126,6 +187,7 @@ export default function ToolsPage() {
     setPrompt("");
     setAnswer("");
     setError("");
+    setSuccess("");
     setActiveSavedId(null);
     textareaRef.current?.focus();
   }
@@ -133,18 +195,18 @@ export default function ToolsPage() {
   async function handleCopy(textToCopy: string) {
     if (!textToCopy) return;
     await navigator.clipboard.writeText(textToCopy);
+    setSuccess("Copied to clipboard.");
+    window.setTimeout(() => setSuccess(""), 1800);
   }
 
-  function handleSaveCurrent() {
-    setError("");
-
+  function saveLocally() {
     const q = prompt.trim();
     if (!q || !answer) {
       setError("Ask a question first — then you can save the result.");
       return;
     }
 
-    const item: SavedItem = {
+    const item: LocalSavedItem = {
       id: crypto.randomUUID(),
       createdAt: Date.now(),
       mode,
@@ -154,14 +216,78 @@ export default function ToolsPage() {
 
     setSaved((prev) => [item, ...prev]);
     setActiveSavedId(item.id);
+    setSuccess("Saved on this device.");
+    window.setTimeout(() => setSuccess(""), 2000);
   }
 
-  function handleOpenSaved(item: SavedItem) {
+  async function handleSaveCurrent() {
+    setError("");
+    setSuccess("");
+
+    const q = prompt.trim();
+    if (!q || !answer) {
+      setError("Ask a question first — then you can save the result.");
+      return;
+    }
+
+    if (!meLoaded) {
+      setError("Please wait a moment and try again.");
+      return;
+    }
+
+    if (!me?.signedIn || !me?.userId) {
+      saveLocally();
+      return;
+    }
+
+    if (!isPremiumActive(me)) {
+      setError("Saving to your account is a premium feature. You can still save on this device for now.");
+      saveLocally();
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      const res = await fetch("/api/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+  type: mode === "prayer" ? "prayer" : mode === "devotional" ? "answer" : "verse",
+  title: q,
+  content: answer,
+  reference: null,
+}),
+      });
+
+      const text = await res.text();
+
+      if (!res.ok) {
+        try {
+          const maybeJson = JSON.parse(text);
+          throw new Error(maybeJson?.error || maybeJson?.message || "Failed to save.");
+        } catch {
+          throw new Error(text || "Failed to save.");
+        }
+      }
+
+      saveLocally();
+      setSuccess("Saved to your account and this device.");
+      window.setTimeout(() => setSuccess(""), 2200);
+    } catch (e: any) {
+      setError(e?.message || "Failed to save.");
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  function handleOpenSaved(item: LocalSavedItem) {
     setActiveSavedId(item.id);
     setPrompt(item.prompt);
     setMode(item.mode);
     setAnswer(item.answer);
     setError("");
+    setSuccess("");
   }
 
   function handleDeleteSaved(id: string) {
@@ -182,11 +308,11 @@ export default function ToolsPage() {
   }
 
   const showingAnswer = activeSaved ? activeSaved.answer : answer;
+  const premiumActive = isPremiumActive(me);
 
   return (
     <main className="min-h-screen app-bg text-slate-900 px-6 py-10">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-8">
-        {/* Left: Tool */}
         <section>
           <BrandHeader
             title="Tools"
@@ -194,7 +320,6 @@ export default function ToolsPage() {
           />
 
           <div className="brand-surface rounded-2xl p-6">
-            {/* Controls */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">Mode</label>
@@ -262,21 +387,21 @@ export default function ToolsPage() {
               <button
                 onClick={handleAsk}
                 disabled={!canSubmit}
-                className={`px-5 py-3 rounded-xl font-semibold transition text-white
-                  ${canSubmit ? "brand-gradient-bg hover:opacity-95" : "bg-black/20 cursor-not-allowed"}
-                `}
+                className={`px-5 py-3 rounded-xl font-semibold transition text-white ${
+                  canSubmit ? "brand-gradient-bg hover:opacity-95" : "bg-black/20 cursor-not-allowed"
+                }`}
               >
                 {isLoading ? "Thinking…" : "Ask"}
               </button>
 
               <button
                 onClick={handleSaveCurrent}
-                disabled={!answer || isLoading}
-                className={`px-5 py-3 rounded-xl font-semibold transition
-                  ${answer && !isLoading ? "bg-black/5 hover:bg-black/10" : "bg-black/5 opacity-40 cursor-not-allowed"}
-                `}
+                disabled={!canSave}
+                className={`px-5 py-3 rounded-xl font-semibold transition ${
+                  canSave ? "bg-black/5 hover:bg-black/10" : "bg-black/5 opacity-40 cursor-not-allowed"
+                }`}
               >
-                Save
+                {isSaving ? "Saving..." : "Save"}
               </button>
 
               <button
@@ -289,17 +414,29 @@ export default function ToolsPage() {
               <button
                 onClick={() => handleCopy(showingAnswer)}
                 disabled={!showingAnswer}
-                className={`px-5 py-3 rounded-xl font-semibold transition
-                  ${showingAnswer ? "bg-black/5 hover:bg-black/10" : "bg-black/5 opacity-40 cursor-not-allowed"}
-                `}
+                className={`px-5 py-3 rounded-xl font-semibold transition ${
+                  showingAnswer ? "bg-black/5 hover:bg-black/10" : "bg-black/5 opacity-40 cursor-not-allowed"
+                }`}
               >
                 Copy answer
               </button>
             </div>
 
+            <div className="mt-4 text-xs text-slate-500">
+              {premiumActive
+                ? "Premium active: saves go to your account and this device."
+                : "Not premium or not signed in: saves are stored on this device for now."}
+            </div>
+
             {error && (
               <div className="mt-5 rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-red-700">
                 <strong>Error:</strong> {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mt-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-emerald-700">
+                <strong>Success:</strong> {success}
               </div>
             )}
 
@@ -322,16 +459,15 @@ export default function ToolsPage() {
           </div>
         </section>
 
-        {/* Right: Saved */}
         <aside className="brand-surface rounded-2xl p-5 h-fit">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-slate-900">Saved</h2>
             <button
               onClick={handleClearAllSaved}
               disabled={saved.length === 0}
-              className={`text-sm px-3 py-2 rounded-xl transition
-                ${saved.length ? "bg-black/5 hover:bg-black/10" : "bg-black/5 opacity-40 cursor-not-allowed"}
-              `}
+              className={`text-sm px-3 py-2 rounded-xl transition ${
+                saved.length ? "bg-black/5 hover:bg-black/10" : "bg-black/5 opacity-40 cursor-not-allowed"
+              }`}
             >
               Clear all
             </button>
@@ -346,13 +482,11 @@ export default function ToolsPage() {
               {saved.slice(0, 20).map((item) => (
                 <div
                   key={item.id}
-                  className={`rounded-xl border p-3 cursor-pointer transition
-                    ${
-                      item.id === activeSavedId
-                        ? "border-black/20 bg-black/5"
-                        : "border-black/10 bg-white hover:bg-black/5"
-                    }
-                  `}
+                  className={`rounded-xl border p-3 cursor-pointer transition ${
+                    item.id === activeSavedId
+                      ? "border-black/20 bg-black/5"
+                      : "border-black/10 bg-white hover:bg-black/5"
+                  }`}
                   onClick={() => handleOpenSaved(item)}
                 >
                   <div className="flex items-center justify-between gap-3">
@@ -383,16 +517,18 @@ export default function ToolsPage() {
                       Delete
                     </button>
                   </div>
-                </div>
+                </div> 
+
               ))}
             </div>
           )}
 
           <div className="mt-4 text-xs text-slate-500">
-            Saved items are stored on this device (localStorage). We’ll sync to accounts later.
+            Local saves stay on this device. Premium account saves are also written to your database.
           </div>
         </aside>
       </div>
     </main>
   );
 }
+

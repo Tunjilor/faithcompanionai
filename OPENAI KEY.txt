@@ -1,0 +1,33 @@
+# dependencies
+node_modules
+
+# next
+.next
+out
+
+# env
+.env
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# prisma
+prisma/dev.db
+prisma/dev.db-journal
+
+# misc
+.DS_Store
+
+
+Steps to Add Keys (Environment Variables):
+Log in to Vercel: Go to the Vercel dashboard and select your project.
+Navigate to Settings: Click the Settings tab at the top of the dashboard.
+Environment Variables: On the left sidebar, click on Environment Variables.
+Add Key/Value: Enter the Name (e.g., OPENAI_API_KEY) and Value (the secret key).
+Select Environment: Choose which environments (Production, Preview, Development) should have access to this key.
+Save: Click Save. 

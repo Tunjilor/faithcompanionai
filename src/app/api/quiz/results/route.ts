@@ -1,26 +1,72 @@
+// src/app/api/quiz/results/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { cookies } from "next/headers";
-import { readSessionToken, sessionCookieName } from "@/lib/session";
 
-type SessionPayload = { uid: string; exp: number };
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
+/**
+ * Expects JSON body:
+ * {
+ *   email?: string,
+ *   userId?: string,
+ *   category: string,
+ *   score: number,
+ *   total?: number,
+ *   timed?: boolean,
+ *   durationSeconds?: number
+ * }
+ */
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => null);
-  const category = String(body?.category || "general");
-  const mode = String(body?.mode || "trivia");
-  const score = Number(body?.score || 0);
-  const total = Number(body?.total || 0);
+  try {
+    const body = await req.json();
 
-  // optional attach to user if logged in
-  const secret = process.env.SESSION_SECRET!;
-  const token = (await cookies()).get(sessionCookieName())?.value;
-  const payload = token ? readSessionToken<SessionPayload>(token, secret) : null;
-  const userId = payload && Date.now() < payload.exp ? payload.uid : null;
+    const category = String(body?.category || "");
+    const score = Number(body?.score ?? 0);
+    const total = Number(body?.total ?? 10);
+    const timed = Boolean(body?.timed ?? false);
+    const durationSeconds =
+      body?.durationSeconds === null || body?.durationSeconds === undefined
+        ? null
+        : Number(body.durationSeconds);
 
-  const result = await db.quizResult.create({
-    data: { category, mode, score, total, userId: userId || undefined },
-  });
+    const email = body?.email ? String(body.email) : null;
+    const userId = body?.userId ? String(body.userId) : null;
 
-  return NextResponse.json({ id: result.id });
+    if (!category) {
+      return NextResponse.json({ error: "Missing category" }, { status: 400 });
+    }
+
+    if (!Number.isFinite(score) || score < 0) {
+      return NextResponse.json({ error: "Invalid score" }, { status: 400 });
+    }
+
+    if (!Number.isFinite(total) || total <= 0) {
+      return NextResponse.json({ error: "Invalid total" }, { status: 400 });
+    }
+
+    const attempt = await db.quizAttempt.create({
+      data: {
+        category,
+        score,
+        total,
+        timed,
+        durationSeconds: durationSeconds ?? undefined,
+        email: email ?? undefined,
+        userId: userId ?? undefined,
+      },
+      select: {
+        id: true,
+        category: true,
+        score: true,
+        total: true,
+        createdAt: true,
+      },
+    });
+
+    return NextResponse.json({ ok: true, attempt });
+  } catch (err: any) {
+    console.error("❌ Failed to create quiz attempt:", err);
+    return NextResponse.json({ error: "Failed to save results" }, { status: 500 });
+  }
 }

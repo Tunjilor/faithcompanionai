@@ -1,19 +1,31 @@
+// src/app/api/leads/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db } from "@/lib/prisma";
 
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => null);
-  const email = String(body?.email || "").trim().toLowerCase();
+  try {
+    const body = await req.json();
 
-  if (!email || !email.includes("@")) {
-    return NextResponse.json({ ok: false, error: "Invalid email" }, { status: 400 });
+    const email =
+      typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
+
+    if (!email || !email.includes("@")) {
+      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
+    }
+
+    const source =
+      typeof body?.source === "string" && body.source.trim()
+        ? body.source.trim()
+        : null;
+
+    await db.lead.upsert({
+      where: { email },
+      update: { ...(source ? { source } : {}) },
+      create: { email, ...(source ? { source } : {}) },
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: "Failed to save lead" }, { status: 500 });
   }
-
-  await db.lead.upsert({
-    where: { email },
-    update: {},
-    create: { email, source: String(body?.source || "quiz") },
-  });
-
-  return NextResponse.json({ ok: true });
 }

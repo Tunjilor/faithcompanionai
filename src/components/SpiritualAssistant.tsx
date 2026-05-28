@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { RotateCcw, X, Send } from "lucide-react";
 
 type Msg = {
   role: "assistant" | "user";
@@ -30,6 +31,8 @@ function downloadText(filename: string, text: string) {
 export default function SpiritualAssistant() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [thinking, setThinking] = useState(false);
+  const [savedFlash, setSavedFlash] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -50,7 +53,7 @@ export default function SpiritualAssistant() {
       {
         role: "assistant",
         content:
-          "Hello! I’m your Faith Companion AI assistant. I can help with Scripture-based encouragement, short prayers, and faith questions. What would you like help with today?",
+          "Hello! I'm your Faith Companion AI assistant. I can help with Scripture-based encouragement, short prayers, and faith questions. What would you like help with today?",
         ts: Date.now(),
       },
     ]);
@@ -74,6 +77,16 @@ export default function SpiritualAssistant() {
     el.scrollTop = el.scrollHeight;
   }, [open, msgs]);
 
+  // Index of the assistant reply that follows the 3rd user message — where we inject the nudge
+  const nudgeAfterIndex = useMemo(() => {
+    let userCount = 0;
+    for (let i = 0; i < msgs.length; i++) {
+      if (msgs[i].role === "user") userCount++;
+      if (userCount === 3 && msgs[i].role === "assistant") return i;
+    }
+    return -1;
+  }, [msgs]);
+
   const transcript = useMemo(() => {
     return msgs
       .map((m) => {
@@ -84,21 +97,49 @@ export default function SpiritualAssistant() {
       .join("\n\n");
   }, [msgs]);
 
-  function addUserMessage(text: string) {
+  async function addUserMessage(text: string) {
     const trimmed = text.trim();
-    if (!trimmed) return;
+    if (!trimmed || thinking) return;
 
-    setMsgs((prev) => [
-      ...prev,
-      { role: "user", content: trimmed, ts: Date.now() },
-      {
-        role: "assistant",
-        content:
-          "Thanks — I’m ready. (Next step: we’ll wire this to your AI endpoint. For now this is a UI + transcript saver.)",
-        ts: Date.now() + 1,
-      },
-    ]);
+    const userMsg: Msg = { role: "user", content: trimmed, ts: Date.now() };
+    setMsgs((prev) => [...prev, userMsg]);
     setInput("");
+    setThinking(true);
+
+    try {
+      // Pass the last 10 messages as history for context (excluding the one we just added)
+      const history = msgs.slice(-10).map((m) => ({ role: m.role, content: m.content }));
+
+      const res = await fetch("/api/assistant", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ message: trimmed, history }),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      const replyContent = res.ok && data?.reply
+        ? data.reply
+        : data?.error === "LIMIT_REACHED" || res.status === 429
+        ? "You've reached your daily limit. Upgrade to Premium for unlimited conversations."
+        : data?.error || "Something went wrong. Please try again.";
+
+      setMsgs((prev) => [
+        ...prev,
+        { role: "assistant", content: replyContent, ts: Date.now() },
+      ]);
+    } catch {
+      setMsgs((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "I couldn't reach the server. Please check your connection and try again.",
+          ts: Date.now(),
+        },
+      ]);
+    } finally {
+      setThinking(false);
+    }
   }
 
   function clearChat() {
@@ -106,7 +147,7 @@ export default function SpiritualAssistant() {
       {
         role: "assistant",
         content:
-          "Hello! I’m your Faith Companion AI assistant. How can I help you today?",
+          "Hello! I'm your Faith Companion AI assistant. How can I help you today?",
         ts: Date.now(),
       },
     ]);
@@ -122,7 +163,7 @@ export default function SpiritualAssistant() {
           className="fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-95"
           aria-label="Open Spiritual Assistant"
         >
-          💬 <span className="hidden sm:inline">Spiritual Assistant</span>
+          {"💬"} <span className="hidden sm:inline">Spiritual Assistant</span>
         </button>
       )}
 
@@ -137,19 +178,19 @@ export default function SpiritualAssistant() {
                 type="button"
                 onClick={clearChat}
                 className="rounded-md bg-white/15 px-2 py-1 text-xs hover:bg-white/25"
-                aria-label="Reset conversation"
-                title="Reset"
+                aria-label="Clear conversation"
+                title="Clear chat (keeps widget open)"
               >
-                ↻
+                <RotateCcw size={14} />
               </button>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 className="rounded-md bg-white/15 px-2 py-1 text-xs hover:bg-white/25"
-                aria-label="Close"
-                title="Close"
+                aria-label="Close chat"
+                title="Close (conversation is saved)"
               >
-                ✕
+                <X size={14} />
               </button>
             </div>
           </div>
@@ -183,12 +224,13 @@ export default function SpiritualAssistant() {
               <button
                 type="button"
                 onClick={() => {
-                  // already saved in localStorage via effect; this is just user feedback behavior
-                  // could later show toast
+                  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs)); } catch { /* ignore */ }
+                  setSavedFlash(true);
+                  setTimeout(() => setSavedFlash(false), 2000);
                 }}
                 className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/80 hover:bg-white/10 hover:text-white"
               >
-                Save Conversation
+                {savedFlash ? "Saved \u2014 you can access this later." : "Save Conversation"}
               </button>
               <button
                 type="button"
@@ -204,6 +246,13 @@ export default function SpiritualAssistant() {
               >
                 Download (.txt)
               </button>
+              <button
+                type="button"
+                onClick={clearChat}
+                className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-white/50 hover:bg-white/10 hover:text-white/80"
+              >
+                Clear chat
+              </button>
             </div>
           </div>
 
@@ -213,18 +262,43 @@ export default function SpiritualAssistant() {
             className="max-h-[48vh] space-y-3 overflow-y-auto px-4 pb-4"
           >
             {msgs.map((m, idx) => (
-              <div
-                key={idx}
-                className={cn(
-                  "max-w-[92%] rounded-2xl px-3 py-2 text-sm leading-relaxed",
-                  m.role === "user"
-                    ? "ml-auto bg-white/10 text-white"
-                    : "bg-white/5 text-white/80"
+              <React.Fragment key={idx}>
+                <div
+                  className={cn(
+                    "max-w-[92%] rounded-2xl px-3 py-2 text-sm leading-relaxed",
+                    m.role === "user"
+                      ? "ml-auto bg-white/10 text-white"
+                      : "bg-white/5 text-white/80"
+                  )}
+                >
+                  {m.content}
+                </div>
+                {idx === nudgeAfterIndex && (
+                  <div className="rounded-xl border border-orange-500/20 bg-orange-900/10 px-3 py-2.5 text-xs text-white/65 leading-relaxed">
+                    Want deeper, longer conversations?{" "}
+                    <Link href="/pricing" className="font-semibold text-orange-400 hover:text-orange-300">
+                      Unlock Your Faith Journey
+                    </Link>{" "}for extended guidance.
+                  </div>
                 )}
-              >
-                {m.content}
-              </div>
+              </React.Fragment>
             ))}
+            {thinking && (
+              <div className="max-w-[92%] rounded-2xl bg-white/5 px-3 py-2 text-sm text-white/50">
+                Thinking...
+              </div>
+            )}
+          </div>
+
+          {/* Premium soft hint */}
+          <div className="mx-4 mb-1 mt-1 rounded-xl border border-purple-500/20 bg-purple-900/20 px-3 py-2 text-center">
+            <p className="text-xs text-white/50">
+              Want deeper, longer guidance?{" "}
+              <span className="text-white/60">Premium unlocks more room to reflect.</span>{" "}
+              <Link href="/pricing" className="font-semibold text-orange-400 hover:text-orange-300">
+                Unlock Your Faith Journey
+              </Link>
+            </p>
           </div>
 
           {/* Input */}
@@ -244,15 +318,21 @@ export default function SpiritualAssistant() {
               />
               <button
                 type="submit"
-                className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-white hover:bg-white/15"
+                disabled={thinking}
+                className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-white hover:bg-white/15 disabled:opacity-50"
                 aria-label="Send"
               >
-                ➤
+                {thinking ? "..." : <Send size={16} />}
               </button>
             </div>
+            <p className="mt-1.5 text-center text-[10px] text-white/30">
+              Your conversation is not saved unless you click Save.
+            </p>
           </form>
         </div>
       )}
     </>
   );
 }
+
+export { SpiritualAssistant };

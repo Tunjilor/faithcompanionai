@@ -1,161 +1,125 @@
-"use client";
-
+// src/app/contact/page.tsx
 import type { Metadata } from "next";
-import BrandHeader from "@/components/BrandHeader";
+import Link from "next/link";
 
-// NOTE: You can't export metadata from a Client Component file.
-// If you want metadata, move it to app/contact/layout.tsx (example below).
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Contact Faith Companion AI for support, account help, billing questions, or general feedback.",
+  alternates: {
+    canonical: "/contact",
+  },
+};
 
-const SUPPORT_EMAIL = "support@faithcompanionai.com";
+const helpTopics = [
+  {
+    title: "Account Support",
+    description:
+      "Need help signing in, accessing your account, or managing your saved content?",
+  },
+  {
+    title: "Billing Questions",
+    description:
+      "Questions about Premium, subscriptions, pricing, or charges?",
+  },
+  {
+    title: "General Feedback",
+    description:
+      "Have a suggestion, found a bug, or want to share your experience?",
+  },
+];
 
 export default function ContactPage() {
-  const subject = encodeURIComponent("Faith Companion AI Support");
-  const mailto = `mailto:${SUPPORT_EMAIL}?subject=${subject}`;
-
   return (
-    <div className="space-y-8">
-      <BrandHeader
-        title="Contact"
-        subtitle="Questions, feedback, or support — we’re here to help."
-      />
+    <main className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-14">
+      <section className="rounded-[28px] border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur md:p-10">
+        <div className="max-w-3xl">
+          <h1 className="text-3xl font-bold text-white md:text-4xl">Contact</h1>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Left: Direct contact */}
-        <section className="fc-surface p-6 space-y-4">
-          <h2 className="text-lg font-semibold text-white">Email Support</h2>
-
-          <p className="text-white/75">
-            The fastest way to reach us is email. If something isn’t working,
-            please include what you were trying to do and any error message you
-            saw.
+          <p className="mt-4 text-sm leading-7 text-white/75 md:text-base">
+            Whether you need support, have a billing question, or want to share feedback,
+            we&rsquo;d love to hear from you.
           </p>
 
-          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-            <div className="text-xs font-semibold text-white/60 uppercase tracking-wide">
-              Email
-            </div>
-
+          <div className="mt-6 rounded-[22px] border border-white/10 bg-black/15 p-5">
+            <div className="text-sm font-semibold text-white/70">Support Email</div>
             <a
-              href={mailto}
-              className="mt-1 inline-flex items-center gap-2 text-white font-semibold underline underline-offset-4 hover:opacity-90"
+              href="mailto:support@faithcompanionai.com?subject=Faith%20Companion%20AI%20Support"
+              className="mt-2 inline-block text-base font-semibold text-white underline underline-offset-4 hover:text-orange-300"
             >
-              {SUPPORT_EMAIL}
-              <span className="text-white/50" aria-hidden>
-                ↗
-              </span>
+              support@faithcompanionai.com
             </a>
+            <p className="mt-3 text-sm leading-7 text-white/65">
+              For the fastest help, please include:
+            </p>
+            <ul className="mt-2 space-y-1 text-sm text-white/65">
+              {[
+                "A short description of the issue",
+                "The email address tied to your account (if applicable)",
+              ].map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-1 shrink-0 text-white/30">&bull;</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
-            <p className="mt-2 text-sm text-white/70">
-              For premium billing questions, include the email you used at
-              checkout and (if possible) a Stripe receipt or invoice number.
+      <section className="mt-8 grid gap-5 md:grid-cols-3">
+        {helpTopics.map((item) => (
+          <div
+            key={item.title}
+            className="rounded-[24px] border border-white/10 bg-white/5 p-6"
+          >
+            <h2 className="text-lg font-bold text-white">{item.title}</h2>
+            <p className="mt-3 text-sm leading-7 text-white/70">
+              {item.description}
             </p>
           </div>
+        ))}
+      </section>
 
-          <div className="text-sm text-white/60">
-            Typical response time:{" "}
-            <span className="text-white/80">1–2 business days</span>
-          </div>
-        </section>
+      <section className="mt-8 rounded-[28px] border border-white/10 bg-white/5 p-8 md:p-10">
+        <h2 className="text-2xl font-bold text-white md:text-3xl">
+          Before you email us
+        </h2>
 
-        {/* Right: Optional form (mailto helper) */}
-        <section className="fc-surface p-6">
-          <h2 className="text-lg font-semibold text-white">Send a Message</h2>
-          <p className="mt-2 text-white/75">
-            Prefer a form? Fill this out and click “Open Email” — it will
-            pre-fill a message for you.
-          </p>
-
-          <form
-            className="mt-5 space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-
-              const form = e.currentTarget as HTMLFormElement;
-              const name = (form.elements.namedItem("name") as HTMLInputElement)
-                ?.value;
-              const email = (
-                form.elements.namedItem("email") as HTMLInputElement
-              )?.value;
-              const topic = (
-                form.elements.namedItem("topic") as HTMLSelectElement
-              )?.value;
-              const message = (
-                form.elements.namedItem("message") as HTMLTextAreaElement
-              )?.value;
-
-              const body = encodeURIComponent(
-                `Name: ${name || ""}\nEmail: ${email || ""}\nTopic: ${
-                  topic || ""
-                }\n\nMessage:\n${message || ""}\n`
-              );
-
-              window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
-            }}
-          >
-            <div>
-              <label className="block text-sm font-medium text-white/70">
-                Name (optional)
-              </label>
-              <input
-                name="name"
-                placeholder="Your name"
-                className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none placeholder:text-white/40 focus:ring-2 focus:ring-white/10"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-white/70">
-                Your email (optional)
-              </label>
-              <input
-                name="email"
-                placeholder="you@example.com"
-                className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none placeholder:text-white/40 focus:ring-2 focus:ring-white/10"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-white/70">
-                Topic
-              </label>
-              <select
-                name="topic"
-                className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none focus:ring-2 focus:ring-white/10"
-                defaultValue="General"
-              >
-                <option>General</option>
-                <option>Premium / Billing (Stripe)</option>
-                <option>Bug / Something not working</option>
-                <option>Feature request</option>
-                <option>Privacy question</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-white/70">
-                Message
-              </label>
-              <textarea
-                name="message"
-                rows={6}
-                placeholder="Tell us what you need help with…"
-                className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none placeholder:text-white/40 focus:ring-2 focus:ring-white/10"
-              />
-              <p className="mt-2 text-xs text-white/50">
-                Tip: If reporting a bug, include the page URL and what you
-                clicked.
-              </p>
-            </div>
-
-            <button
-              type="submit"
-              className="inline-flex w-full items-center justify-center rounded-md bg-gradient-to-r from-purple-600 to-orange-500 px-4 py-3 text-sm font-semibold text-white hover:opacity-95"
+        <div className="mt-6 grid gap-5 md:grid-cols-2">
+          <div className="rounded-[22px] border border-white/10 bg-black/15 p-5">
+            <h3 className="text-base font-semibold text-white">Check the FAQ</h3>
+            <p className="mt-2 text-sm leading-7 text-white/70">
+              Many common questions about accounts, Premium, and free usage are already answered there.
+            </p>
+            <p className="mt-1 text-xs text-white/40">Visit FAQ &rarr;</p>
+            <Link
+              href="/faq"
+              className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:opacity-90"
             >
-              Open Email
-            </button>
-          </form>
-        </section>
-      </div>
-    </div>
+              Visit FAQ
+            </Link>
+          </div>
+
+          <div className="rounded-[22px] border border-white/10 bg-black/15 p-5">
+            <h3 className="text-base font-semibold text-white">Review Pricing</h3>
+            <p className="mt-2 text-sm leading-7 text-white/70">
+              If your question is about Premium access or what&rsquo;s included, you may find your answer here.
+            </p>
+            <p className="mt-1 text-xs text-white/40">View Pricing &rarr;</p>
+            <Link
+              href="/pricing"
+              className="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              View Pricing
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <p className="mt-8 text-center text-sm text-white/50">
+        We aim to respond as quickly as possible and appreciate your patience.
+      </p>
+    </main>
   );
 }

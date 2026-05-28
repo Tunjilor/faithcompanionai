@@ -1,48 +1,37 @@
+// src/components/usePremium.ts
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
 
-const KEY = "isPremium";
+type MeResponse = {
+  premium: boolean;
+  premiumUntil: string | null;
+  email?: string;
+};
 
 export function usePremium() {
   const [isPremium, setIsPremium] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [me, setMe] = useState<MeResponse | null>(null);
 
-  const read = useCallback(() => {
+  const refresh = useCallback(async () => {
+    setLoading(true);
     try {
-      setIsPremium(localStorage.getItem(KEY) === "true");
+      const res = await fetch("/api/me", { cache: "no-store" });
+      const json = (await res.json()) as MeResponse;
+      setMe(json);
+      setIsPremium(Boolean(json?.premium));
     } catch {
+      setMe({ premium: false, premiumUntil: null });
       setIsPremium(false);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    read();
+    refresh();
+  }, [refresh]);
 
-    const onStorage = (e: StorageEvent) => {
-      if (e.key === KEY) read();
-    };
-
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, [read]);
-
-  const activatePremium = useCallback(() => {
-    try {
-      localStorage.setItem(KEY, "true");
-    } catch {
-      // ignore
-    }
-    setIsPremium(true);
-  }, []);
-
-  const deactivatePremium = useCallback(() => {
-    try {
-      localStorage.removeItem(KEY);
-    } catch {
-      // ignore
-    }
-    setIsPremium(false);
-  }, []);
-
-  return { isPremium, activatePremium, deactivatePremium };
+  return { isPremium, loading, me, refresh };
 }

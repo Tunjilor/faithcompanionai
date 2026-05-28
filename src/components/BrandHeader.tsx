@@ -1,4 +1,4 @@
-export default function BrandHeader({
+﻿export default function BrandHeader({
   title,
   subtitle,
 }: {
@@ -16,3 +16,4 @@ export default function BrandHeader({
     </div>
   );
 }
+export { BrandHeader };

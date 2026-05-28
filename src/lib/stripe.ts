@@ -1,17 +1,24 @@
 // src/lib/stripe.ts
 import Stripe from "stripe";
 
-/**
- * Server-side Stripe client (Node runtime).
- * Used by API routes like:
- *   import { stripe } from "@/lib/stripe";
- */
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
-  apiVersion: "2023-10-16",
-});
+const globalForStripe = globalThis as unknown as { stripe?: Stripe };
 
-/**
- * Optional default export if any file uses:
- *   import stripe from "@/lib/stripe";
- */
-export default stripe;
+function requireStripeSecretKey() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    // Fail fast in runtime (but won't execute at build unless code is imported)
+    throw new Error("Missing STRIPE_SECRET_KEY");
+  }
+  return key;
+}
+
+export const stripe =
+  globalForStripe.stripe ??
+  new Stripe(requireStripeSecretKey(), {
+    // ✅ Do NOT set apiVersion here to avoid TS mismatches between Stripe package versions
+    // Stripe will use the SDK default API version.
+  });
+
+if (process.env.NODE_ENV !== "production") {
+  globalForStripe.stripe = stripe;
+}

@@ -1,4 +1,4 @@
-﻿// src/components/Footer.tsx
+// src/components/Footer.tsx
 import Link from "next/link";
 
 const sitemapLinks = [
@@ -25,12 +25,18 @@ const legalLinks = [
   { label: "Refund", href: "/refund" },
 ];
 
+const ecosystemLinks = [
+  { label: "AI Tithe Calculator", href: "https://www.tithecalculatorai.com" },
+  { label: "AI Prayer Generator", href: "https://www.prayergeneratorai.com" },
+  { label: "Bible Verse Generator AI", href: "https://www.bibleversegeneratorai.com" },
+];
+
 export default function Footer() {
   return (
     <footer className="border-t border-white/10">
       <div className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-12">
         <div className="rounded-[28px] border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur">
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_1fr]">
             <div>
               <div className="flex items-start gap-3">
                 <img
@@ -107,7 +113,7 @@ export default function Footer() {
 
             <div>
               <h3 className="text-sm font-semibold uppercase tracking-wide text-white/60">
-                Help & Legal
+                Help &amp; Legal
               </h3>
               <div className="mt-4 space-y-3">
                 {legalLinks.map((item) => (
@@ -130,6 +136,28 @@ export default function Footer() {
               >
                 support@faithcompanionai.com
               </a>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-white/60">
+                Free Christian AI Tools
+              </h3>
+              <div className="mt-4 space-y-3">
+                {ecosystemLinks.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-sm text-white/75 transition hover:text-white"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+              <p className="mt-5 text-xs leading-5 text-white/45">
+                Part of the Faith Companion AI ecosystem — free tools for prayer, Bible study, and tithing.
+              </p>
             </div>
           </div>
 
